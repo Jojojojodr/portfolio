@@ -1,0 +1,59 @@
+version: '3'
+
+dotenv:
+  - .env
+
+includes:
+  os_specific: ./tasks/taskfile_{{ OS }}.yaml
+
+vars:
+  GO_RUN_PATH: ./cmd/main.go
+
+tasks:
+  default:
+    cmds:
+      - echo "Running the application"
+      - templ generate
+      - go run {{ .GO_RUN_PATH }}
+    silent: true
+  
+  serve:
+    cmds:
+      - air
+    silent: true
+
+  build:
+    cmds:
+      - templ generate
+      - go build -o {{ .EXE_PATH }} {{ .GO_RUN_PATH }}
+      - echo "Application build"
+    silent: true
+
+  start:
+    cmds:
+      - ./{{ .EXE_PATH }}
+    silent: true
+
+  run:
+    cmds:
+      - echo "Building and running the application"
+      - task build
+      - task start
+    silent: true
+
+  docker:
+    cmds:
+      - docker-compose up
+    silent: true
+
+  docker-build:
+    cmds:
+      - docker-compose up --build
+    silent: true
+
+  clean:
+    cmds:
+      - echo "Cleaning application"
+      - rm -rf ./bin
+      - rm -rf ./tmp
+    silent: true

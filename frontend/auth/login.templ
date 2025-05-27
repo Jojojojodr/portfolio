@@ -1,0 +1,26 @@
+package auth
+
+import (
+    "github.com/Jojojojodr/portfolio/frontend"
+
+    "github.com/gin-gonic/gin"    
+)
+
+templ Login(c *gin.Context) {
+    @frontend.Layout(c, "Login") {
+        <div class="container">
+            <h1>Login</h1>
+            <form method="POST" action="/auth/login">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control bg-white" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control bg-white" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    }
+}

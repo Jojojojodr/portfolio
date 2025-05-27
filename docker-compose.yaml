@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: portfolio-app
+    volumes:
+      - ./database/sqlite.db:/app/database/sqlite.db
+    ports:
+      - "8080:${PORT}"
+    environment:
+      - SECRET_TOKEN=${SECRET_TOKEN}
+      - PORT=${PORT}
+    restart: unless-stopped
+    command: [./main]

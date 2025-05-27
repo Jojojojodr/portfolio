@@ -1,0 +1,7 @@
+.vscode/
+bin/
+tmp/
+
+.env
+sqlite.db
+*_templ.go
