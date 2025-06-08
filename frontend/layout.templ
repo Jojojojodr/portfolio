@@ -16,7 +16,9 @@ templ Layout(c *gin.Context, title string) {
         @header(c, middleware.IsAuthenticated(c))
         <main class="pt-1">
             <div class="bg-gray-800 w-full h-screen">
-            { children... }
+                <div class="px-8 py-4">
+                { children... }
+                </div>
             </div>
         </main>
     </body>
@@ -40,32 +42,35 @@ templ header(c *gin.Context,isAuthenticated bool) {
                 <span>JdRSearch</span>
             </a>
         </div>
-        if !isAuthenticated {
-            <div class="flex items-center gap-2">
-                @components.ButtonPrimary("Login", "/login")
-                @components.ButtonPrimary("Register", "/register") 
-            </div>
-        } else {
-            <div class="flex items-center gap-4">
-                {{
-                    userAny, _ := c.Get("user")
-                    var userName string
-                    if userAny != nil {
-                        if user, ok := userAny.(*models.User); ok {
-                            userName = user.Name
-                        }
-                    }
-                }}
-                <span class="text-white">Hello,<br />{ userName }</span>
-                <div>
-                   
-                    @components.ButtonAction("Logout", "/auth/logout")
-                    if c.GetBool("isAdmin") {
-                        @components.ButtonPrimary("Admin Dashboard", "/admin/dashboard")
-                    }
+        <div class="flex items-center gap-6">
+            <a href="/blog" class="text-white hover:underline">Blog</a>
+            if !isAuthenticated {
+                <div class="flex items-center gap-2">
+                    @components.ButtonPrimary("Login", "/login")
+                    @components.ButtonPrimary("Register", "/register")
                 </div>
-            </div>
-        }
+            } else {
+                <div class="flex items-center gap-4">
+                    {{
+                        userAny, _ := c.Get("user")
+                        var userName string
+                        if userAny != nil {
+                            if user, ok := userAny.(*models.User); ok {
+                                userName = user.Name
+                            }
+                        }
+                    }}
+                    <span class="text-white">Hello,<br />{ userName }</span>
+                    <div>
+            
+                        @components.ButtonAction("Logout", "/auth/logout")
+                        if c.GetBool("isAdmin") {
+                            @components.ButtonPrimary("Admin Dashboard", "/admin/dashboard")
+                        }
+                    </div>
+                </div>
+            }
+        </div>
     </header>
 }
 

@@ -1,0 +1,26 @@
+package components
+
+import (
+    "fmt"
+
+    "github.com/Jojojojodr/portfolio/internal/db/models"
+)
+
+templ BlogSidebar(posts []models.BlogPost) {
+    <aside class="w-64 bg-gray-900 text-white h-[100vh] p-4 flex-shrink-0">
+        <h2 class="text-lg font-bold mb-4">All Blog Posts</h2>
+        <ul class="space-y-2">
+            if len(posts) == 0 {
+                <li class="text-gray-400">No posts available.</li>
+            } else {
+                for _, post := range posts {
+                    <li>
+                        <a href={ templ.SafeURL("/blog/post/" + fmt.Sprint(post.ID))} class="hover:underline text-blue-300">
+                            { post.Title }
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </aside>
+}

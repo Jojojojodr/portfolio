@@ -1,0 +1,107 @@
+package blog
+
+import (
+    "fmt"
+
+    "github.com/Jojojojodr/portfolio/frontend"
+    "github.com/Jojojojodr/portfolio/frontend/components" 
+    "github.com/Jojojojodr/portfolio/internal/db/models"
+
+    "github.com/gin-gonic/gin"
+)
+
+templ BlogPosts(c *gin.Context, posts []models.BlogPost) {
+    @frontend.Layout(c, "Blog Posts") {
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-2xl font-bold mb-4">Blog Posts</h1>
+            if len(posts) == 0 {
+                <p>No blog posts found.</p>
+            } else {
+                for _, post := range posts {
+                    <a href={ templ.SafeURL("/blog/post/" + fmt.Sprint(post.ID)) }>
+                        <div class="mb-6 p-4 border rounded bg-white shadow">
+                            <h2 class="text-xl font-semibold">{ post.Title }</h2>
+                            <p class="text-gray-700 mt-2">{ post.Content }</p>
+                            <div class="text-sm text-gray-500 mt-2">
+                                Posted at: { post.CreatedAt.Format("2006-01-02 15:04") }
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    }
+}
+
+templ BlogPostPage(c *gin.Context, posts []models.BlogPost, post *models.BlogPost) {
+    @markdownStyle()
+    @frontend.Layout(c, post.Title) {
+         <div class="flex min-h-screen">
+            @components.BlogSidebar(posts)
+            <div class="max-w-xl mx-20 mt-8">
+                <h1 class="text-3xl font-bold mb-4">{ post.Title }</h1>
+                <div class="text-gray-500 text-sm mb-4">
+                    Posted at: { post.CreatedAt.Format("2006-01-02 15:04") }
+                </div>
+                <div class="markdown">
+                    @templ.Raw(post.Content)
+                </div>
+            </div>
+        </div> 
+    }
+}
+
+templ markdownStyle() {
+    <style>
+        .markdown h1 {
+            font-size: 2rem; /* 32px */
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #5c3131;
+        }
+        .markdown h2 {
+            font-size: 1.5rem; /* 24px */
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #723f3f;
+        }
+        .markdown h3 {
+            font-size: 1.25rem; /* 20px */
+            font-weight: bold;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #8a4d4d;
+        }
+        .markdown h4 {
+            font-size: 1rem; /* 16px */
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: #a15b5b;
+        }
+        .markdown h5 {
+            font-size: 0.875rem; /* 14px */
+            margin-top: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: #b16969;
+        }
+        .markdown h6 {
+            font-size: 0.75rem; /* 12px */
+            margin-top: 0.75rem;
+            margin-bottom: 0.5rem;
+            color: #c27777;
+        }
+        .markdown p {
+            font-size: 1rem; /* 16px */
+            line-height: 1.5;
+            color: #fff;
+        }
+        .markdown a {
+            color: #1e90ff; /* DodgerBlue */
+            text-decoration: underline;
+        }
+        .markdown a:hover {
+            text-decoration: none;
+        }
+    </style>
+}
