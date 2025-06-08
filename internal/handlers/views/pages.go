@@ -1,4 +1,4 @@
-package handlers
+package views
 
 import (
 	"github.com/Jojojojodr/portfolio/frontend"
@@ -11,8 +11,6 @@ import (
 )
 
 func HandleHomePage(c *gin.Context) {
-
-
     renderTempl(c, 200, frontend.Index(c))
 }
 
