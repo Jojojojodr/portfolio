@@ -26,5 +26,7 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	admin.GET("/blog/create", views.HandleCreateBlogPostPage)
 	admin.POST("/blog/create", views.HandleCreateBlogPost)
 
+	svr.NoRoute(views.HandleNotFoundPage)
+
 	return svr
 }

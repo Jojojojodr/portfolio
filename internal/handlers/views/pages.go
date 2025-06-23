@@ -24,6 +24,10 @@ func HandleDashboardPage(c *gin.Context) {
 	renderTempl(c, 200, admin.Dashboard(c, users))
 }
 
+func HandleNotFoundPage(c *gin.Context) {
+	renderTempl(c, 404, frontend.NotFound(c))
+}
+
 func renderTempl(c *gin.Context, status int, template templ.Component) error {
 	c.Status(status)
 	return template.Render(c.Request.Context(), c.Writer)
