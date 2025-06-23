@@ -6,13 +6,14 @@ import (
 
 	"github.com/Jojojojodr/portfolio"
 	"github.com/Jojojojodr/portfolio/internal"
+	"github.com/Jojojojodr/portfolio/internal/db"
 )
 
 func main() {
 	log.Println("Starting Application")
 
 	// Set up database connection and migrations
-	portfolio.InitDB("./database/sqlite.db", "./database/migrations", "./database/seeds")
+	db.DataBase = portfolio.ConnectDB("./database/sqlite.db")
 
 	// Run the server
 	port := internal.Env("PORT")
