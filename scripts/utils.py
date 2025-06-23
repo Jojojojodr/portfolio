@@ -41,6 +41,8 @@ def run_seeds(seeds_folder: str, cur: sqlite3.Cursor):
                         columns = ', '.join(keys)
                         placeholders = ', '.join(['?'] * len(keys))
                         for row in data:
+                            if "password" in row:
+                                row["password"] = hash_password(row["password"])
                             values = tuple(row[k] for k in keys)
                             cur.execute(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})", values)
                         print(f"Seeded: {filename}")
@@ -54,3 +56,12 @@ def drop_all_tables(cur: sqlite3.Cursor):
             continue
         cur.execute(f"DROP TABLE IF EXISTS {table_name[0]}")
         print(f"Dropped table: {table_name[0]}")
+        
+def hash_password(password: str) -> str:
+    result = subprocess.run(
+        ["go", "run", "cmd/hash/hashpass.go", password],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+    return result.stdout.strip()
