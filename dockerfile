@@ -12,10 +12,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go install github.com/a-h/templ/cmd/templ@latest
-RUN go install github.com/go-task/task/v3/cmd/task@latest
-
-RUN task build
+RUN go build -o bin/main ./cmd/main.go
 
 FROM alpine:latest
 
