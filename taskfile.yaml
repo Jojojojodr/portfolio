@@ -48,7 +48,17 @@ tasks:
 
   docker-build:
     cmds:
+      - templ generate
       - docker-compose up --build
+    silent: true
+
+  db:
+    cmds:
+      - python{{ .PYTHON }} ./scripts/fresh_db.py
+
+  setup:
+    cmds:
+      - python{{ .PYTHON }} ./scripts/setup.py
     silent: true
 
   clean:
