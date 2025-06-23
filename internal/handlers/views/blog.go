@@ -3,7 +3,6 @@ package views
 import (
 	"time"
 
-	"github.com/Jojojojodr/portfolio/frontend"
 	"github.com/Jojojojodr/portfolio/frontend/admin"
 	"github.com/Jojojojodr/portfolio/frontend/blog"
 	"github.com/Jojojojodr/portfolio/internal/db"
@@ -26,12 +25,12 @@ func HandleBlogPostPage(c *gin.Context) {
     id := c.Param("id")
 	posts, err := models.GetBlogPosts()
 	if err != nil {
-		renderTempl(c, 404, frontend.NotFound(c, "Blog Post Not Found"))
+		c.Redirect(404, "/not-found")
         return
 	}
     var post models.BlogPost
     if err := db.DataBase.First(&post, id).Error; err != nil {
-        renderTempl(c, 404, frontend.NotFound(c, "Blog Post Not Found"))
+        c.Redirect(404, "/not-found")
         return
     }
 	htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
