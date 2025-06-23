@@ -1,0 +1,19 @@
+import utils
+import fresh_db
+
+go_deps = [
+    "github.com/a-h/templ/cmd/templ@latest",
+    "github.com/air-verse/air@latest",
+    "github.com/go-task/task/v3/cmd/task@latest"
+]
+
+def setup():
+    print("Installing Go dependencies...\n")
+    for dep in go_deps:
+        utils.install_go_dependency(dep)  
+    print("\nAll Go dependencies installed successfully.")
+    
+    fresh_db.fresh()
+
+if __name__ == "__main__":
+    setup()
