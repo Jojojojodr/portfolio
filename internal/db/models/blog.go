@@ -19,11 +19,17 @@ type BlogPost struct {
 func GetPublishedBlogPosts(db *gorm.DB) ([]BlogPost, error) {
 	var posts []BlogPost
 	err := db.Where("is_published = ?", 1).Order("created_at DESC").Find(&posts).Error
-	return posts, err
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
 
 func GetBlogPosts() ([]BlogPost, error) {
 	var posts []BlogPost
 	err := db.DataBase.Where("is_published = ?", 1).Order("created_at DESC").Find(&posts).Error
-	return posts, err
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
