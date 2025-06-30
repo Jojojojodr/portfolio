@@ -5,20 +5,17 @@ import (
 
 	"github.com/Jojojojodr/portfolio/frontend/admin"
 	"github.com/Jojojojodr/portfolio/frontend/blog"
+	"github.com/Jojojojodr/portfolio/frontend/components"
 	"github.com/Jojojojodr/portfolio/internal/db"
 	"github.com/Jojojojodr/portfolio/internal/db/models"
 	"github.com/gin-gonic/gin"
 
 	"github.com/gomarkdown/markdown"
-    "github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/html"
 )
 
 func HandleBlogPostsPage(c *gin.Context) {
-    posts, err := models.GetBlogPosts()
-	if err != nil {
-		renderTempl(c, 200, blog.BlogPosts(c, nil))
-	}
-    renderTempl(c, 200, blog.BlogPosts(c, posts))
+    renderTempl(c, 200, blog.BlogPosts(c))
 }
 
 func HandleBlogPostPage(c *gin.Context) {
@@ -66,4 +63,19 @@ func HandleCreateBlogPost(c *gin.Context) {
         return
     }
     c.Redirect(302, "/blog")
+}
+
+func HandleBlogPostsHTMX(c *gin.Context) {
+    posts, err := models.GetPublishedBlogPosts(db.DataBase)
+    if err != nil {
+        c.String(500, "Error loading posts")
+        return
+    }
+
+    c.Writer.WriteHeader(200)
+    if len(posts) == 0 {
+        components.BlogPostsPartial([]models.BlogPost{}).Render(c.Request.Context(), c.Writer)
+    } else {
+        components.BlogPostsPartial(posts).Render(c.Request.Context(), c.Writer)
+    }
 }

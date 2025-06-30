@@ -1,8 +1,6 @@
 package blog
 
 import (
-    "fmt"
-
     "github.com/Jojojojodr/portfolio/frontend"
     "github.com/Jojojojodr/portfolio/frontend/components" 
     "github.com/Jojojojodr/portfolio/internal/db/models"
@@ -10,25 +8,13 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-templ BlogPosts(c *gin.Context, posts []models.BlogPost) {
+templ BlogPosts(c *gin.Context) {
     @frontend.Layout(c, "Blog Posts") {
         <div class="max-w-2xl mx-auto">
             <h1 class="text-2xl font-bold mb-4">Blog Posts</h1>
-            if len(posts) == 0 {
-                <p>No blog posts found.</p>
-            } else {
-                for _, post := range posts {
-                    <a href={ templ.SafeURL("/blog/post/" + fmt.Sprint(post.ID)) }>
-                        <div class="mb-6 p-4 border rounded bg-white shadow">
-                            <h2 class="text-xl font-semibold">{ post.Title }</h2>
-                            <p class="text-gray-700 mt-2">{ post.Content }</p>
-                            <div class="text-sm text-gray-500 mt-2">
-                                Posted at: { post.CreatedAt.Format("2006-01-02 15:04") }
-                            </div>
-                        </div>
-                    </a>
-                }
-            }
+            <div id="blog-posts" hx-get="/blog/posts-htmx" hx-trigger="load" hx-target="#blog-posts" hx-swap="innerHTML">
+                <p>Loading blog posts...</p>
+            </div>
         </div>
     }
 }
