@@ -2,21 +2,16 @@ import os
 import sqlite3
 import utils
 
-db_folder = os.path.join(os.path.dirname(__file__), '..', 'database')
-db_file = os.path.join(db_folder, 'sqlite.db')
-migrations_folder = os.path.join(db_folder, 'migrations')
-seeds_folder = os.path.join(db_folder, 'seeds')
-
 def fresh():    
-    create_db = not os.path.exists(db_file)
+    create_db = not os.path.exists(utils.db_file)
         
-    conn = sqlite3.connect(db_file)
+    conn = sqlite3.connect(utils.db_file)
     cur = conn.cursor()
 
     if not create_db:
         utils.drop_all_tables(cur)
-    utils.run_migrations(migrations_folder, cur)
-    utils.run_seeds(seeds_folder, cur)
+    utils.run_migrations(utils.migrations_folder, cur)
+    utils.run_seeds(utils.seeds_folder, cur)
         
     conn.commit()
     conn.close()

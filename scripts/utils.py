@@ -3,6 +3,11 @@ import subprocess
 import sqlite3
 import json
 
+db_folder = os.path.join(os.path.dirname(__file__), '..', 'database')
+db_file = os.path.join(db_folder, 'sqlite.db')
+migrations_folder = os.path.join(db_folder, 'migrations')
+seeds_folder = os.path.join(db_folder, 'seeds')
+
 def install_go_dependency(package: str):
     print(f"Installing Go dependency: {package}...")
     
@@ -46,6 +51,25 @@ def run_seeds(seeds_folder: str, cur: sqlite3.Cursor):
                             values = tuple(row[k] for k in keys)
                             cur.execute(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})", values)
                         print(f"Seeded: {filename}")
+
+def seed_file(file_path: str, cur: sqlite3.Cursor):
+    if not os.path.isfile(file_path):
+        print(f"File not found: {file_path}")
+        return
+
+    table_name = os.path.splitext(os.path.basename(file_path))[0]
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        if isinstance(data, list) and data:
+            keys = data[0].keys()
+            columns = ', '.join(keys)
+            placeholders = ', '.join(['?'] * len(keys))
+            for row in data:
+                if "password" in row:
+                    row["password"] = hash_password(row["password"])
+                values = tuple(row[k] for k in keys)
+                cur.execute(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})", values)
+            print(f"Seeded: {file_path}")
                         
 def drop_all_tables(cur: sqlite3.Cursor):
     # Drop all tables in the database except sqlite_sequence
