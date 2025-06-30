@@ -43,7 +43,12 @@ tasks:
 
   docker:
     cmds:
-      - docker-compose up
+      - docker-compose up -d
+    silent: true
+
+  docker-stop:
+    cmds:
+      - docker-compose down
     silent: true
 
   docker-build:
@@ -55,10 +60,11 @@ tasks:
   db:
     cmds:
       - python{{ .PYTHON }} ./scripts/fresh_db.py
-
-  setup:
+    silent: true
+  
+  seed:
     cmds:
-      - python{{ .PYTHON }} ./scripts/setup.py
+      - python{{ .PYTHON }} ./scripts/seed_db.py {{ .CLI_ARGS }}
     silent: true
 
   clean:
