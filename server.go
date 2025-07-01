@@ -23,6 +23,7 @@ func RunServer(port string) {
 
 	routers.FrontendRouter(svr)
 	routers.V1Router(svr)
+	routers.HandleRouter(svr)
 
 	log.Println("Server is running at http://localhost" + port)
 	svr.Use(cors.Default())
