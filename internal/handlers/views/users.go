@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Jojojojodr/portfolio/frontend/components"
 	"github.com/Jojojojodr/portfolio/internal"
 	"github.com/Jojojojodr/portfolio/internal/db/models"
 
@@ -12,22 +13,25 @@ import (
 )
 
 func Login(c *gin.Context) {
-	name := c.PostForm("name")
+    name := c.PostForm("name")
     password := c.PostForm("password")
 
-	if name == "" || password == "" {
-        c.HTML(http.StatusBadRequest, "login.tmpl", gin.H{"error": "Username and password required"})
+    if name == "" || password == "" {
+		c.Writer.WriteHeader(400)
+		components.LoginResponse("", "Username and password required").Render(c.Request.Context(), c.Writer)
         return
     }
 
     user, err := models.GetUserByName(name)
     if err != nil || user == nil {
-        c.HTML(http.StatusUnauthorized, "login.tmpl", gin.H{"error": "Invalid username or password"})
+		c.Writer.WriteHeader(401)
+		components.LoginResponse("", "Invalid username or password").Render(c.Request.Context(), c.Writer)
         return
     }
 
     if !internal.CheckPasswordHash(password, user.Password) {
-        c.HTML(http.StatusUnauthorized, "login.tmpl", gin.H{"error": "Invalid username or password"})
+		c.Writer.WriteHeader(401)
+		components.LoginResponse("", "Invalid username or password").Render(c.Request.Context(), c.Writer)
         return
     }
 
@@ -39,15 +43,16 @@ func Login(c *gin.Context) {
     secretToken := internal.Env("SECRET_TOKEN")
     tokenString, err := token.SignedString([]byte(secretToken))
     if err != nil {
-        c.HTML(http.StatusInternalServerError, "login.tmpl", gin.H{"error": "Could not create token"})
+		c.Writer.WriteHeader(500)
+		components.LoginResponse("", "Could not create token").Render(c.Request.Context(), c.Writer)
         return
     }
 
     c.SetSameSite(http.SameSiteLaxMode)
     c.SetCookie("Authorization", tokenString, 3600*24*30, "/", "", false, true)
 
-    c.Redirect(http.StatusSeeOther, "/")
-
+	c.Header("HX-Location", "/")
+	c.Writer.WriteHeader(200)
 }
 
 func Logout(c *gin.Context) {

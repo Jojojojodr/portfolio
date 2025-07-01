@@ -1,0 +1,10 @@
+package components
+
+templ LoginResponse(success string, err string) {
+    if err != "" {
+        <div class="text-red-500">{ err }</div>
+    }
+    if success != "" {
+        <div class="text-green-500">{ success }</div>
+    }
+}
