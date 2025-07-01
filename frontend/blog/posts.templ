@@ -12,7 +12,7 @@ templ BlogPosts(c *gin.Context) {
     @frontend.Layout(c, "Blog Posts") {
         <div class="max-w-2xl mx-auto">
             <h1 class="text-2xl font-bold mb-4">Blog Posts</h1>
-            <div id="blog-posts" hx-get="/blog/posts-htmx" hx-trigger="load" hx-target="#blog-posts" hx-swap="innerHTML">
+            <div id="blog-posts" hx-get="/handle/blog/posts" hx-trigger="load" hx-target="#blog-posts" hx-swap="innerHTML">
                 <p>Loading blog posts...</p>
             </div>
         </div>
