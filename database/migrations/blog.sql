@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     user_id INTEGER NOT NULL,
     is_published INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS blog_comments (
