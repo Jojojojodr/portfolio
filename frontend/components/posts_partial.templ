@@ -1,17 +1,21 @@
 package components
 
 import (
+    "fmt"
+
     "github.com/Jojojojodr/portfolio/internal/db/models"
 )
 
 templ BlogPostsPartial(posts []models.BlogPost) {
     for _, post := range posts {
-        <div class="mb-6 p-4 border rounded bg-white shadow">
+        <a
+            href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) } class="block mb-6 p-4 border rounded bg-white shadow hover:bg-gray-100 transition"
+        >
             <h2 class="text-xl font-semibold">{ post.Title }</h2>
             <p class="text-gray-700 mt-2">{ post.Content }</p>
             <div class="text-sm text-gray-500 mt-2">
                 Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
             </div>
-        </div>
+        </a>
     }
 }

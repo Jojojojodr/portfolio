@@ -1,6 +1,8 @@
 package views
 
 import (
+	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Jojojojodr/portfolio/frontend/admin"
@@ -19,20 +21,30 @@ func HandleBlogPostsPage(c *gin.Context) {
 }
 
 func HandleBlogPostPage(c *gin.Context) {
-    id := c.Param("id")
-	posts, err := models.GetBlogPosts()
-	if err != nil {
-		c.Redirect(404, "/not-found")
-        return
-	}
-    var post models.BlogPost
-    if err := db.DataBase.First(&post, id).Error; err != nil {
-        c.Redirect(404, "/not-found")
+    idStr := c.Query("id")
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        c.Writer.WriteHeader(http.StatusBadRequest)
+        c.Writer.Write([]byte("Invalid post ID"))
         return
     }
+	
+    posts, err := models.GetBlogPosts()
+    if err != nil {
+        c.String(404, "Post not found")
+        return
+    }
+
+    post, err := models.GetBlogPostByID(db.DataBase, uint(id))
+    if err != nil || post == nil {
+        c.Writer.WriteHeader(http.StatusNotFound)
+        c.Writer.Write([]byte("Post not found"))
+        return
+    }
+
 	htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
 	post.Content = string(htmlContent)
-    renderTempl(c, 200, blog.BlogPostPage(c, posts, &post))
+    renderTempl(c, 200, blog.BlogPostPage(c, posts, post))
 }
 
 func HandleCreateBlogPostPage(c *gin.Context) {
@@ -78,4 +90,26 @@ func HandleBlogPostsHTMX(c *gin.Context) {
     } else {
         components.BlogPostsPartial(posts).Render(c.Request.Context(), c.Writer)
     }
+}
+
+func HandleBlogPostHTMX(c *gin.Context) {
+    idStr := c.Query("id")
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        c.Writer.WriteHeader(http.StatusBadRequest)
+        c.Writer.Write([]byte("Invalid post ID"))
+        return
+    }
+
+    post, err := models.GetBlogPostByID(db.DataBase, uint(id))
+    if err != nil || post == nil {
+        c.Writer.WriteHeader(http.StatusNotFound)
+        c.Writer.Write([]byte("Post not found"))
+        return
+    }
+
+	htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
+	post.Content = string(htmlContent)
+
+    components.BlogPostContent(post).Render(c.Request.Context(), c.Writer)
 }

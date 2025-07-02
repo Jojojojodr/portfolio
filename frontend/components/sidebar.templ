@@ -15,7 +15,14 @@ templ BlogSidebar(posts []models.BlogPost) {
             } else {
                 for _, post := range posts {
                     <li>
-                        <a href={ templ.SafeURL("/blog/post/" + fmt.Sprint(post.ID))} class="hover:underline text-blue-300">
+                        <a
+                            href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
+                            hx-get={ "/handle/blog/post?id=" + fmt.Sprint(post.ID) }
+                            hx-target="#blog-post-content"
+                            hx-swap="innerHTML"
+                            hx-push-url={ "/blog/post?id=" + fmt.Sprint(post.ID) }
+                            class="block px-4 py-2 hover:bg-gray-100"
+                        >
                             { post.Title }
                         </a>
                     </li>

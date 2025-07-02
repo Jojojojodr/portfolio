@@ -15,7 +15,7 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 
 	blog := svr.Group("/blog")
 	blog.GET("/", views.HandleBlogPostsPage)
-	blog.GET("/post/:id", views.HandleBlogPostPage)
+	blog.GET("/post", views.HandleBlogPostPage)
 
 	admin := svr.Group("/admin").Use(middleware.AuthMiddleware, middleware.AdminMiddleware)
 	admin.GET("/dashboard", views.HandleDashboardPage)
