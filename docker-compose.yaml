@@ -11,5 +11,6 @@ services:
     environment:
       - SECRET_TOKEN=${SECRET_TOKEN}
       - PORT=${PORT}
+      - GIN_MODE=${GIN_MODE}
     restart: unless-stopped
     command: [./main]

@@ -19,6 +19,6 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY .env .env
-COPY ./database ./database
+COPY ./database/sqlite.db ./database/sqlite.db
 
 COPY --from=builder /builder/bin/main .
