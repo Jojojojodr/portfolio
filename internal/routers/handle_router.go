@@ -13,7 +13,7 @@ func HandleRouter(svr *gin.Engine) *gin.Engine {
 	blog.GET("/posts", views.HandleBlogPostsHTMX)
 	blog.GET("/post", views.HandleBlogPostHTMX)
 
-	auth := svr.Group("/auth")
+	auth := handle.Group("/auth")
 	auth.POST("/login", views.Login)
 	auth.POST("/logout", views.Logout)
 
