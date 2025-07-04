@@ -20,7 +20,13 @@ templ BlogPosts(c *gin.Context) {
 }
 
 templ BlogPostPage(c *gin.Context, posts []models.BlogPost, post *models.BlogPost) {
-    @frontend.Layout(c, post.Title) {
+    {{
+        title := "Blog Post" 
+        if post != nil {
+            title = post.Title
+        }
+    }}
+    @frontend.Layout(c, title) {
          <div class="flex min-h-screen">
             @components.BlogSidebar(posts)
             <div id="blog-post-content" class="max-w-xl mx-20 mt-8">
