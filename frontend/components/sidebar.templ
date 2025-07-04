@@ -14,18 +14,20 @@ templ BlogSidebar(posts []models.BlogPost) {
                 <li class="text-gray-400">No posts available.</li>
             } else {
                 for _, post := range posts {
-                    <li>
-                        <a
-                            href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
-                            hx-get={ "/handle/blog/post?id=" + fmt.Sprint(post.ID) }
-                            hx-target="#blog-post-content"
-                            hx-swap="innerHTML"
-                            hx-push-url={ "/blog/post?id=" + fmt.Sprint(post.ID) }
-                            class="block px-4 py-2 hover:bg-gray-100"
-                        >
-                            { post.Title }
-                        </a>
-                    </li>
+                    if post.IsPublished {
+                        <li>
+                            <a
+                                href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
+                                hx-get={ "/handle/blog/post?id=" + fmt.Sprint(post.ID) }
+                                hx-target="#blog-post-content"
+                                hx-swap="innerHTML"
+                                hx-push-url={ "/blog/post?id=" + fmt.Sprint(post.ID) }
+                                class="block px-4 py-2 hover:bg-gray-100"
+                            >
+                                { post.Title }
+                            </a>
+                        </li>
+                    }
                 }
             }
         </ul>
