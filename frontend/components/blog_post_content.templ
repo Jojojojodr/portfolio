@@ -7,6 +7,7 @@ import (
 templ BlogPostContent(post *models.BlogPost) {
     @markdownStyle()
     if post != nil {
+        <title hx-swap-oob="true">{ post.Title }</title>
         <h1 class="text-3xl font-bold mb-4">{ post.Title }</h1>
         <div class="text-gray-500 text-sm mb-4">
             <span class="font-semibold">Author:</span> { post.User.Name }
