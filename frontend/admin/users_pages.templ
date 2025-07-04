@@ -1,0 +1,46 @@
+package admin
+
+import (
+    "github.com/Jojojojodr/portfolio/frontend"
+    "github.com/Jojojojodr/portfolio/internal/db/models"
+    "github.com/gin-gonic/gin"
+)
+
+templ AdminUsersPage(c *gin.Context, users []models.User) {
+    @frontend.Layout(c, "All Users") {
+        <div class="max-w-4xl mx-auto mt-12">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-white">All Users</h1>
+                <a href="/admin/user/create" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition">
+                    + Create New User
+                </a>
+            </div>
+            <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left text-gray-300">ID</th>
+                        <th class="px-4 py-2 text-left text-gray-300">Name</th>
+                        <th class="px-4 py-2 text-left text-gray-300">Email</th>
+                        <th class="px-4 py-2 text-left text-gray-300">Admin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    for _, user := range users {
+                        <tr class="border-b border-gray-700 cursor-pointer hover:bg-gray-700 transition" onclick="window.location.href='/admin/user/edit?id={ user.ID }'">
+                            <td class="px-4 py-2 text-white">{ user.ID }</td>
+                            <td class="px-4 py-2 text-white">{ user.Name }</td>
+                            <td class="px-4 py-2 text-white">{ user.Email }</td>
+                            <td class="px-4 py-2 text-white">
+                                if user.IsAdmin {
+                                    Yes
+                                } else {
+                                    No
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

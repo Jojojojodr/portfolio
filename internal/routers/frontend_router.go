@@ -18,9 +18,13 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	blog.GET("/post", views.HandleBlogPostPage)
 
 	admin := svr.Group("/admin").Use(middleware.AuthMiddleware, middleware.AdminMiddleware)
-	admin.GET("/dashboard", views.HandleDashboardPage)
-	admin.GET("/blog/create", views.HandleCreateBlogPostPage)
-	admin.POST("/blog/create", views.HandleCreateBlogPost)
+	admin.GET("/dashboard", views.HandleAdminDashboardPage)
+	admin.GET("/users", views.HandleAdminUsersPage)
+	admin.GET("/posts", views.HandleAdminPostsPage)
+	admin.GET("/post/create", views.HandleAdminCreateBlogPostPage)
+	admin.GET("/post/edit", views.HandleAdminEditBlogPostPage)
+	admin.POST("/post/create", views.HandleAdminCreateBlogPost)
+	admin.POST("/post/edit", views.HandleAdminEditBlogPost)
 
 	svr.NoRoute(views.HandleNotFoundPage)
 
