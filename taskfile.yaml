@@ -19,7 +19,7 @@ tasks:
   
   serve:
     cmds:
-      - air
+      - air -c .air_{{ OS }}.toml
     silent: true
 
   build:
