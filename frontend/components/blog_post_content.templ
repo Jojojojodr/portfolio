@@ -1,6 +1,8 @@
 package components
 
 import (
+    "fmt"
+
     "github.com/Jojojojodr/portfolio/internal/db/models"
 )
 
@@ -15,6 +17,23 @@ templ BlogPostContent(post *models.BlogPost) {
         </div>
         <div class="markdown">
             @templ.Raw(post.Content)
+        </div>
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold mb-2">Comments</h2>
+            <div id="comments-section"
+                hx-get={ "/handle/blog/comments?post_id=" + fmt.Sprint(post.ID) }
+                hx-trigger="load"
+                hx-swap="innerHTML">
+                <p>Loading comments...</p>
+            </div>
+            <form id="comment-form"
+                hx-post={ "/handle/blog/comments/add?post_id=" + fmt.Sprint(post.ID) }
+                hx-target="#comments-section"
+                hx-swap="innerHTML"
+                class="mt-4 space-y-2">
+                <textarea name="comment" class="w-full border rounded px-3 py-2 text-black" rows="3" placeholder="Add a comment..." required></textarea>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Post Comment</button>
+            </form>
         </div>
     } else {
         <div>No post selected.</div>

@@ -76,3 +76,44 @@ func HandleBlogPostHTMX(c *gin.Context) {
 
     components.BlogPostContent(post).Render(c.Request.Context(), c.Writer)
 }
+
+func HandleGetBlogComments(c *gin.Context) {
+    postIDStr := c.Query("post_id")
+    postID, _ := strconv.Atoi(postIDStr)
+    var comments []models.BlogComment
+    db.DataBase.Preload("User").Where("blog_post_id = ?", postID).Order("created_at asc").Find(&comments)
+    components.BlogComments(comments).Render(c.Request.Context(), c.Writer)
+}
+
+func HandleAddBlogComment(c *gin.Context) {
+    postIDStr := c.Query("post_id")
+    postID, _ := strconv.Atoi(postIDStr)
+    commentText := c.PostForm("comment")
+    user, exists := c.Get("user")
+    if !exists {
+        c.String(http.StatusUnauthorized, "Login required")
+        return
+    }
+    u, ok := user.(*models.User)
+    if !ok || u.ID == 0 {
+        c.String(http.StatusUnauthorized, "Invalid user")
+        return
+    }
+    if commentText == "" {
+        c.String(http.StatusBadRequest, "Comment cannot be empty")
+        return
+    }
+    comment := &models.BlogComment{
+        BlogPostID: uint(postID),
+        UserID:     u.ID,
+        Comment:    commentText,
+    }
+    if err := db.DataBase.Create(comment).Error; err != nil {
+        c.String(http.StatusInternalServerError, "Failed to add comment: %v", err)
+        return
+    }
+    // Return updated comments section
+    var comments []models.BlogComment
+    db.DataBase.Preload("User").Where("blog_post_id = ?", postID).Order("created_at asc").Find(&comments)
+    components.BlogComments(comments).Render(c.Request.Context(), c.Writer)
+}

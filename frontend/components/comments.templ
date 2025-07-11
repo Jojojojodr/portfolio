@@ -1,0 +1,21 @@
+package components
+
+import (
+    "github.com/Jojojojodr/portfolio/internal/db/models"
+)
+
+templ BlogComments(comments []models.BlogComment) {
+    if len(comments) > 0 {
+        <ul class="space-y-2">
+            for _, comment := range comments {
+                <li class="bg-gray-100 text-black rounded px-3 py-2">
+                    <div class="text-sm font-semibold">{ comment.User.Name }</div>
+                    <div class="text-sm">{ comment.Comment }</div>
+                    <div class="text-xs text-gray-500">{ comment.CreatedAt.Format("02-01-2006 15:04") }</div>
+                </li>
+            }
+        </ul>
+    } else {
+        <div class="text-gray-400">No comments yet.</div>
+    }
+}

@@ -17,6 +17,16 @@ type BlogPost struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
+type BlogComment struct {
+    ID         uint      `json:"id" gorm:"primaryKey"`
+    Comment    string    `json:"comment"`
+    UserID     uint      `json:"user_id"`
+    User       User      `gorm:"foreignKey:UserID"`
+    BlogPostID uint      `json:"blog_post_id"`
+    BlogPost   BlogPost  `gorm:"foreignKey:BlogPostID"`
+    CreatedAt  time.Time `json:"created_at"`
+}
+
 func GetPublishedBlogPosts(db *gorm.DB) ([]BlogPost, error) {
 	var posts []BlogPost
 	err := db.Preload("User").Where("is_published = ?", 1).Order("created_at DESC").Find(&posts).Error
