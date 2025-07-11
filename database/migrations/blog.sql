@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL,
     is_published INTEGER DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -13,5 +13,7 @@ CREATE TABLE IF NOT EXISTS blog_comments (
     comment TEXT NOT NULL,
     user_id INTEGER NOT NULL,
     blog_post_id INTEGER NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (blog_post_id) REFERENCES blog_posts(id)
 );
