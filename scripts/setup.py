@@ -1,3 +1,5 @@
+import os
+import shutil
 import utils
 import fresh_db
 
@@ -12,6 +14,12 @@ def setup():
     for dep in go_deps:
         utils.install_go_dependency(dep)  
     print("\nAll Go dependencies installed successfully.")
+    
+    if not os.path.exists(".env"):
+        shutil.copy(".env.example", ".env")
+        print(".env file created from .env.example.")
+    else:
+        print(".env file already exists.")  
     
     fresh_db.fresh()
 
