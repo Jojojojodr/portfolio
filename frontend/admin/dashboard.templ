@@ -24,18 +24,4 @@ templ Dashboard(c *gin.Context, users []models.User) {
             </div>
         </div>
     }
-    // @frontend.Layout(c, "Admin Dashboard") {
-    //     <div class="flex flex-col items-center justify-center">
-    //         for _, user := range users {
-    //             <p class="text-white">{ user.ID }</p>
-    //             <p class="text-white">{ user.Name }</p>
-    //             <p class="text-white">{ user.Email }</p>
-    //             if user.IsAdmin {
-    //                 <p class="text-white">This user is an admin</p>
-    //             } else {
-    //                 <p class="text-white">This user is not an admin</p>
-    //             }
-    //         }
-    //     </div>
-    // }
 }
