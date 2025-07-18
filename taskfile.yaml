@@ -44,26 +44,39 @@ tasks:
   docker:
     cmds:
       - docker-compose up -d
+      - echo "Docker containers started"
     silent: true
 
   docker-stop:
     cmds:
       - docker-compose down
+      - echo "Docker containers stopped"
     silent: true
 
   docker-build:
     cmds:
+      - echo "Building Docker containers"
       - templ generate
       - docker-compose up --build
+    silent: true
+  
+  docker-rebuild:
+    cmds:
+      - echo "Rebuilding Docker containers"
+      - docker-compose down
+      - templ generate
+      - docker-compose up --build --force-recreate
     silent: true
 
   db:
     cmds:
+      - echo "Resetting the database"
       - python{{ .PYTHON }} ./scripts/fresh_db.py
     silent: true
   
   seed:
     cmds:
+      - echo "Seeding the database"
       - python{{ .PYTHON }} ./scripts/seed_db.py {{ .CLI_ARGS }}
     silent: true
 
