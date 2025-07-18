@@ -2,12 +2,10 @@ package middleware
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/Jojojojodr/portfolio/internal"
-	"github.com/Jojojojodr/portfolio/internal/db"
 	"github.com/Jojojojodr/portfolio/internal/db/models"
 
 	"github.com/gin-gonic/gin"
@@ -41,14 +39,14 @@ func AuthMiddleware(c *gin.Context) {
 		}
 
 		var user *models.User
-		user, err := models.GetUserByID(db.DataBase, uint(claims["sub"].(float64)), user)
+		user, err = models.GetUserByID(uint(claims["sub"].(float64)))
 		if err != nil {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
-	
+
 		c.Set("user", user)
-	
+
 		c.Next()
 	} else {
 		c.AbortWithStatus(http.StatusUnauthorized)
@@ -57,51 +55,53 @@ func AuthMiddleware(c *gin.Context) {
 }
 
 func LoginMiddleware(c *gin.Context) {
-	tokenString, err := c.Cookie("Authorization")
-	if err != nil {
-		c.Set("user", nil) // No user if no token
-		c.Next()
-		return
-	}
+    tokenString, err := c.Cookie("Authorization")
+    if err != nil {       
+        c.Set("isAuthenticated", false)
+        c.Next()
+        return
+    }
 
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		secretToken := internal.Env("SECRET_TOKEN")
-		return []byte(secretToken), nil
-	})
+    token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+        if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+            return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+        }
+        secretToken := internal.Env("SECRET_TOKEN")
+        return []byte(secretToken), nil
+    })
 
-	if err != nil || !token.Valid {
-		c.Set("user", nil) // No user if token is invalid
-		c.Next()
-		return
-	}
+    if err != nil || !token.Valid {
+        c.Set("isAuthenticated", false)
+        c.Next()
+        return
+    }
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok || claims["sub"] == nil {
-		c.Set("user", nil) // No user if claims are invalid
-		c.Next()
-		return
-	}
+    claims, ok := token.Claims.(jwt.MapClaims)
+    if !ok {
+        c.Set("isAuthenticated", false)
+        c.Next()
+        return
+    }
 
-	var user *models.User
-	user, err = models.GetUserByID(db.DataBase, uint(claims["sub"].(float64)), user)
-	if err != nil {
-		log.Printf("Error fetching user by ID: %v", err)
-		c.Set("user", nil) // No user if fetching fails
-		c.Next()
-		return
-	}
+    userID, ok := claims["sub"].(float64)
+    if !ok {
+        c.Set("isAuthenticated", false)
+        c.Next()
+        return
+    }
 
-	if user == nil {
-		c.Set("user", nil) // No user if user is nil
-		c.Next()
-		return
-	}
+    user, err := models.GetUserByID(uint(userID))
+    if err != nil || user == nil {
+        c.Set("isAuthenticated", false)
+        c.Next()
+        return
+    }
 
-	c.Set("user", user) // Set user if everything is valid
-	c.Next()
+    c.Set("isAuthenticated", true)
+    c.Set("user", user)
+    c.Set("isAdmin", user.IsAdmin)
+    
+    c.Next()
 }
 
 func IsAuthenticated(c *gin.Context) bool {
@@ -133,6 +133,25 @@ func GetUser(c *gin.Context) *models.User {
 	return nil
 }
 
+func AuthRequired() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        isAuthenticated, exists := c.Get("isAuthenticated")
+        if !exists || !isAuthenticated.(bool) {
+            c.Redirect(http.StatusFound, "/login")
+            c.Abort()
+            return
+        }
+
+        _, userExists := c.Get("user")
+        if !userExists {
+            c.Redirect(http.StatusFound, "/login")
+            c.Abort()
+            return
+        }
+        c.Next()
+    }
+}
+
 func AdminMiddleware(c *gin.Context) {
 	user, exists := c.Get("user")
 	if !exists {
@@ -145,4 +164,22 @@ func AdminMiddleware(c *gin.Context) {
 	} else {
 		c.AbortWithStatus(http.StatusForbidden)
 	}
+}
+
+func AdminRequired() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        isAuthenticated, exists := c.Get("isAuthenticated")
+        if !exists || !isAuthenticated.(bool) {
+            c.Redirect(http.StatusFound, "/login")
+            c.Abort()
+            return
+        }
+
+        isAdmin, adminExists := c.Get("isAdmin")
+        if !adminExists || !isAdmin.(bool) {
+            c.AbortWithStatus(http.StatusForbidden)
+            return
+        }
+        c.Next()
+    }
 }
