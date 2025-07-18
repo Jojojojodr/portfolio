@@ -45,7 +45,7 @@ func Index(c *gin.Context) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-col items-center justify-center\"><h1 class=\"pb-3 text-2xl\">Hello World!!</h1><p>This site is under construction!!</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-col items-center justify-center\"><p class=\"text-red-600 font-extrabold\">This site is under construction!!!</p></div><div class=\"flex flex-col items-center justify-center mt-4\"><p class=\"text-gray-500\">Please check back later.</p><p class=\"text-gray-500\">Thank you for your patience!</p></div><div class=\"flex flex-col items-center justify-center mt-4\"><p class=\"text-gray-500\">In the meantime, you can visit my <a href=\"https://www.linkedin.com/in/jordy-de-ron/\" class=\"text-blue-500 hover:underline\">LinkedIn</a> profile for updates.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

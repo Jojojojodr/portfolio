@@ -7,8 +7,14 @@ import (
 templ Index(c *gin.Context) {
     @Layout(c, "Home") {
         <div class="flex flex-col items-center justify-center">
-            <h1 class="pb-3 text-2xl">Hello World!!</h1>
-            <p>This site is under construction!!</p>
+            <p class="text-red-600 font-extrabold">This site is under construction!!!</p>
+        </div>
+        <div class="flex flex-col items-center justify-center mt-4">
+            <p class="text-gray-500">Please check back later.</p>
+            <p class="text-gray-500">Thank you for your patience!</p>
+        </div>
+        <div class="flex flex-col items-center justify-center mt-4">
+            <p class="text-gray-500">In the meantime, you can visit my <a href="https://www.linkedin.com/in/jordy-de-ron/" class="text-blue-500 hover:underline">LinkedIn</a> profile for updates.</p>
         </div>
     }
 }

@@ -22,7 +22,7 @@ templ BlogSidebar(posts []models.BlogPost) {
                                 hx-target="#blog-post-content"
                                 hx-swap="innerHTML"
                                 hx-push-url={ "/blog/post?id=" + fmt.Sprint(post.ID) }
-                                class="block px-4 py-2 hover:bg-gray-100"
+                                class="block px-4 py-2 hover:bg-gray-800"
                             >
                                 { post.Title }
                             </a>
