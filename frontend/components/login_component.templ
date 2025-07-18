@@ -12,14 +12,16 @@ templ LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) {
         </div>
     } else {
         <div class="flex items-center gap-4">
-            <span class="text-white">
-                Hello,<br />
-                if user != nil {
-                    { user.Name }
-                } else {
-                    Guest
-                }
-            </span>
+            <a href="/profile" class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                <span class="text-white">
+                    Hello,<br />
+                    if user != nil {
+                        { user.Name }
+                    } else {
+                        Guest
+                    }
+                </span>
+            </a>
             <div>
                 @ButtonAction("Logout", "/handle/auth/logout")
                 if isAdmin {
