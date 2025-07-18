@@ -24,7 +24,7 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                     }
                 </div>
 
-                <form method="POST" action="/profile/update" class="space-y-6">
+                <form method="POST" action="/handle/profile/update" class="space-y-6">
                     <input type="hidden" name="user_id" value={ strconv.Itoa(int(user.ID)) }/>
                     
                     <!-- Name Field -->
