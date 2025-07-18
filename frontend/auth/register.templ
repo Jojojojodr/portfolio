@@ -1,0 +1,52 @@
+package auth
+
+import (
+    "github.com/Jojojojodr/portfolio/frontend"
+    "github.com/gin-gonic/gin"
+)
+
+templ RegisterPage(c *gin.Context, errors map[string]string) {
+    @frontend.Layout(c, "Register") {
+        <div class="max-w-md mx-auto mt-12">
+            <div class="bg-gray-800 rounded-lg p-8 shadow-lg">
+                <h1 class="text-2xl font-bold text-white mb-6">Register</h1>
+                <form method="POST" action="/handle/register" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                        <input type="text" id="name" name="name"
+                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                            required />
+                        if errors["name"] != "" {
+                            <p class="mt-1 text-sm text-red-400">{ errors["name"] }</p>
+                        }
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email"
+                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                            required />
+                        if errors["email"] != "" {
+                            <p class="mt-1 text-sm text-red-400">{ errors["email"] }</p>
+                        }
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <input type="password" id="password" name="password"
+                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                            required />
+                        if errors["password"] != "" {
+                            <p class="mt-1 text-sm text-red-400">{ errors["password"] }</p>
+                        }
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow font-semibold transition">
+                        Register
+                    </button>
+                </form>
+                <div class="mt-4 text-center">
+                    <a href="/login" class="text-blue-400 hover:underline">Already have an account? Login</a>
+                </div>
+            </div>
+        </div>
+    }
+}

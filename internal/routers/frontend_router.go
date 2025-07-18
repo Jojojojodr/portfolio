@@ -12,9 +12,9 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	svr.Use(middleware.LoginMiddleware)
 	svr.GET("/", views.HandleHomePage)
 	svr.GET("/login", views.HandleLoginPage)
+	svr.GET("/register", views.HandleRegisterPage)
 	svr.GET("/profile", middleware.AuthRequired(), views.ProfileHandler)
 	svr.GET("/profile/:id", middleware.AuthRequired(), middleware.AdminRequired(), views.ProfileHandler)
-	svr.POST("/profile/update", middleware.AuthRequired(), views.UpdateProfileHandler)
 
 	blog := svr.Group("/blog")
 	blog.GET("/", views.HandleBlogPostsPage)

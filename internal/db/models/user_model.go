@@ -76,3 +76,7 @@ func CountAdminUsers() (int64, error) {
     result := db.DataBase.Model(&User{}).Where("is_admin = ?", true).Count(&count)
     return count, result.Error
 }
+
+func CreateUser(user *User) error {
+	return db.DataBase.Create(user).Error
+}

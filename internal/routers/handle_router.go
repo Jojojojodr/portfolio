@@ -2,12 +2,15 @@ package routers
 
 import (
 	"github.com/Jojojojodr/portfolio/internal/handlers/views"
+	"github.com/Jojojojodr/portfolio/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func HandleRouter(svr *gin.Engine) *gin.Engine {
 	handle := svr.Group("/handle")
+	handle.POST("/register", views.HandleRegisterPost)
+	handle.POST("/profile/update", middleware.AuthRequired(), views.UpdateProfileHandler)
 	
 	blog := handle.Group("/blog")
 	blog.GET("/posts", views.HandleBlogPostsHTMX)

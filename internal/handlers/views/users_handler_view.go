@@ -65,6 +65,55 @@ func Logout(c *gin.Context) {
 	c.Redirect(http.StatusSeeOther, "/")
 }
 
+func HandleRegisterPage(c *gin.Context) {
+    errors := make(map[string]string)
+    auth.RegisterPage(c, errors).Render(c.Request.Context(), c.Writer)
+}
+
+func HandleRegisterPost(c *gin.Context) {
+    name := strings.TrimSpace(c.PostForm("name"))
+    email := strings.TrimSpace(c.PostForm("email"))
+    password := c.PostForm("password")
+    errors := make(map[string]string)
+
+    // Validation
+    if name == "" {
+        errors["name"] = "Name is required"
+    }
+    if email == "" {
+        errors["email"] = "Email is required"
+    } else if !strings.Contains(email, "@") {
+        errors["email"] = "Invalid email"
+    }
+    if password == "" {
+        errors["password"] = "Password is required"
+    } else if len(password) < 6 {
+        errors["password"] = "Password must be at least 6 characters"
+    }
+
+    // Check if email already exists
+    if _, err := models.GetUserByEmail(email); err == nil {
+        errors["email"] = "Email already registered"
+    }
+
+    if len(errors) > 0 {
+        auth.RegisterPage(c, errors).Render(c.Request.Context(), c.Writer)
+        return
+    }
+
+    // Create user
+    hashed := internal.Encrypt(password)
+    user := &models.User{Name: name, Email: email, Password: hashed}
+    if err := models.CreateUser(user); err != nil {
+        errors["general"] = "Registration failed"
+        auth.RegisterPage(c, errors).Render(c.Request.Context(), c.Writer)
+        return
+    }
+
+    // Redirect to login or auto-login
+    c.Redirect(http.StatusSeeOther, "/login")
+}
+
 func ProfileHandler(c *gin.Context) {
     currentUser, exists := c.Get("user")
     if !exists {
