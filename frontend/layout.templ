@@ -3,7 +3,6 @@ package frontend
 import (
     "github.com/Jojojojodr/portfolio/frontend/components"
 	"github.com/Jojojojodr/portfolio/internal/middleware"
-    "github.com/Jojojojodr/portfolio/internal/db/models"
 
     "github.com/gin-gonic/gin"
 )
@@ -35,7 +34,7 @@ templ head(title string) {
     </head>
 }
 
-templ header(c *gin.Context,isAuthenticated bool) {
+templ header(c *gin.Context, isAuthenticated bool) {
     <header class="flex items-center justify-between px-8 bg-gray-800 h-20">
         <div>
             <a class="flex items-center gap-1" href="/">
@@ -45,32 +44,7 @@ templ header(c *gin.Context,isAuthenticated bool) {
         </div>
         <div class="flex items-center gap-6">
             <a href="/blog" class="text-white hover:underline">Blog</a>
-            if !isAuthenticated {
-                <div class="flex items-center gap-2">
-                    @components.ButtonPrimary("Login", "/login")
-                    @components.ButtonPrimary("Register", "/register")
-                </div>
-            } else {
-                <div class="flex items-center gap-4">
-                    {{
-                        userAny, _ := c.Get("user")
-                        var userName string
-                        if userAny != nil {
-                            if user, ok := userAny.(*models.User); ok {
-                                userName = user.Name
-                            }
-                        }
-                    }}
-                    <span class="text-white">Hello,<br />{ userName }</span>
-                    <div>
-            
-                        @components.ButtonAction("Logout", "/auth/logout")
-                        if c.GetBool("isAdmin") {
-                            @components.ButtonPrimary("Admin Dashboard", "/admin/dashboard")
-                        }
-                    </div>
-                </div>
-            }
+            @components.LoginComponent(isAuthenticated, middleware.GetUser(c), middleware.IsAdmin(c))
         </div>
     </header>
 }

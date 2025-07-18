@@ -109,6 +109,30 @@ func IsAuthenticated(c *gin.Context) bool {
 	return exists && user != nil
 }
 
+func IsAdmin(c *gin.Context) bool {
+	user, exists := c.Get("user")
+	if !exists {
+		return false
+	}
+
+	if u, ok := user.(*models.User); ok {
+		return u.IsAdmin
+	}
+	return false
+}
+
+func GetUser(c *gin.Context) *models.User {
+	user, exists := c.Get("user")
+	if !exists {
+		return nil
+	}
+
+	if u, ok := user.(*models.User); ok {
+		return u
+	}
+	return nil
+}
+
 func AdminMiddleware(c *gin.Context) {
 	user, exists := c.Get("user")
 	if !exists {

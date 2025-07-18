@@ -1,0 +1,31 @@
+package components
+
+import (
+    "github.com/Jojojojodr/portfolio/internal/db/models"
+)
+
+templ LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) {
+    if !isAuthenticated {
+        <div class="flex items-center gap-2">
+            @ButtonPrimary("Login", "/login")
+            @ButtonPrimary("Register", "/register")
+        </div>
+    } else {
+        <div class="flex items-center gap-4">
+            <span class="text-white">
+                Hello,<br />
+                if user != nil {
+                    { user.Name }
+                } else {
+                    Guest
+                }
+            </span>
+            <div>
+                @ButtonAction("Logout", "/handle/auth/logout")
+                if isAdmin {
+                    @ButtonPrimary("Admin Dashboard", "/admin/dashboard")
+                }
+            </div>
+        </div>
+    }
+}
