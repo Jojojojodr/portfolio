@@ -38,13 +38,13 @@ func GetUsers() []User {
 	return users
 }
 
-func GetUserByID(database *gorm.DB, id uint, user *User) (*User, error) {
-	result := db.DataBase.First(&user, id)
-	if result.Error != nil {
-		log.Printf("Error fetching user by ID %d: %v", id, result.Error)
-		return nil, result.Error
-	}
-	return user, nil
+func GetUserByID(id uint) (*User, error) {
+    var user User
+    result := db.DataBase.First(&user, id)
+    if result.Error != nil {
+        return nil, result.Error
+    }
+    return &user, nil
 }
 
 func GetUserByName(name string) (*User, error) {
@@ -55,4 +55,24 @@ func GetUserByName(name string) (*User, error) {
 		return nil, result.Error
 	}
 	return &user, nil
+}
+
+func GetUserByEmail(email string) (*User, error) {
+    var user User
+    result := db.DataBase.Where("email = ?", email).First(&user)
+    if result.Error != nil {
+        return nil, result.Error
+    }
+    return &user, nil
+}
+
+func UpdateUser(user *User) error {
+    result := db.DataBase.Save(user)
+    return result.Error
+}
+
+func CountAdminUsers() (int64, error) {
+    var count int64
+    result := db.DataBase.Model(&User{}).Where("is_admin = ?", true).Count(&count)
+    return count, result.Error
 }

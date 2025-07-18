@@ -1,0 +1,168 @@
+package auth
+
+import (
+    "github.com/Jojojojodr/portfolio/frontend"
+    "github.com/Jojojojodr/portfolio/internal/db/models"
+    "github.com/gin-gonic/gin"
+    "strconv"
+)
+
+templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors map[string]string) {
+    @frontend.Layout(c, "Profile") {
+        <div class="max-w-2xl mx-auto mt-12">
+            <div class="bg-gray-800 rounded-lg p-8 shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-white">
+                        if isOwnProfile {
+                            My Profile
+                        } else {
+                            User Profile
+                        }
+                    </h1>
+                    if !isOwnProfile {
+                        <span class="text-sm text-gray-400">(Admin View)</span>
+                    }
+                </div>
+
+                <form method="POST" action="/profile/update" class="space-y-6">
+                    <input type="hidden" name="user_id" value={ strconv.Itoa(int(user.ID)) }/>
+                    
+                    <!-- Name Field -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            value={ user.Name }
+                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
+                        />
+                        if errors["name"] != "" {
+                            <p class="mt-1 text-sm text-red-400">{ errors["name"] }</p>
+                        }
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value={ user.Email }
+                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
+                        />
+                        if errors["email"] != "" {
+                            <p class="mt-1 text-sm text-red-400">{ errors["email"] }</p>
+                        }
+                    </div>
+
+                    <!-- Admin Status -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Account Type</label>
+                        if !isOwnProfile && c.GetBool("isAdmin") {
+                            <!-- Admin Toggle for other users -->
+                            <div class="flex items-center justify-between px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
+                                <span class="text-white">
+                                    if user.IsAdmin {
+                                        Administrator
+                                    } else {
+                                        Regular User
+                                    }
+                                </span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        name="is_admin" 
+                                        class="sr-only peer" 
+                                        if user.IsAdmin {
+                                            checked
+                                        }
+                                    />
+                                    <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    <span class="ml-3 text-sm font-medium text-gray-300">Admin Privileges</span>
+                                </label>
+                            </div>
+                        } else {
+                            <!-- Read-only display -->
+                            <div class="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
+                                if user.IsAdmin {
+                                    Administrator
+                                } else {
+                                    Regular User
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Password Change Section -->
+                    <div class="border-t border-gray-600 pt-6">
+                        <h3 class="text-lg font-medium text-white mb-4">Change Password</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="current_password" class="block text-sm font-medium text-gray-300 mb-2">Current Password</label>
+                                <input 
+                                    type="password" 
+                                    id="current_password" 
+                                    name="current_password" 
+                                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Leave blank to keep current password"
+                                />
+                                if errors["current_password"] != "" {
+                                    <p class="mt-1 text-sm text-red-400">{ errors["current_password"] }</p>
+                                }
+                            </div>
+
+                            <div>
+                                <label for="new_password" class="block text-sm font-medium text-gray-300 mb-2">New Password</label>
+                                <input 
+                                    type="password" 
+                                    id="new_password" 
+                                    name="new_password" 
+                                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Leave blank to keep current password"
+                                />
+                                if errors["new_password"] != "" {
+                                    <p class="mt-1 text-sm text-red-400">{ errors["new_password"] }</p>
+                                }
+                            </div>
+
+                            <div>
+                                <label for="confirm_password" class="block text-sm font-medium text-gray-300 mb-2">Confirm New Password</label>
+                                <input 
+                                    type="password" 
+                                    id="confirm_password" 
+                                    name="confirm_password" 
+                                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Leave blank to keep current password"
+                                />
+                                if errors["confirm_password"] != "" {
+                                    <p class="mt-1 text-sm text-red-400">{ errors["confirm_password"] }</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-between items-center pt-6">
+                        <a 
+                            href="/" 
+                            class="px-4 py-2 text-gray-400 hover:text-white transition"
+                        >
+                            Cancel
+                        </a>
+                        <button 
+                            type="submit" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+                        >
+                            Update Profile
+                        </button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    }
+}

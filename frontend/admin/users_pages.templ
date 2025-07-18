@@ -26,7 +26,7 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
                 </thead>
                 <tbody>
                     for _, user := range users {
-                        <tr class="border-b border-gray-700 cursor-pointer hover:bg-gray-700 transition" onclick="window.location.href='/admin/user/edit?id={ user.ID }'">
+                        <tr class="border-b border-gray-700 cursor-pointer hover:bg-gray-700 transition" onclick={ editUser(user.ID) }>
                             <td class="px-4 py-2 text-white">{ user.ID }</td>
                             <td class="px-4 py-2 text-white">{ user.Name }</td>
                             <td class="px-4 py-2 text-white">{ user.Email }</td>
@@ -43,4 +43,8 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
             </table>
         </div>
     }
+}
+
+script editUser(id uint) {
+    window.location.href = `/profile/${id}`;
 }
