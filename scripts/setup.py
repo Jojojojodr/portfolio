@@ -4,7 +4,7 @@ import utils
 import fresh_db
 
 go_deps = [
-    "github.com/a-h/templ/cmd/templ@latest",
+    "github.com/a-h/templ/cmd/templ@v0.3.865",
     "github.com/air-verse/air@latest",
     "github.com/go-task/task/v3/cmd/task@latest"
 ]
