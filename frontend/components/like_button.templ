@@ -1,0 +1,55 @@
+package components
+
+import (
+    "strconv"
+)
+
+templ LikeButton(itemID uint, itemType string, likeCount int64, isLiked bool, userLoggedIn bool) {
+    <div class="flex items-center space-x-2">
+        if userLoggedIn {
+            <button 
+                onclick={ toggleLike(itemID, itemType) }
+                class={ "flex items-center space-x-1 px-3 py-1 rounded-full text-sm transition-colors",
+                       templ.KV("bg-red-600 text-white", isLiked),
+                       templ.KV("bg-gray-600 text-gray-300 hover:bg-gray-500", !isLiked) }
+                id={ "like-btn-" + itemType + "-" + strconv.Itoa(int(itemID)) }
+            >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                </svg>
+                <span id={ "like-count-" + itemType + "-" + strconv.Itoa(int(itemID)) }>{ strconv.FormatInt(likeCount, 10) }</span>
+            </button>
+        } else {
+            <div class="flex items-center space-x-1 px-3 py-1 bg-gray-600 text-gray-300 rounded-full text-sm">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                </svg>
+                <span>{ strconv.FormatInt(likeCount, 10) }</span>
+            </div>
+        }
+    </div>
+}
+
+script toggleLike(itemID uint, itemType string) {
+    const btn = document.getElementById(`like-btn-${itemType}-${itemID}`);
+    const countSpan = document.getElementById(`like-count-${itemType}-${itemID}`);
+    
+    fetch(`/handle/like/${itemType}/${itemID}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            countSpan.textContent = data.like_count;
+            if (data.is_liked) {
+                btn.className = btn.className.replace('bg-gray-600 text-gray-300 hover:bg-gray-500', 'bg-red-600 text-white');
+            } else {
+                btn.className = btn.className.replace('bg-red-600 text-white', 'bg-gray-600 text-gray-300 hover:bg-gray-500');
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}

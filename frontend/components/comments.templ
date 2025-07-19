@@ -2,20 +2,55 @@ package components
 
 import (
     "github.com/Jojojojodr/portfolio/internal/db/models"
+
+    "github.com/gin-gonic/gin"
 )
 
-templ BlogComments(comments []models.BlogComment) {
-    if len(comments) > 0 {
-        <ul class="space-y-2">
-            for _, comment := range comments {
-                <li class="bg-gray-100 text-black rounded px-3 py-2">
-                    <div class="text-sm font-semibold">{ comment.User.Name }</div>
-                    <div class="text-sm">{ comment.Comment }</div>
-                    <div class="text-xs text-gray-500">{ comment.CreatedAt.Format("02-01-2006 15:04") }</div>
-                </li>
+templ BlogComments(c *gin.Context, comments []models.BlogComment) {
+    <div>
+        for _, comment := range comments {
+            @BlogComment(c, comment)
+        }
+        if len(comments) == 0 {
+            <p class="text-gray-400 text-center py-8">No comments yet. Be the first to comment!</p>
+        }
+    </div>
+}
+
+templ BlogComment(c *gin.Context, comment models.BlogComment) {
+    <div class="bg-gray-700 rounded-lg p-6 mb-4">
+        <div class="flex items-start justify-between mb-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span class="text-white text-sm font-medium">
+                        { string(comment.User.Name[0]) }
+                    </span>
+                </div>
+                <div>
+                    <p class="text-white font-medium">{ comment.User.Name }</p>
+                    <p class="text-gray-400 text-sm">{ comment.CreatedAt.Format("Jan 2, 2006 at 3:04 PM") }</p>
+                </div>
+            </div>
+            <!-- Like Button for Comment -->
+            if userInterface, exists := c.Get("user"); exists {
+                {{ currentUser := userInterface.(*models.User) }}
+                @LikeButton(
+                    comment.ID,
+                    "comment",
+                    comment.GetLikeCount(),
+                    comment.IsLikedByUser(currentUser.ID),
+                    true,
+                )
+            } else {
+                @LikeButton(
+                    comment.ID,
+                    "comment",
+                    comment.GetLikeCount(),
+                    false,
+                    false,
+                )
             }
-        </ul>
-    } else {
-        <div class="text-gray-400">No comments yet.</div>
-    }
+        </div>
+        <p class="text-gray-300">{ comment.Comment }</p>
+    </div>
 }

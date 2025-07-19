@@ -12,9 +12,10 @@ import (
 	"fmt"
 
 	"github.com/Jojojojodr/portfolio/internal/db/models"
+	"github.com/gin-gonic/gin"
 )
 
-func BlogPostContent(post *models.BlogPost) templ.Component {
+func BlogPostContent(c *gin.Context, post *models.BlogPost) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -47,7 +48,7 @@ func BlogPostContent(post *models.BlogPost) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 12, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 13, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -60,7 +61,7 @@ func BlogPostContent(post *models.BlogPost) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 13, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 14, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -73,7 +74,7 @@ func BlogPostContent(post *models.BlogPost) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.User.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 15, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 16, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -86,13 +87,41 @@ func BlogPostContent(post *models.BlogPost) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(post.CreatedAt.Format("02-01-2006 15:04"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 16, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 17, Col: 66}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><div class=\"markdown\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if userInterface, exists := c.Get("user"); exists {
+				currentUser := userInterface.(*models.User)
+				templ_7745c5c3_Err = LikeButton(
+					post.ID,
+					"post",
+					post.GetLikeCount(),
+					post.IsLikedByUser(currentUser.ID),
+					true,
+				).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				templ_7745c5c3_Err = LikeButton(
+					post.ID,
+					"post",
+					post.GetLikeCount(),
+					false,
+					false,
+				).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " <div class=\"markdown\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -100,38 +129,38 @@ func BlogPostContent(post *models.BlogPost) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><div class=\"mt-8\"><h2 class=\"text-xl font-semibold mb-2\">Comments</h2><div id=\"comments-section\" hx-get=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"mt-8\"><h2 class=\"text-xl font-semibold mb-2\">Comments</h2><div id=\"comments-section\" hx-get=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs("/handle/blog/comments?post_id=" + fmt.Sprint(post.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 24, Col: 79}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 43, Col: 79}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" hx-trigger=\"load\" hx-swap=\"innerHTML\"><p>Loading comments...</p></div><form id=\"comment-form\" hx-post=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" hx-trigger=\"load\" hx-swap=\"innerHTML\"><p>Loading comments...</p></div><form id=\"comment-form\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("/handle/blog/comments/add?post_id=" + fmt.Sprint(post.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 30, Col: 84}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/blog_post_content.templ`, Line: 49, Col: 84}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" hx-target=\"#comments-section\" hx-swap=\"innerHTML\" class=\"mt-4 space-y-2\"><textarea name=\"comment\" class=\"w-full border rounded px-3 py-2 text-black\" rows=\"3\" placeholder=\"Add a comment...\" required></textarea> <button type=\"submit\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Post Comment</button></form></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" hx-target=\"#comments-section\" hx-swap=\"innerHTML\" class=\"mt-4 space-y-2\"><textarea name=\"comment\" class=\"w-full border rounded px-3 py-2 text-black\" rows=\"3\" placeholder=\"Add a comment...\" required></textarea> <button type=\"submit\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Post Comment</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div>No post selected.</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div>No post selected.</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -161,7 +190,7 @@ func markdownStyle() templ.Component {
 			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<style>\n        .markdown h1 {\n            font-size: 2rem; /* 32px */\n            font-weight: bold;\n            margin-bottom: 1rem;\n            color: #5c3131;\n        }\n        .markdown h2 {\n            font-size: 1.5rem; /* 24px */\n            font-weight: bold;\n            margin-top: 1.5rem;\n            margin-bottom: 0.75rem;\n            color: #723f3f;\n        }\n        .markdown h3 {\n            font-size: 1.25rem; /* 20px */\n            font-weight: bold;\n            margin-top: 1.25rem;\n            margin-bottom: 0.5rem;\n            color: #8a4d4d;\n        }\n        .markdown h4 {\n            font-size: 1rem; /* 16px */\n            margin-top: 1rem;\n            margin-bottom: 0.5rem;\n            color: #a15b5b;\n        }\n        .markdown h5 {\n            font-size: 0.875rem; /* 14px */\n            margin-top: 0.875rem;\n            margin-bottom: 0.5rem;\n            color: #b16969;\n        }\n        .markdown h6 {\n            font-size: 0.75rem; /* 12px */\n            margin-top: 0.75rem;\n            margin-bottom: 0.5rem;\n            color: #c27777;\n        }\n        .markdown p {\n            font-size: 1rem; /* 16px */\n            line-height: 1.5;\n            color: #fff;\n        }\n        .markdown a {\n            color: #1e90ff; /* DodgerBlue */\n            text-decoration: underline;\n        }\n        .markdown a:hover {\n            text-decoration: none;\n        }\n    </style>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<style>\n        .markdown h1 {\n            font-size: 2rem; /* 32px */\n            font-weight: bold;\n            margin-bottom: 1rem;\n            color: #5c3131;\n        }\n        .markdown h2 {\n            font-size: 1.5rem; /* 24px */\n            font-weight: bold;\n            margin-top: 1.5rem;\n            margin-bottom: 0.75rem;\n            color: #723f3f;\n        }\n        .markdown h3 {\n            font-size: 1.25rem; /* 20px */\n            font-weight: bold;\n            margin-top: 1.25rem;\n            margin-bottom: 0.5rem;\n            color: #8a4d4d;\n        }\n        .markdown h4 {\n            font-size: 1rem; /* 16px */\n            margin-top: 1rem;\n            margin-bottom: 0.5rem;\n            color: #a15b5b;\n        }\n        .markdown h5 {\n            font-size: 0.875rem; /* 14px */\n            margin-top: 0.875rem;\n            margin-bottom: 0.5rem;\n            color: #b16969;\n        }\n        .markdown h6 {\n            font-size: 0.75rem; /* 12px */\n            margin-top: 0.75rem;\n            margin-bottom: 0.5rem;\n            color: #c27777;\n        }\n        .markdown p {\n            font-size: 1rem; /* 16px */\n            line-height: 1.5;\n            color: #fff;\n        }\n        .markdown a {\n            color: #1e90ff; /* DodgerBlue */\n            text-decoration: underline;\n        }\n        .markdown a:hover {\n            text-decoration: none;\n        }\n    </style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

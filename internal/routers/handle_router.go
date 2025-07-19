@@ -18,6 +18,10 @@ func HandleRouter(svr *gin.Engine) *gin.Engine {
 	blog.GET("comments", views.HandleGetBlogComments)
 	blog.POST("comments/add", views.HandleAddBlogComment)
 
+	like := handle.Group("/like", middleware.AuthRequired())
+	like.POST("/post/:postId", views.TogglePostLike)
+	like.POST("/comment/:commentId", views.ToggleCommentLike)	
+
 	auth := handle.Group("/auth")
 	auth.POST("/login", views.Login)
 	auth.POST("/logout", views.Logout)

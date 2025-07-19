@@ -27,6 +27,22 @@ type BlogComment struct {
     CreatedAt  time.Time `json:"created_at"`
 }
 
+func (bp *BlogPost) GetLikeCount() int64 {
+    return GetPostLikeCount(bp.ID)
+}
+
+func (bp *BlogPost) IsLikedByUser(userID uint) bool {
+    return IsPostLikedByUser(userID, bp.ID)
+}
+
+func (bc *BlogComment) GetLikeCount() int64 {
+    return GetCommentLikeCount(bc.ID)
+}
+
+func (bc *BlogComment) IsLikedByUser(userID uint) bool {
+    return IsCommentLikedByUser(userID, bc.ID)
+}
+
 func GetPublishedBlogPosts(db *gorm.DB) ([]BlogPost, error) {
 	var posts []BlogPost
 	err := db.Preload("User").Where("is_published = ?", 1).Order("created_at DESC").Find(&posts).Error

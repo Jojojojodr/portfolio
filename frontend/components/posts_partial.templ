@@ -2,6 +2,7 @@ package components
 
 import (
     "fmt"
+    "strconv"
 
     "github.com/Jojojojodr/portfolio/internal/db/models"
 )
@@ -12,9 +13,17 @@ templ BlogPostsPartial(posts []models.BlogPost) {
             href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) } class="block mb-6 p-4 border rounded bg-white shadow hover:bg-gray-100 transition"
         >
             <h2 class="text-xl text-black font-semibold">{ post.Title }</h2>
-            <div class="text-sm text-gray-500 mt-2">
-                <span class="font-semibold">Author:</span> { post.User.Name }
-                Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
+            <div class="text-sm text-gray-500 mt-2 flex items-center justify-between">
+                <span>
+                    <span class="font-semibold">Author:</span> { post.User.Name }
+                    &nbsp;Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
+                </span>
+                <span class="flex items-center ml-2">
+                    <svg class="w-5 h-5 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-black font-medium">{ strconv.FormatInt(post.GetLikeCount(), 10) }</span>
+                </span>
             </div>
         </a>
     }

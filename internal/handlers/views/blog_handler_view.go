@@ -74,7 +74,7 @@ func HandleBlogPostHTMX(c *gin.Context) {
 	htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
 	post.Content = string(htmlContent)
 
-    components.BlogPostContent(post).Render(c.Request.Context(), c.Writer)
+    components.BlogPostContent(c, post).Render(c.Request.Context(), c.Writer)
 }
 
 func HandleGetBlogComments(c *gin.Context) {
@@ -82,7 +82,7 @@ func HandleGetBlogComments(c *gin.Context) {
     postID, _ := strconv.Atoi(postIDStr)
     var comments []models.BlogComment
     db.DataBase.Preload("User").Where("blog_post_id = ?", postID).Order("created_at asc").Find(&comments)
-    components.BlogComments(comments).Render(c.Request.Context(), c.Writer)
+    components.BlogComments(c, comments).Render(c.Request.Context(), c.Writer)
 }
 
 func HandleAddBlogComment(c *gin.Context) {
@@ -115,5 +115,5 @@ func HandleAddBlogComment(c *gin.Context) {
     // Return updated comments section
     var comments []models.BlogComment
     db.DataBase.Preload("User").Where("blog_post_id = ?", postID).Order("created_at asc").Find(&comments)
-    components.BlogComments(comments).Render(c.Request.Context(), c.Writer)
+    components.BlogComments(c, comments).Render(c.Request.Context(), c.Writer)
 }

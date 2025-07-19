@@ -113,7 +113,7 @@ func BlogPostPage(c *gin.Context, posts []models.BlogPost, post *models.BlogPost
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.BlogPostContent(post).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.BlogPostContent(c, post).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

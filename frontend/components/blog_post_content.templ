@@ -4,9 +4,10 @@ import (
     "fmt"
 
     "github.com/Jojojojodr/portfolio/internal/db/models"
+	"github.com/gin-gonic/gin"
 )
 
-templ BlogPostContent(post *models.BlogPost) {
+templ BlogPostContent(c *gin.Context, post *models.BlogPost) {
     @markdownStyle()
     if post != nil {
         <title hx-swap-oob="true">{ post.Title }</title>
@@ -15,6 +16,24 @@ templ BlogPostContent(post *models.BlogPost) {
             <span class="font-semibold">Author:</span> { post.User.Name }
             Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
         </div>
+        if userInterface, exists := c.Get("user"); exists {
+            {{ currentUser := userInterface.(*models.User) }}
+                @LikeButton(
+                    post.ID,
+                    "post",
+                    post.GetLikeCount(),
+                    post.IsLikedByUser(currentUser.ID),
+                    true,
+                )
+            } else {
+                @LikeButton(
+                    post.ID,
+                    "post",
+                    post.GetLikeCount(),
+                    false,
+                    false,
+                )
+            }
         <div class="markdown">
             @templ.Raw(post.Content)
         </div>
