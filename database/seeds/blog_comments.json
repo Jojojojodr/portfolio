@@ -1,7 +1,7 @@
 [
     {
         "comment": "this is a test comment", 
-        "user_id": "2",
-        "blog_post_id": "1"
+        "user_id": 2,
+        "blog_post_id": 1
     }
 ]

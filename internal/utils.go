@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Jojojojodr/portfolio/internal/db/models"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func Env(key string) string {
@@ -24,6 +26,14 @@ func Encrypt(key string) string {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func IsDatabaseEmpty(database *gorm.DB) bool {
+    var userCount int64
+    
+    database.Model(&models.User{}).Count(&userCount)
+    
+    return userCount == 0
 }
 
 func init() {

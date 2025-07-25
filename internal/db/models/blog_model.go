@@ -45,7 +45,7 @@ func (bc *BlogComment) IsLikedByUser(userID uint) bool {
 
 func GetPublishedBlogPosts(db *gorm.DB) ([]BlogPost, error) {
 	var posts []BlogPost
-	err := db.Preload("User").Where("is_published = ?", 1).Order("created_at DESC").Find(&posts).Error
+	err := db.Preload("User").Where("is_published = true").Order("created_at DESC").Find(&posts).Error
 	if err != nil {
 		return nil, err
 	}

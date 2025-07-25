@@ -13,6 +13,7 @@ type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	IsAdmin  bool   `json:"is_admin"`
+	CreatedAt string `json:"created_at"`
 }
 
 func (user *User) IsAuthenticated(tx *gorm.DB) bool {
