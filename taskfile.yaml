@@ -68,18 +68,6 @@ tasks:
       - docker-compose up --build --force-recreate
     silent: true
 
-  db:
-    cmds:
-      - echo "Resetting the database"
-      - python{{ .PYTHON }} ./scripts/fresh_db.py
-    silent: true
-  
-  seed:
-    cmds:
-      - echo "Seeding the database"
-      - python{{ .PYTHON }} ./scripts/seed_db.py {{ .CLI_ARGS }}
-    silent: true
-
   clean:
     cmds:
       - echo "Cleaning application"
