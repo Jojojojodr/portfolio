@@ -1,7 +1,6 @@
 import os
 import shutil
 import utils
-import fresh_db
 
 go_deps = [
     "github.com/a-h/templ/cmd/templ@v0.3.865",
@@ -19,9 +18,15 @@ def setup():
         shutil.copy(".env.example", ".env")
         print(".env file created from .env.example.")
     else:
-        print(".env file already exists.")  
-    
-    fresh_db.fresh()
+        print(".env file already exists.")
+        
+    if not os.path.exists("database/sqlite.db"):
+        print("Creating SQLite database...")
+        with open("database/sqlite.db", "w") as db_file:
+            pass
+        print("SQLite database created at database/sqlite.db.")
+    else:
+        print("SQLite database already exists at database/sqlite.db.")
 
 if __name__ == "__main__":
     setup()
