@@ -18,7 +18,10 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY .env .env
-COPY ./database/sqlite.db ./database/sqlite.db
+RUN apk add --no-cache ca-certificates
+
+RUN mkdir -p database
 
 COPY --from=builder /builder/bin/main .
+COPY --from=builder /builder/database ./database
+COPY --from=builder /builder/.env* ./

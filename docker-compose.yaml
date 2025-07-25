@@ -9,8 +9,39 @@ services:
     ports:
       - "8080:${PORT}"
     environment:
+      - DB_TYPE=${DB_TYPE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_SSLMODE=${DB_SSLMODE}
       - SECRET_TOKEN=${SECRET_TOKEN}
       - PORT=${PORT}
       - GIN_MODE=${GIN_MODE}
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
     command: [./main]
+  
+  postgres:
+    image: postgres:latest
+    container_name: portfolio-postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
