@@ -9,6 +9,8 @@ import (
 
 func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	// Set up the routes for the frontend
+	svr.Static("/static", "./static")
+
 	svr.Use(middleware.LoginMiddleware)
 	svr.GET("/", views.HandleHomePage)
 	svr.GET("/login", views.HandleLoginPage)

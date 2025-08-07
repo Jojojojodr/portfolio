@@ -24,4 +24,4 @@ RUN mkdir -p database
 
 COPY --from=builder /builder/bin/main .
 COPY --from=builder /builder/database ./database
-COPY --from=builder /builder/.env* ./
+COPY --from=builder /builder/static ./static

@@ -3,3 +3,4 @@ version: '3'
 vars:
   EXE_PATH: bin/app.exe
   PYTHON:
+  TAILWIND: bin/tailwindcss.exe

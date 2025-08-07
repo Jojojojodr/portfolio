@@ -1,6 +1,8 @@
 import os
 import shutil
+from sys import platform
 import utils
+import tailwind
 
 go_deps = [
     "github.com/a-h/templ/cmd/templ@v0.3.865",
@@ -27,6 +29,18 @@ def setup():
         print("SQLite database created at database/sqlite.db.")
     else:
         print("SQLite database already exists at database/sqlite.db.")
+        
+    sys = platform.system()
+    if sys == "Windows":
+        tailwind_path = "bin/tailwindcss.exe"
+    elif sys in ["Linux", "Darwin"]:
+        tailwind_path = "bin/tailwindcss"
+        
+    if not os.path.exists(tailwind_path):
+        tailwind.download_tailwind_binary()
+        print(f"Tailwind CSS binary downloaded to {tailwind_path}.")
+    else:
+        print(f"Tailwind CSS binary already exists at {tailwind_path}.")
 
 if __name__ == "__main__":
     setup()

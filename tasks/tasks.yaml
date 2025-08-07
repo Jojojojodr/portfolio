@@ -1,0 +1,22 @@
+version: '3'
+
+includes:
+  os_specific: ./taskfile_{{ OS }}.yaml
+
+tasks:
+  watch-css:
+    cmds:
+      - echo "Watching CSS changes"
+      - ./{{ .TAILWIND }} -i ./static/css/input.css -o ./static/css/style.css --watch
+    silent: true
+
+  build-css:
+    cmds:
+      - echo "Building CSS"
+      - ./{{ .TAILWIND }} -i ./static/css/input.css -o ./static/css/style.css --minify
+    silent: true
+
+  air:
+    cmds:
+      - air -c .air_{{ OS }}.toml
+    silent: true
