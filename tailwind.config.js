@@ -3,11 +3,6 @@ module.exports = {
   content: [
     "./frontend/**/*.templ",
   ],
-  safelist: [
-    {
-        pattern: /.*/,
-    }
-  ],
   theme: {
     extend: {},
   },
