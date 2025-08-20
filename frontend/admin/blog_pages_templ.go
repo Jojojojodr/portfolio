@@ -50,7 +50,7 @@ func AdminPostsPage(c *gin.Context, posts []models.BlogPost) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Posts</h1><a href=\"/admin/blog/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New Post</a></div><table class=\"min-w-full bg-gray-800 rounded-lg\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Title</th><th class=\"px-4 py-2 text-left text-gray-300\">Author</th><th class=\"px-4 py-2 text-left text-gray-300\">Published</th><th class=\"px-4 py-2 text-left text-gray-300\">Created</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Posts</h1><a href=\"/admin/post/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New Post</a></div><table class=\"lighter-bg min-w-full rounded-lg\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Title</th><th class=\"px-4 py-2 text-left text-gray-300\">Author</th><th class=\"px-4 py-2 text-left text-gray-300\">Published</th><th class=\"px-4 py-2 text-left text-gray-300\">Created</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -59,7 +59,7 @@ func AdminPostsPage(c *gin.Context, posts []models.BlogPost) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"border-b border-gray-700 cursor-pointer hover:bg-gray-700 transition\" onclick=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"hover-bg border-b cursor-pointer transition\" onclick=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -187,19 +187,19 @@ func BlogCreatePage(c *gin.Context, errorMsg string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"max-w-xl mx-auto bg-white p-8 rounded shadow\"><h1 class=\"text-2xl font-bold mb-6 text-black\">Create Blog Post</h1>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"w-4/5 mx-auto mt-12\"><div class=\"darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Create Blog Post</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if errorMsg != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"mb-4 text-red-600\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"mb-4 text-red-400\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(errorMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 59, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 60, Col: 61}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -210,7 +210,7 @@ func BlogCreatePage(c *gin.Context, errorMsg string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<form action=\"/admin/blog/create\" method=\"POST\" class=\"space-y-4\"><div><label class=\"block mb-1 font-semibold text-black\">Title</label> <input type=\"text\" name=\"title\" class=\"w-full border border-black rounded px-3 py-2 text-black\" required></div><div><label class=\"block mb-1 font-semibold text-black\">Content</label> <textarea name=\"content\" class=\"w-full border border-black rounded px-3 py-2 text-black\" rows=\"8\" required></textarea></div><div><label class=\"inline-flex items-center text-black\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\"> Publish immediately</label></div><button type=\"submit\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Create</button></form></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<form action=\"/handle/admin/post/create\" method=\"POST\" class=\"space-y-6\"><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Title</label> <input type=\"text\" name=\"title\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" required></div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Content</label> <textarea name=\"content\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" rows=\"8\" required></textarea></div><div><label class=\"inline-flex items-center text-gray-300\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\"> Publish immediately</label></div><button type=\"submit\" class=\"w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600\">Create</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -257,19 +257,19 @@ func BlogEditPage(c *gin.Context, post *models.BlogPost, errorMsg string) templ.
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"max-w-xl mx-auto bg-white p-8 rounded shadow\"><h1 class=\"text-2xl font-bold mb-6 text-black\">Edit Blog Post</h1>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"w-4/5 mx-auto mt-12\"><div class=\"darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Edit Blog Post</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if errorMsg != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"mb-4 text-red-600\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"mb-4 text-red-400\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(errorMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 87, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 94, Col: 61}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -284,51 +284,51 @@ func BlogEditPage(c *gin.Context, post *models.BlogPost, errorMsg string) templ.
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var14 templ.SafeURL = templ.SafeURL("/admin/post/edit?id=" + fmt.Sprint(post.ID))
+			var templ_7745c5c3_Var14 templ.SafeURL = templ.SafeURL("/handle/admin/post/edit?id=" + fmt.Sprint(post.ID))
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var14)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" method=\"POST\" class=\"space-y-4\"><div><label class=\"block mb-1 font-semibold text-black\">Title</label> <input type=\"text\" name=\"title\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" method=\"POST\" class=\"space-y-6\"><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Title</label> <input type=\"text\" name=\"title\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 92, Col: 70}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 99, Col: 74}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" class=\"w-full border border-black rounded px-3 py-2 text-black\" required></div><div><label class=\"block mb-1 font-semibold text-black\">Content</label> <textarea name=\"content\" class=\"w-full border border-black rounded px-3 py-2 text-black\" rows=\"8\" required>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" required></div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Content</label> <textarea name=\"content\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" rows=\"8\" required>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(post.Content)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 96, Col: 141}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 107, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</textarea></div><div><label class=\"inline-flex items-center text-black\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\" checked=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</textarea></div><div><label class=\"inline-flex items-center text-gray-300\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\" checked=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(post.IsPublished)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 100, Col: 115}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 111, Col: 119}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"> Published</label></div><button type=\"submit\" class=\"bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600\">Save Changes</button></form></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"> Published</label></div><button type=\"submit\" class=\"w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600\">Save Changes</button></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

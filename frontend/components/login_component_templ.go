@@ -51,7 +51,7 @@ func LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) templ
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"flex items-center gap-4\"><a href=\"/profile\" class=\"flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md transition\"><span class=\"text-white\">Hello,<br>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"flex items-center gap-4\"><a href=\"/profile\" class=\"darker-bg hover-bg flex items-center gap-2 px-4 py-2 rounded-md transition\"><span class=\"text-white\">Hello,<br>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

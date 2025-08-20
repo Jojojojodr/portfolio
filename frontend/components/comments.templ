@@ -18,7 +18,7 @@ templ BlogComments(c *gin.Context, comments []models.BlogComment) {
 }
 
 templ BlogComment(c *gin.Context, comment models.BlogComment) {
-    <div class="bg-gray-700 rounded-lg p-6 mb-4">
+    <div class="lighter-bg rounded-lg p-6 mb-4">
         <div class="flex items-start justify-between mb-2">
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
@@ -31,7 +31,6 @@ templ BlogComment(c *gin.Context, comment models.BlogComment) {
                     <p class="text-gray-400 text-sm">{ comment.CreatedAt.Format("Jan 2, 2006 at 3:04 PM") }</p>
                 </div>
             </div>
-            <!-- Like Button for Comment -->
             if userInterface, exists := c.Get("user"); exists {
                 {{ currentUser := userInterface.(*models.User) }}
                 @LikeButton(

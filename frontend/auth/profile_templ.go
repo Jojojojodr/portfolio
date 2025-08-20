@@ -48,7 +48,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-2xl mx-auto mt-12\"><div class=\"bg-gray-800 rounded-lg p-8 shadow-lg\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-2xl mx-auto mt-12\"><div class=\"darker-bg rounded-lg p-8 shadow-lg\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -86,14 +86,14 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\"><!-- Name Field --><div><label for=\"name\" class=\"block text-sm font-medium text-gray-300 mb-2\">Name</label> <input type=\"text\" id=\"name\" name=\"name\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\"><div><label for=\"name\" class=\"block text-sm font-medium text-gray-300 mb-2\">Name</label> <input type=\"text\" id=\"name\" name=\"name\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 37, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 36, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -111,7 +111,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(errors["name"])
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 42, Col: 81}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 41, Col: 81}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -122,14 +122,14 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><!-- Email Field --><div><label for=\"email\" class=\"block text-sm font-medium text-gray-300 mb-2\">Email</label> <input type=\"email\" id=\"email\" name=\"email\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div><label for=\"email\" class=\"block text-sm font-medium text-gray-300 mb-2\">Email</label> <input type=\"email\" id=\"email\" name=\"email\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 53, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 51, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -147,7 +147,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(errors["email"])
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 58, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 56, Col: 82}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -158,12 +158,12 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><!-- Admin Status --><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Account Type</label> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Account Type</label> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if !isOwnProfile && c.GetBool("isAdmin") {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<!-- Admin Toggle for other users --> <div class=\"flex items-center justify-between px-3 py-2 bg-gray-700 border border-gray-600 rounded-md\"><span class=\"text-white\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"flex items-center justify-between px-3 py-2 bg-gray-700 border border-gray-600 rounded-md\"><span class=\"text-white\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -193,7 +193,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<!-- Read-only display --> <div class=\"px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -213,7 +213,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><!-- Password Change Section --><div class=\"border-t border-gray-600 pt-6\"><h3 class=\"text-lg font-medium text-white mb-4\">Change Password</h3><div class=\"space-y-4\"><div><label for=\"current_password\" class=\"block text-sm font-medium text-gray-300 mb-2\">Current Password</label> <input type=\"password\" id=\"current_password\" name=\"current_password\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent\" placeholder=\"Leave blank to keep current password\"> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"border-t border-gray-600 pt-6\"><h3 class=\"text-lg font-medium text-white mb-4\">Change Password</h3><div class=\"space-y-4\"><div><label for=\"current_password\" class=\"block text-sm font-medium text-gray-300 mb-2\">Current Password</label> <input type=\"password\" id=\"current_password\" name=\"current_password\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent\" placeholder=\"Leave blank to keep current password\"> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -225,7 +225,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(errors["current_password"])
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 115, Col: 101}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 109, Col: 101}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -248,7 +248,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(errors["new_password"])
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 129, Col: 97}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 123, Col: 97}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -271,7 +271,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(errors["confirm_password"])
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 143, Col: 101}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/auth/profile.templ`, Line: 137, Col: 101}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -282,7 +282,7 @@ func ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors ma
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div></div><!-- Action Buttons --><div class=\"flex justify-between items-center pt-6\"><a href=\"/\" class=\"px-4 py-2 text-gray-400 hover:text-white transition\">Cancel</a> <button type=\"submit\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800\">Update Profile</button></div></form></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div></div><div class=\"flex justify-between items-center pt-6\"><a href=\"/\" class=\"px-4 py-2 text-gray-400 hover:text-white transition\">Cancel</a> <button type=\"submit\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800\">Update Profile</button></div></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

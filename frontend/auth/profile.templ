@@ -10,7 +10,7 @@ import (
 templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors map[string]string) {
     @frontend.Layout(c, "Profile") {
         <div class="max-w-2xl mx-auto mt-12">
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg">
+            <div class="darker-bg rounded-lg p-8 shadow-lg">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-white">
                         if isOwnProfile {
@@ -27,7 +27,6 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                 <form method="POST" action="/handle/profile/update" class="space-y-6">
                     <input type="hidden" name="user_id" value={ strconv.Itoa(int(user.ID)) }/>
                     
-                    <!-- Name Field -->
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
                         <input 
@@ -43,7 +42,6 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                         }
                     </div>
 
-                    <!-- Email Field -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
                         <input 
@@ -59,11 +57,9 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                         }
                     </div>
 
-                    <!-- Admin Status -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">Account Type</label>
                         if !isOwnProfile && c.GetBool("isAdmin") {
-                            <!-- Admin Toggle for other users -->
                             <div class="flex items-center justify-between px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
                                 <span class="text-white">
                                     if user.IsAdmin {
@@ -86,7 +82,6 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                                 </label>
                             </div>
                         } else {
-                            <!-- Read-only display -->
                             <div class="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-gray-400">
                                 if user.IsAdmin {
                                     Administrator
@@ -97,7 +92,6 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                         }
                     </div>
 
-                    <!-- Password Change Section -->
                     <div class="border-t border-gray-600 pt-6">
                         <h3 class="text-lg font-medium text-white mb-4">Change Password</h3>
                         
@@ -146,7 +140,6 @@ templ ProfilePage(c *gin.Context, user *models.User, isOwnProfile bool, errors m
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="flex justify-between items-center pt-6">
                         <a 
                             href="/" 

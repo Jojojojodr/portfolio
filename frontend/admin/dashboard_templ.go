@@ -48,7 +48,7 @@ func Dashboard(c *gin.Context, users []models.User) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-col items-center min-h-screen w-full\"><div class=\"flex flex-col md:flex-row gap-8 mt-16\"><a href=\"/admin/users\" class=\"bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg p-10 flex flex-col items-center transition\"><span class=\"text-4xl mb-2\">👤</span> <span class=\"text-xl font-bold\">All Users</span> <span class=\"text-sm mt-2\">View and manage all users</span></a> <a href=\"/admin/posts\" class=\"bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-lg p-10 flex flex-col items-center transition\"><span class=\"text-4xl mb-2\">📝</span> <span class=\"text-xl font-bold\">All Posts</span> <span class=\"text-sm mt-2\">View and manage all blog posts</span></a></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex flex-col items-center min-h-screen w-full\"><div class=\"flex flex-col md:flex-row gap-8 mt-16\"><a href=\"/admin/users\" class=\"lighter-bg hover-bg text-white rounded-lg shadow-lg p-10 flex flex-col items-center transition\"><span class=\"text-xl font-bold\">All Users</span> <span class=\"text-sm mt-2\">View and manage all users</span></a> <a href=\"/admin/posts\" class=\"lighter-bg hover-bg text-white rounded-lg shadow-lg p-10 flex flex-col items-center transition\"><span class=\"text-xl font-bold\">All Posts</span> <span class=\"text-sm mt-2\">View and manage all blog posts</span></a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

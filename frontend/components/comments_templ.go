@@ -80,7 +80,7 @@ func BlogComment(c *gin.Context, comment models.BlogComment) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"bg-gray-700 rounded-lg p-6 mb-4\"><div class=\"flex items-start justify-between mb-2\"><div class=\"flex items-center space-x-3\"><div class=\"w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center\"><span class=\"text-white text-sm font-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"lighter-bg rounded-lg p-6 mb-4\"><div class=\"flex items-start justify-between mb-2\"><div class=\"flex items-center space-x-3\"><div class=\"w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center\"><span class=\"text-white text-sm font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -119,7 +119,7 @@ func BlogComment(c *gin.Context, comment models.BlogComment) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div></div><!-- Like Button for Comment -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -154,7 +154,7 @@ func BlogComment(c *gin.Context, comment models.BlogComment) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(comment.Comment)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/comments.templ`, Line: 54, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/comments.templ`, Line: 53, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {

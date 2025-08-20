@@ -7,7 +7,7 @@ import (
 )
 
 templ BlogSidebar(posts []models.BlogPost) {
-    <aside class="w-64 bg-gray-900 text-white h-[100vh] p-4 flex-shrink-0">
+    <aside class="darker-bg w-64 text-white h-[100vh] p-4 flex-shrink-0">
         <h2 class="text-lg font-bold mb-4">All Blog Posts</h2>
         <ul class="space-y-2">
             if len(posts) == 0 {
@@ -15,14 +15,14 @@ templ BlogSidebar(posts []models.BlogPost) {
             } else {
                 for _, post := range posts {
                     if post.IsPublished {
-                        <li>
+                        <li class="hover-bg rounded">
                             <a
                                 href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
                                 hx-get={ "/handle/blog/post?id=" + fmt.Sprint(post.ID) }
                                 hx-target="#blog-post-content"
                                 hx-swap="innerHTML"
                                 hx-push-url={ "/blog/post?id=" + fmt.Sprint(post.ID) }
-                                class="block px-4 py-2 hover:bg-gray-800"
+                                class="block px-4 py-2"
                             >
                                 { post.Title }
                             </a>

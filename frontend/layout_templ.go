@@ -44,7 +44,7 @@ func Layout(c *gin.Context, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<body class=\"bg-gray-600 text-white\"><main class=\"pt-1 bg-gray-800 h-screen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<body class=\"text-white\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -52,7 +52,7 @@ func Layout(c *gin.Context, title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"w-full h-1 bg-gray-300\"></div><div class=\"w-full\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<main class=\"pt-1 h-screen\"><div class=\"w-full h-1 bg-gray-300\"></div><div class=\"w-full\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -131,7 +131,7 @@ func header(c *gin.Context, isAuthenticated bool) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<header class=\"flex items-center justify-between px-8 bg-gray-800 h-20\"><div><a class=\"flex items-center gap-1\" href=\"/\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"25\" height=\"25\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"m8.13 1.229l5.5 4.47a1 1 0 0 1 .37.777V14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6.476a1 1 0 0 1 .37-.776l5.5-4.471a1 1 0 0 1 1.26 0M13 6.476L7.5 2.005L2 6.475V14h11z\"></path></svg> <span class=\"pt-1 text-2xl font-bold\">JdR</span></a></div><div class=\"flex items-center gap-6\"><a href=\"/blog\" class=\"text-white hover:underline\">Blog</a>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<header class=\"flex items-center justify-between px-8 h-20\"><div><a class=\"flex items-center gap-1\" href=\"/\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"25\" height=\"25\" viewBox=\"0 0 16 16\"><path fill=\"currentColor\" d=\"m8.13 1.229l5.5 4.47a1 1 0 0 1 .37.777V14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6.476a1 1 0 0 1 .37-.776l5.5-4.471a1 1 0 0 1 1.26 0M13 6.476L7.5 2.005L2 6.475V14h11z\"></path></svg> <span class=\"pt-1 text-2xl font-bold\">JdR</span></a></div><div class=\"flex items-center gap-6\"><a href=\"/blog\" class=\"text-white hover:underline\">Blog</a>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

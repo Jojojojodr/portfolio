@@ -15,7 +15,7 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
                     + Create New User
                 </a>
             </div>
-            <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden">
+            <table class="lighter-bg min-w-full rounded-lg overflow-hidden">
                 <thead>
                     <tr>
                         <th class="px-4 py-2 text-left text-gray-300">ID</th>
@@ -26,7 +26,7 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
                 </thead>
                 <tbody>
                     for _, user := range users {
-                        <tr class="border-b border-gray-700 cursor-pointer hover:bg-gray-700 transition" onclick={ editUser(user.ID) }>
+                        <tr class="hover-bg border-b cursor-pointer transition" onclick={ editUser(user.ID) }>
                             <td class="px-4 py-2 text-white">{ user.ID }</td>
                             <td class="px-4 py-2 text-white">{ user.Name }</td>
                             <td class="px-4 py-2 text-white">{ user.Email }</td>

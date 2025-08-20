@@ -155,7 +155,7 @@ func BlogPostContent(c *gin.Context, post *models.BlogPost) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" hx-target=\"#comments-section\" hx-swap=\"innerHTML\" class=\"mt-4 space-y-2\"><textarea name=\"comment\" class=\"w-full border rounded px-3 py-2 text-black\" rows=\"3\" placeholder=\"Add a comment...\" required></textarea> <button type=\"submit\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Post Comment</button></form></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" hx-target=\"#comments-section\" hx-swap=\"innerHTML\" class=\"mt-4 space-y-2\"><textarea name=\"comment\" class=\"w-full text-white border rounded px-3 py-2 text-black\" rows=\"3\" placeholder=\"Add a comment...\" required></textarea> <button type=\"submit\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Post Comment</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+body {
+    background-color: #272727;
+}
+
+.darker-bg {
+    background-color: #181818;
+}
+
+.lighter-bg {
+    background-color: #393939;
+}
+
+.hover-bg:hover {
+    background-color: #525252;
+}

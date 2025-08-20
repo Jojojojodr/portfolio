@@ -8,7 +8,7 @@ import (
 templ RegisterPage(c *gin.Context, errors map[string]string) {
     @frontend.Layout(c, "Register") {
         <div class="max-w-md mx-auto mt-12">
-            <div class="bg-gray-800 rounded-lg p-8 shadow-lg">
+            <div class="darker-bg rounded-lg p-8 shadow-lg">
                 <h1 class="text-2xl font-bold text-white mb-6">Register</h1>
                 <form method="POST" action="/handle/register" class="space-y-6">
                     <div>

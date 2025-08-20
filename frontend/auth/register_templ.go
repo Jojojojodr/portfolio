@@ -46,7 +46,7 @@ func RegisterPage(c *gin.Context, errors map[string]string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-md mx-auto mt-12\"><div class=\"bg-gray-800 rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Register</h1><form method=\"POST\" action=\"/handle/register\" class=\"space-y-6\"><div><label for=\"name\" class=\"block text-sm font-medium text-gray-300 mb-2\">Name</label> <input type=\"text\" id=\"name\" name=\"name\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" required> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-md mx-auto mt-12\"><div class=\"darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Register</h1><form method=\"POST\" action=\"/handle/register\" class=\"space-y-6\"><div><label for=\"name\" class=\"block text-sm font-medium text-gray-300 mb-2\">Name</label> <input type=\"text\" id=\"name\" name=\"name\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" required> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

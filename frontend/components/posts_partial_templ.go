@@ -46,7 +46,7 @@ func BlogPostsPartial(posts []models.BlogPost) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"block mb-6 p-4 border rounded bg-white shadow hover:bg-gray-100 transition\"><h2 class=\"text-xl text-black font-semibold\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"hover-bg block mb-6 p-4 border rounded lighter-bg shadow transition\"><h2 class=\"text-xl text-white font-semibold\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

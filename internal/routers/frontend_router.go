@@ -27,9 +27,7 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	admin.GET("/users", views.HandleAdminUsersPage)
 	admin.GET("/posts", views.HandleAdminPostsPage)
 	admin.GET("/post/create", views.HandleAdminCreateBlogPostPage)
-	admin.GET("/post/edit", views.HandleAdminEditBlogPostPage)
-	admin.POST("/post/create", views.HandleAdminCreateBlogPost)
-	admin.POST("/post/edit", views.HandleAdminEditBlogPost)
+	admin.GET("/post/edit", views.HandleAdminEditBlogPostPage)	
 
 	svr.NoRoute(views.HandleNotFoundPage)
 

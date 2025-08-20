@@ -26,5 +26,9 @@ func HandleRouter(svr *gin.Engine) *gin.Engine {
 	auth.POST("/login", views.Login)
 	auth.POST("/logout", views.Logout)
 
+	admin := handle.Group("/admin").Use(middleware.AuthRequired(), middleware.AdminRequired())
+	admin.POST("/post/create", views.HandleAdminCreateBlogPost)
+	admin.POST("/post/edit", views.HandleAdminEditBlogPost)
+
 	return svr
 }

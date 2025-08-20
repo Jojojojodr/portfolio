@@ -47,7 +47,7 @@ func AdminUsersPage(c *gin.Context, users []models.User) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Users</h1><a href=\"/admin/user/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New User</a></div><table class=\"min-w-full bg-gray-800 rounded-lg overflow-hidden\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Name</th><th class=\"px-4 py-2 text-left text-gray-300\">Email</th><th class=\"px-4 py-2 text-left text-gray-300\">Admin</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Users</h1><a href=\"/admin/user/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New User</a></div><table class=\"lighter-bg min-w-full rounded-lg overflow-hidden\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Name</th><th class=\"px-4 py-2 text-left text-gray-300\">Email</th><th class=\"px-4 py-2 text-left text-gray-300\">Admin</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -56,7 +56,7 @@ func AdminUsersPage(c *gin.Context, users []models.User) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"border-b border-gray-700 cursor-pointer hover:bg-gray-700 transition\" onclick=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"hover-bg border-b cursor-pointer transition\" onclick=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
