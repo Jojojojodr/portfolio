@@ -109,7 +109,7 @@ func BlogPostPage(c *gin.Context, posts []models.BlogPost, post *models.BlogPost
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div id=\"blog-post-content\" class=\"max-w-xl mx-20 mt-8\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div id=\"blog-post-content\" class=\"w-3/5 mx-20 mt-8\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

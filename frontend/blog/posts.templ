@@ -27,9 +27,9 @@ templ BlogPostPage(c *gin.Context, posts []models.BlogPost, post *models.BlogPos
         }
     }}
     @frontend.Layout(c, title) {
-         <div class="flex min-h-screen">
+        <div class="flex min-h-screen">
             @components.BlogSidebar(posts)
-            <div id="blog-post-content" class="max-w-xl mx-20 mt-8">
+            <div id="blog-post-content" class="w-3/5 mx-20 mt-8">
                 @components.BlogPostContent(c, post)
             </div>
         </div> 
