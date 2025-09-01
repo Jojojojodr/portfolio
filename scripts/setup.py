@@ -1,6 +1,6 @@
 import os
 import shutil
-from sys import platform
+import platform
 import utils
 import tailwind
 
@@ -37,6 +37,7 @@ def setup():
         tailwind_path = "bin/tailwindcss"
         
     if not os.path.exists(tailwind_path):
+        os.makedirs("bin", exist_ok=True)
         tailwind.download_tailwind_binary()
         print(f"Tailwind CSS binary downloaded to {tailwind_path}.")
     else:
