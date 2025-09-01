@@ -85,7 +85,7 @@ task seed            # Seeds to the database
 task clean           # Cleans up application
 ```
 
-## 📱 Features Overview
+## Features Overview
 
 ### Portfolio Section
 - Professional profile with skills showcase
