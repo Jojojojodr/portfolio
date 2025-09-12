@@ -13,8 +13,8 @@ type PostLike struct {
     CreatedAt  time.Time `json:"created_at"`
     
     // Relationships
-    User     User     `json:"user" gorm:"foreignKey:UserID"`
-    BlogPost BlogPost `json:"blog_post" gorm:"foreignKey:BlogPostID"`
+    User     User     `json:"-" gorm:"foreignKey:UserID"`
+    BlogPost BlogPost `json:"-" gorm:"foreignKey:BlogPostID"`
 }
 
 type CommentLike struct {
@@ -24,8 +24,8 @@ type CommentLike struct {
     CreatedAt time.Time `json:"created_at"`
     
     // Relationships
-    User    User        `json:"user" gorm:"foreignKey:UserID"`
-    Comment BlogComment `json:"comment" gorm:"foreignKey:CommentID"`
+    User    User        `json:"-" gorm:"foreignKey:UserID"`
+    Comment BlogComment `json:"-" gorm:"foreignKey:CommentID"`
 }
 
 // PostLike methods

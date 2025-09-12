@@ -69,7 +69,7 @@ func HandleAdminEditBlogPostPage(c *gin.Context) {
         c.String(http.StatusBadRequest, "Invalid post ID")
         return
     }
-    post, err := models.GetBlogPostByID(db.DataBase, uint(id))
+    post, err := models.GetBlogPostByID(uint(id))
     if err != nil || post == nil {
         c.String(http.StatusNotFound, "Post not found")
         return
@@ -84,7 +84,7 @@ func HandleAdminEditBlogPost(c *gin.Context) {
         c.String(http.StatusBadRequest, "Invalid post ID")
         return
     }
-    post, err := models.GetBlogPostByID(db.DataBase, uint(id))
+    post, err := models.GetBlogPostByID(uint(id))
     if err != nil || post == nil {
         c.String(http.StatusNotFound, "Post not found")
         return

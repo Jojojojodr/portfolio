@@ -8,12 +8,12 @@ import (
 )
 
 type User struct {
-	ID       uint   `json:"id" gorm:"primaryKey"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	IsAdmin  bool   `json:"is_admin"`
-	CreatedAt string `json:"created_at"`
+	ID       	uint   `json:"id" gorm:"primaryKey"`
+	Name     	string `json:"name"`
+	Email    	string `json:"email"`
+	Password 	string `json:"-"`
+	IsAdmin  	bool   `json:"is_admin"`
+	CreatedAt 	string `json:"created_at"`
 }
 
 func (user *User) IsAuthenticated(tx *gorm.DB) bool {

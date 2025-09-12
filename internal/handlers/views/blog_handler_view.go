@@ -31,7 +31,7 @@ func HandleBlogPostPage(c *gin.Context) {
     if idStr != "" {
         id, err := strconv.Atoi(idStr)
         if err == nil {
-            post, _ = models.GetBlogPostByID(db.DataBase, uint(id))
+            post, _ = models.GetBlogPostByID(uint(id))
 			htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
 			post.Content = string(htmlContent)
         }
@@ -41,7 +41,7 @@ func HandleBlogPostPage(c *gin.Context) {
 }
 
 func HandleBlogPostsHTMX(c *gin.Context) {
-    posts, err := models.GetPublishedBlogPosts(db.DataBase)
+    posts, err := models.GetPublishedBlogPosts()
     if err != nil {
         c.String(500, "Error loading posts")
         return
@@ -64,7 +64,7 @@ func HandleBlogPostHTMX(c *gin.Context) {
         return
     }
 
-    post, err := models.GetBlogPostByID(db.DataBase, uint(id))
+    post, err := models.GetBlogPostByID(uint(id))
     if err != nil || post == nil {
         c.Writer.WriteHeader(http.StatusNotFound)
         c.Writer.Write([]byte("Post not found"))

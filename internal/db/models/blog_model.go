@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/Jojojojodr/portfolio/internal/db"
-	"gorm.io/gorm"
 )
 
 type BlogPost struct {
@@ -12,7 +11,7 @@ type BlogPost struct {
 	Title       string    `json:"title"`
 	Content     string    `json:"content"`
 	UserID      uint      `json:"user_id"`
-	User		User      `gorm:"foreignKey:UserID"`
+	User		User      `json:"-" gorm:"foreignKey:UserID"`
 	IsPublished bool      `json:"is_published" gorm:"column:is_published"`
 	CreatedAt   time.Time `json:"created_at"`
 }
@@ -21,9 +20,9 @@ type BlogComment struct {
     ID         uint      `json:"id" gorm:"primaryKey"`
     Comment    string    `json:"comment"`
     UserID     uint      `json:"user_id"`
-    User       User      `gorm:"foreignKey:UserID"`
+    User       User      `json:"-" gorm:"foreignKey:UserID"`
     BlogPostID uint      `json:"blog_post_id"`
-    BlogPost   BlogPost  `gorm:"foreignKey:BlogPostID"`
+    BlogPost   BlogPost  `json:"-" gorm:"foreignKey:BlogPostID"`
     CreatedAt  time.Time `json:"created_at"`
 }
 
@@ -43,9 +42,9 @@ func (bc *BlogComment) IsLikedByUser(userID uint) bool {
     return IsCommentLikedByUser(userID, bc.ID)
 }
 
-func GetPublishedBlogPosts(db *gorm.DB) ([]BlogPost, error) {
+func GetPublishedBlogPosts() ([]BlogPost, error) {
 	var posts []BlogPost
-	err := db.Preload("User").Where("is_published = true").Order("created_at DESC").Find(&posts).Error
+	err := db.DataBase.Preload("User").Where("is_published = true").Order("created_at DESC").Find(&posts).Error
 	if err != nil {
 		return nil, err
 	}
@@ -61,11 +60,20 @@ func GetBlogPosts() ([]BlogPost, error) {
 	return posts, nil
 }
 
-func GetBlogPostByID(db *gorm.DB, id uint) (*BlogPost, error) {
+func GetBlogPostByID(id uint) (*BlogPost, error) {
     var post BlogPost
-    err := db.Preload("User").First(&post, id).Error
+    err := db.DataBase.Preload("User").First(&post, id).Error
     if err != nil {
         return nil, err
     }
     return &post, nil
+}
+
+func GetCommentsByPostID(postID uint) ([]BlogComment, error) {
+    var comments []BlogComment
+    err := db.DataBase.Where("blog_post_id = ?", postID).Find(&comments).Error
+	if err != nil {
+		return nil, err
+	}
+    return comments, err
 }
