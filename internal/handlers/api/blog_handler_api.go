@@ -2,6 +2,7 @@ package api
 
 import (
     "net/http"
+    "fmt"
 
     "github.com/Jojojojodr/portfolio/internal/db"	
     "github.com/Jojojojodr/portfolio/internal/db/models"
@@ -10,12 +11,38 @@ import (
 )
 
 func GetPublishedBlogs(c *gin.Context) {
-    posts, err := models.GetPublishedBlogPosts(db.DataBase)
+    posts, err := models.GetPublishedBlogPosts()
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not fetch blog posts"})
         return
     }
     c.JSON(http.StatusOK, posts)
+}
+
+func GetBlogPostByID(c *gin.Context) {
+    idStr := c.Query("id")
+    var idUint uint
+    _, err := fmt.Sscanf(idStr, "%d", &idUint)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid blog post ID"})
+        return
+    }
+
+    post, err := models.GetBlogPostByID(idUint)
+    if err != nil {
+        c.JSON(404, gin.H{"error": "Blog post not found"})
+        return
+    }
+
+	comments, err := models.GetCommentsByPostID(post.ID)
+	if err != nil {
+		comments = []models.BlogComment{}
+	}
+
+    c.JSON(200, gin.H{
+		"post": post,
+		"comments": comments,
+	})
 }
 
 func CreateBlogPost(c *gin.Context) {
