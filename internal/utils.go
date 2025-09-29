@@ -10,6 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var SecretToken string
+
 func Env(key string) string {
 	return os.Getenv(key)
 }
@@ -34,6 +36,10 @@ func IsDatabaseEmpty(database *gorm.DB) bool {
     database.Model(&models.User{}).Count(&userCount)
     
     return userCount == 0
+}
+
+func SetSecretToken(token string) {
+	SecretToken = token
 }
 
 func init() {

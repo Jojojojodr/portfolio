@@ -16,7 +16,7 @@ func TestConnectSQLite_InMemory(t *testing.T) {
 	os.Setenv("DB_TYPE", "sqlite")
 	os.Setenv("DB_PATH", "file::memory:?cache=shared")
 
-	gdb := ConnectDB()
+	gdb := ConnectDB(prevType)
 	if gdb == nil {
 		t.Fatalf("ConnectDB returned nil")
 	}

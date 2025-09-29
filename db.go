@@ -12,11 +12,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectDB() *gorm.DB {
+func ConnectDB(dbType string) *gorm.DB {
 	var err error
 	var db *gorm.DB
-
-	dbType := internal.Env("DB_TYPE")
 
 	switch dbType {
 	case "postgres":
@@ -53,6 +51,13 @@ func connectPostgres() (*gorm.DB, error) {
     dbname := internal.Env("DB_NAME")
     sslmode := internal.Env("DB_SSLMODE")
 
+	if host == "" || port == "" || user == "" || password == "" || dbname == "" {
+		return nil, fmt.Errorf("one or more required environment variables for Postgres are missing, required: DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME")
+	}
+	if sslmode == "" {
+		sslmode = "disable"
+	}
+
 	dns := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
 	
 	return gorm.Open(postgres.Open(dns), &gorm.Config{})
@@ -61,7 +66,7 @@ func connectPostgres() (*gorm.DB, error) {
 func connectSQLite() (*gorm.DB, error) {
 	dbPath := internal.Env("DB_PATH")
 	if dbPath == "" {
-		dbPath = "database/sqlite.db"
+		return nil, fmt.Errorf("DB_PATH environment variable is not set for SQLite")
 	}
 
 	return gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

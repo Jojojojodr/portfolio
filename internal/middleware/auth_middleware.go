@@ -23,7 +23,7 @@ func AuthMiddleware(c *gin.Context) {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		secretToken := internal.Env("SECRET_TOKEN")
+		secretToken := internal.SecretToken
 		return []byte(secretToken), nil
 	})
 
@@ -66,7 +66,7 @@ func LoginMiddleware(c *gin.Context) {
         if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
             return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
         }
-        secretToken := internal.Env("SECRET_TOKEN")
+        secretToken := internal.SecretToken
         return []byte(secretToken), nil
     })
 

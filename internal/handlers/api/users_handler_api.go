@@ -63,7 +63,7 @@ func HandleAuth(c *gin.Context) {
 		"exp": jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 	})
 	
-	secretToken := internal.Env("SECRET_TOKEN")
+	secretToken := internal.SecretToken
 	tokenString, err := token.SignedString([]byte(secretToken))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create token"})
