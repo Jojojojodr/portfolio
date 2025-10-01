@@ -8,7 +8,6 @@ import (
 )
 
 templ BlogPostContent(c *gin.Context, post *models.BlogPost) {
-    @markdownStyle()
     if post != nil {
         <title hx-swap-oob="true">{ post.Title }</title>
         <h1 class="text-3xl font-bold mb-4">{ post.Title }</h1>
@@ -18,22 +17,22 @@ templ BlogPostContent(c *gin.Context, post *models.BlogPost) {
         </div>
         if userInterface, exists := c.Get("user"); exists {
             {{ currentUser := userInterface.(*models.User) }}
-                @LikeButton(
-                    post.ID,
-                    "post",
-                    post.GetLikeCount(),
-                    post.IsLikedByUser(currentUser.ID),
-                    true,
-                )
-            } else {
-                @LikeButton(
-                    post.ID,
-                    "post",
-                    post.GetLikeCount(),
-                    false,
-                    false,
-                )
-            }
+            @LikeButton(
+                post.ID,
+                "post",
+                post.GetLikeCount(),
+                post.IsLikedByUser(currentUser.ID),
+                true,
+            )
+        } else {
+            @LikeButton(
+                post.ID,
+                "post",
+                post.GetLikeCount(),
+                false,
+                false,
+            )
+        }
         <div class="markdown">
             @templ.Raw(post.Content)
         </div>
@@ -57,59 +56,4 @@ templ BlogPostContent(c *gin.Context, post *models.BlogPost) {
     } else {
         <div>No post selected.</div>
     }
-}
-
-templ markdownStyle() {
-    <style>
-        .markdown h1 {
-            font-size: 2rem; /* 32px */
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: #5c3131;
-        }
-        .markdown h2 {
-            font-size: 1.5rem; /* 24px */
-            font-weight: bold;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: #723f3f;
-        }
-        .markdown h3 {
-            font-size: 1.25rem; /* 20px */
-            font-weight: bold;
-            margin-top: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: #8a4d4d;
-        }
-        .markdown h4 {
-            font-size: 1rem; /* 16px */
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            color: #a15b5b;
-        }
-        .markdown h5 {
-            font-size: 0.875rem; /* 14px */
-            margin-top: 0.875rem;
-            margin-bottom: 0.5rem;
-            color: #b16969;
-        }
-        .markdown h6 {
-            font-size: 0.75rem; /* 12px */
-            margin-top: 0.75rem;
-            margin-bottom: 0.5rem;
-            color: #c27777;
-        }
-        .markdown p {
-            font-size: 1rem; /* 16px */
-            line-height: 1.5;
-            color: #fff;
-        }
-        .markdown a {
-            color: #1e90ff; /* DodgerBlue */
-            text-decoration: underline;
-        }
-        .markdown a:hover {
-            text-decoration: none;
-        }
-    </style>
 }
