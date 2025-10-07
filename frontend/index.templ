@@ -90,38 +90,54 @@ templ Index(c *gin.Context) {
 
             <div class="grid md:grid-cols-2 gap-8">
                 <section>
-                    <div class="darker-bg rounded-lg p-8 shadow-lg">
+                    <div class="darker-bg rounded-lg p-8 shadow-lg h-full">
                         <h2 class="text-2xl font-bold text-white mb-6">Education</h2>
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h3 class="text-lg font-semibold text-white">Curio</h3>
-                            <p class="text-gray-400 mb-3">September 2019 - July 2025</p>
-                            <ul class="text-gray-300 text-sm space-y-1">
-                                <li>• Various software projects executed with diverse techniques</li>
-                                <li>• Focus on web development, embedded systems and application management</li>
-                            </ul>
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-blue-500 pl-6">
+                                <h3 class="text-lg font-semibold text-white">Software Development</h3>
+                                <p class="text-blue-400 font-medium">Curio</p>
+                                <p class="text-gray-400 mb-3">September 2019 - July 2025</p>
+                                <ul class="text-gray-300 text-sm space-y-2">
+                                    <li>• Various software projects executed with diverse techniques</li>
+                                    <li>• Focus on web development, embedded systems and application management</li>
+                                    <li>• Learned multiple programming languages and frameworks</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <div class="darker-bg rounded-lg p-8 shadow-lg">
+                    <div class="darker-bg rounded-lg p-8 shadow-lg h-full">
                         <h2 class="text-2xl font-bold text-white mb-6">Hobbies & Side Activities</h2>
-                        <ul class="text-gray-300 space-y-3">
+                        <ul class="text-gray-300 space-y-4">
                             <li class="flex items-center">
                                 <span class="text-2xl mr-3">🥋</span>
-                                <span>Karate</span>
+                                <div>
+                                    <span class="font-medium">Karate</span>
+                                    <p class="text-sm text-gray-400">Martial arts training and discipline</p>
+                                </div>
                             </li>
                             <li class="flex items-center">
                                 <span class="text-2xl mr-3">⚔️</span>
-                                <span>Iai Jutsu</span>
+                                <div>
+                                    <span class="font-medium">Iai Jutsu</span>
+                                    <p class="text-sm text-gray-400">Traditional Japanese sword art</p>
+                                </div>
                             </li>
                             <li class="flex items-center">
                                 <span class="text-2xl mr-3">🎨</span>
-                                <span>Drawing</span>
+                                <div>
+                                    <span class="font-medium">Drawing</span>
+                                    <p class="text-sm text-gray-400">Digital and traditional art</p>
+                                </div>
                             </li>
                             <li class="flex items-center">
                                 <span class="text-2xl mr-3">🎮</span>
-                                <span>Gaming</span>
+                                <div>
+                                    <span class="font-medium">Gaming</span>
+                                    <p class="text-sm text-gray-400">Strategy and puzzle games</p>
+                                </div>
                             </li>
                         </ul>
                     </div>
