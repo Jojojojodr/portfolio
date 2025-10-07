@@ -4,26 +4,23 @@ services:
       context: .
       dockerfile: dockerfile
     container_name: portfolio-app
-    volumes:
-      - ./database/sqlite.db:/app/database/sqlite.db
     ports:
       - "8080:${PORT}"
     environment:
-      - DB_TYPE=${DB_TYPE}
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=postgres
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_SSLMODE=${DB_SSLMODE}
-      - SECRET_TOKEN=${SECRET_TOKEN}
-      - PORT=${PORT}
       - GIN_MODE=${GIN_MODE}
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
-    command: [./main]
+    networks:
+      - portfolio-network
+    command: ["./main", "-d", "postgres", "-p", "${PORT}", "-t", "${SECRET_TOKEN}"]
   
   postgres:
     image: postgres:latest
@@ -42,6 +39,12 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    networks:
+      - portfolio-network
 
 volumes:
   postgres_data:
+
+networks:
+  portfolio-network:
+    driver: bridge
