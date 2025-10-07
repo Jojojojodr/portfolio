@@ -44,14 +44,23 @@ templ BlogPostContent(c *gin.Context, post *models.BlogPost) {
                 hx-swap="innerHTML">
                 <p>Loading comments...</p>
             </div>
-            <form id="comment-form"
-                hx-post={ "/handle/blog/comments/add?post_id=" + fmt.Sprint(post.ID) }
-                hx-target="#comments-section"
-                hx-swap="innerHTML"
-                class="mt-4 space-y-2">
-                <textarea name="comment" class="w-full text-white border rounded px-3 py-2 text-black" rows="3" placeholder="Add a comment..." required></textarea>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Post Comment</button>
-            </form>
+            if _, exists := c.Get("user"); exists {
+                <form id="comment-form"
+                    hx-post={ "/handle/blog/comments/add?post_id=" + fmt.Sprint(post.ID) }
+                    hx-target="#comments-section"
+                    hx-swap="innerHTML"
+                    class="mt-4 space-y-2">
+                    <textarea name="comment" class="w-full text-white border rounded px-3 py-2 text-black" rows="3" placeholder="Add a comment..." required></textarea>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Post Comment</button>
+                </form>
+            } else {
+                <div class="mt-4 p-4 bg-gray-700 rounded border">
+                    <p class="text-gray-300 text-center">
+                        <a href="/login" class="text-blue-400 hover:text-blue-300 underline">Log in</a> 
+                        to post a comment
+                    </p>
+                </div>
+            }
         </div>
     } else {
         <div>No post selected.</div>
