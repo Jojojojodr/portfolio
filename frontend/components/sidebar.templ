@@ -7,7 +7,7 @@ import (
 )
 
 templ BlogSidebar(posts []models.BlogPost) {
-    <aside class="darker-bg w-64 text-white h-[100vh] p-4 flex-shrink-0">
+    <aside class="darker-bg w-64 text-white h-screen max-h-screen sticky top-0 p-4 flex-shrink-0 overflow-y-auto">
         <h2 class="text-lg font-bold mb-4">All Blog Posts</h2>
         <ul class="space-y-2">
             if len(posts) == 0 {
