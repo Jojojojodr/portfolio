@@ -2,12 +2,11 @@ package admin
 
 import (
     "github.com/Jojojojodr/portfolio/frontend"
-    "github.com/Jojojojodr/portfolio/internal/db/models"
 
     "github.com/gin-gonic/gin"    
 )
 
-templ Dashboard(c *gin.Context, users []models.User) {
+templ Dashboard(c *gin.Context) {
     @frontend.Layout(c, "Admin Dashboard") {
         <div class="flex flex-col items-center min-h-screen w-full">
             <div class="flex flex-col md:flex-row gap-8 mt-16">

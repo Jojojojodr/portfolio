@@ -10,12 +10,11 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"github.com/Jojojojodr/portfolio/frontend"
-	"github.com/Jojojojodr/portfolio/internal/db/models"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Dashboard(c *gin.Context, users []models.User) templ.Component {
+func Dashboard(c *gin.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

@@ -47,32 +47,32 @@ func AdminUsersPage(c *gin.Context, users []models.User) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Users</h1><a href=\"/admin/user/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New User</a></div><table class=\"lighter-bg min-w-full rounded-lg overflow-hidden\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Name</th><th class=\"px-4 py-2 text-left text-gray-300\">Email</th><th class=\"px-4 py-2 text-left text-gray-300\">Admin</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Users</h1><a href=\"/admin/user/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New User</a></div><table class=\"lighter-bg min-w-full rounded-lg overflow-hidden\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Name</th><th class=\"px-4 py-2 text-left text-gray-300\">Email</th><th class=\"px-4 py-2 text-left text-gray-300\">Admin</th><th class=\"px-4 py-2 text-left text-gray-300\">Actions</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, user := range users {
-				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, editUser(user.ID))
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"hover-bg border-b transition\"><td class=\"px-4 py-2 text-white\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"hover-bg border-b cursor-pointer transition\" onclick=\"")
+				var templ_7745c5c3_Var3 string
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(user.ID)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/users_pages.templ`, Line: 31, Col: 70}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 templ.ComponentScript = editUser(user.ID)
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3.Call)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><td class=\"px-4 py-2 text-white\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</td><td class=\"px-4 py-2 text-white\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.ID)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/users_pages.templ`, Line: 30, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/users_pages.templ`, Line: 32, Col: 72}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -83,9 +83,9 @@ func AdminUsersPage(c *gin.Context, users []models.User) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/users_pages.templ`, Line: 31, Col: 72}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/users_pages.templ`, Line: 33, Col: 73}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -95,36 +95,57 @@ func AdminUsersPage(c *gin.Context, users []models.User) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/users_pages.templ`, Line: 32, Col: 73}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</td><td class=\"px-4 py-2 text-white\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
 				if user.IsAdmin {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "Yes")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Yes")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "No")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "No")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</td></tr>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</td><td class=\"px-4 py-2\"><div class=\"flex space-x-2\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, editUser(user.ID))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<button onclick=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var6 templ.ComponentScript = editUser(user.ID)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6.Call)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition\">Edit</button> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, deleteUser(user.ID, user.Name))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<button onclick=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var7 templ.ComponentScript = deleteUser(user.ID, user.Name)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7.Call)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" class=\"bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition\">Delete</button></div></td></tr>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</tbody></table></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</tbody></table></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -145,6 +166,35 @@ func editUser(id uint) templ.ComponentScript {
 }`,
 		Call:       templ.SafeScript(`__templ_editUser_241d`, id),
 		CallInline: templ.SafeScriptInline(`__templ_editUser_241d`, id),
+	}
+}
+
+func deleteUser(userID uint, userName string) templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_deleteUser_03b8`,
+		Function: `function __templ_deleteUser_03b8(userID, userName){if (confirm("Are you sure you want to delete the user '" + userName + "'? This action cannot be undone.")) {
+        fetch("/handle/admin/user/delete?id=" + userID, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Reload the page to reflect the changes
+                window.location.reload();
+            } else {
+                alert("Error deleting user. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error deleting user. Please try again.");
+        });
+    }
+}`,
+		Call:       templ.SafeScript(`__templ_deleteUser_03b8`, userID, userName),
+		CallInline: templ.SafeScriptInline(`__templ_deleteUser_03b8`, userID, userName),
 	}
 }
 

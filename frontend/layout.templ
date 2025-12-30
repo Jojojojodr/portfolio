@@ -13,7 +13,7 @@ templ Layout(c *gin.Context, title string) {
     @head(title)
     <body class="text-white">
         @header(c, middleware.IsAuthenticated(c))
-        <main class="pt-1 h-screen">
+        <main class="pt-1">
             <div class="w-full h-1 bg-gray-300"></div>
             <div class="w-full">
                 { children... }

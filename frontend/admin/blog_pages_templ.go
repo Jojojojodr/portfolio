@@ -50,32 +50,32 @@ func AdminPostsPage(c *gin.Context, posts []models.BlogPost) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Posts</h1><a href=\"/admin/post/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New Post</a></div><table class=\"lighter-bg min-w-full rounded-lg\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Title</th><th class=\"px-4 py-2 text-left text-gray-300\">Author</th><th class=\"px-4 py-2 text-left text-gray-300\">Published</th><th class=\"px-4 py-2 text-left text-gray-300\">Created</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl mx-auto mt-12\"><div class=\"flex justify-between items-center mb-6\"><h1 class=\"text-2xl font-bold text-white\">All Posts</h1><a href=\"/admin/post/create\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm font-semibold transition\">+ Create New Post</a></div><table class=\"lighter-bg min-w-full rounded-lg\"><thead><tr><th class=\"px-4 py-2 text-left text-gray-300\">ID</th><th class=\"px-4 py-2 text-left text-gray-300\">Title</th><th class=\"px-4 py-2 text-left text-gray-300\">Author</th><th class=\"px-4 py-2 text-left text-gray-300\">Published</th><th class=\"px-4 py-2 text-left text-gray-300\">Created</th><th class=\"px-4 py-2 text-left text-gray-300\">Actions</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, post := range posts {
-				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, editPost(post.ID))
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"hover-bg border-b transition\"><td class=\"px-4 py-2 text-white\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<tr class=\"hover-bg border-b cursor-pointer transition\" onclick=\"")
+				var templ_7745c5c3_Var3 string
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(post.ID)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 35, Col: 70}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 templ.ComponentScript = editPost(post.ID)
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3.Call)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><td class=\"px-4 py-2 text-white\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</td><td class=\"px-4 py-2 text-white\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.ID)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 35, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 36, Col: 73}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -86,9 +86,9 @@ func AdminPostsPage(c *gin.Context, posts []models.BlogPost) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(post.User.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 36, Col: 73}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 37, Col: 77}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -98,49 +98,70 @@ func AdminPostsPage(c *gin.Context, posts []models.BlogPost) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(post.User.Name)
+				if post.IsPublished {
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Yes")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				} else {
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "No")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</td><td class=\"px-4 py-2 text-white\">")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 37, Col: 77}
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(post.CreatedAt.Format("02-01-2006 15:04"))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 45, Col: 104}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</td><td class=\"px-4 py-2 text-white\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</td><td class=\"px-4 py-2\"><div class=\"flex space-x-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if post.IsPublished {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "Yes")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "No")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</td><td class=\"px-4 py-2 text-white\">")
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, editPost(post.ID))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(post.CreatedAt.Format("02-01-2006 15:04"))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 45, Col: 104}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<button onclick=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</td></tr>")
+				var templ_7745c5c3_Var7 templ.ComponentScript = editPost(post.ID)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7.Call)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition\">Edit</button> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, deletePost(post.ID, post.Title))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<button onclick=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var8 templ.ComponentScript = deletePost(post.ID, post.Title)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8.Call)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\" class=\"bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition\">Delete</button></div></td></tr>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</tbody></table></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</tbody></table></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -170,12 +191,12 @@ func BlogCreatePage(c *gin.Context, errorMsg string) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var8 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var8 == nil {
-			templ_7745c5c3_Var8 = templ.NopComponent
+		templ_7745c5c3_Var9 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var9 == nil {
+			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Var9 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var10 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -187,36 +208,36 @@ func BlogCreatePage(c *gin.Context, errorMsg string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"w-4/5 mx-auto mt-12\"><div class=\"darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Create Blog Post</h1>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"max-w-7xl mx-auto mt-12 px-4\"><div class=\"flex gap-6\"><!-- Preview Section (Left) --><div class=\"w-1/2 darker-bg rounded-lg p-8 shadow-lg\"><div class=\"mb-6\"><h2 class=\"text-2xl font-bold text-white\">Preview</h2></div><div id=\"preview-content\" class=\"min-h-96\"><div id=\"preview-area\"><h1 id=\"preview-title\" class=\"text-3xl font-bold mb-4\">Blog Post Title</h1><div class=\"text-gray-500 text-sm mb-4\"><span class=\"font-semibold\">Author:</span> You</div><div id=\"preview-body\" class=\"prose prose-invert max-w-none\"><p class=\"text-gray-400\">Your markdown content will appear here as you type...</p></div></div></div></div><!-- Form Section (Right) --><div class=\"w-1/2 darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Create Blog Post</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if errorMsg != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"mb-4 text-red-400\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"mb-4 text-red-400\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var10 string
-				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(errorMsg)
+				var templ_7745c5c3_Var11 string
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(errorMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 60, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 90, Col: 65}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<form action=\"/handle/admin/post/create\" method=\"POST\" class=\"space-y-6\"><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Title</label> <input type=\"text\" name=\"title\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" required></div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Content</label> <textarea name=\"content\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" rows=\"8\" required></textarea></div><div><label class=\"inline-flex items-center text-gray-300\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\"> Publish immediately</label></div><button type=\"submit\" class=\"w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600\">Create</button></form></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<form action=\"/handle/admin/post/create\" method=\"POST\" class=\"space-y-6\"><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Title</label> <input type=\"text\" name=\"title\" id=\"post-title\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" hx-post=\"/handle/admin/preview-title\" hx-target=\"#preview-title\" hx-trigger=\"input changed delay:300ms\" required></div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Content (Markdown)</label> <textarea name=\"content\" id=\"post-content\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" rows=\"15\" hx-post=\"/handle/admin/preview-markdown\" hx-target=\"#preview-body\" hx-trigger=\"input changed delay:500ms\" required></textarea></div><div><label class=\"inline-flex items-center text-gray-300\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\"> Publish immediately</label></div><button type=\"submit\" class=\"w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600\">Create</button></form></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = frontend.Layout(c, "Create Blog Post").Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = frontend.Layout(c, "Create Blog Post").Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -240,12 +261,12 @@ func BlogEditPage(c *gin.Context, post *models.BlogPost, errorMsg string) templ.
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var11 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var11 == nil {
-			templ_7745c5c3_Var11 = templ.NopComponent
+		templ_7745c5c3_Var12 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var12 == nil {
+			templ_7745c5c3_Var12 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Var12 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var13 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -257,84 +278,123 @@ func BlogEditPage(c *gin.Context, post *models.BlogPost, errorMsg string) templ.
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"w-4/5 mx-auto mt-12\"><div class=\"darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Edit Blog Post</h1>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"max-w-7xl mx-auto mt-12 px-4\"><div class=\"flex gap-6\"><!-- Preview Section (Left) --><div class=\"w-1/2 darker-bg rounded-lg p-8 shadow-lg\"><div class=\"mb-6\"><h2 class=\"text-2xl font-bold text-white\">Preview</h2></div><div id=\"preview-content\" class=\"min-h-96\"><div id=\"preview-area\"><h1 id=\"preview-title\" class=\"text-3xl font-bold mb-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if errorMsg != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"mb-4 text-red-400\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(errorMsg)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 94, Col: 61}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
+			var templ_7745c5c3_Var14 string
+			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 137, Col: 95}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<form action=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var14 templ.SafeURL = templ.SafeURL("/handle/admin/post/edit?id=" + fmt.Sprint(post.ID))
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var14)))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" method=\"POST\" class=\"space-y-6\"><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Title</label> <input type=\"text\" name=\"title\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</h1><div class=\"text-gray-500 text-sm mb-4\"><span class=\"font-semibold\">Author:</span> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var15 string
-			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
+			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(post.User.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 99, Col: 74}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 139, Col: 91}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" required></div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Content</label> <textarea name=\"content\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" rows=\"8\" required>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div><div id=\"preview-body\" class=\"prose prose-invert max-w-none\" hx-post=\"/handle/admin/preview-markdown\" hx-trigger=\"load\" hx-vals=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var16 string
-			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(post.Content)
+			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(`{"content": "` + post.Content + `"}`)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 107, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 144, Col: 79}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</textarea></div><div><label class=\"inline-flex items-center text-gray-300\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\" checked=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\"><!-- Initial content will be loaded via HTMX --></div></div></div></div><!-- Form Section (Right) --><div class=\"w-1/2 darker-bg rounded-lg p-8 shadow-lg\"><h1 class=\"text-2xl font-bold text-white mb-6\">Edit Blog Post</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var17 string
-			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(post.IsPublished)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 111, Col: 119}
+			if errorMsg != "" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"mb-4 text-red-400\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var17 string
+				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(errorMsg)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 155, Col: 65}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<form action=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"> Published</label></div><button type=\"submit\" class=\"w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600\">Save Changes</button></form></div></div>")
+			var templ_7745c5c3_Var18 templ.SafeURL = templ.SafeURL("/handle/admin/post/edit?id=" + fmt.Sprint(post.ID))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var18)))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" method=\"POST\" class=\"space-y-6\"><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Title</label> <input type=\"text\" name=\"title\" id=\"post-title\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var19 string
+			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 160, Col: 94}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" hx-post=\"/handle/admin/preview-title\" hx-target=\"#preview-title\" hx-trigger=\"input changed delay:300ms\" required></div><div><label class=\"block text-sm font-medium text-gray-300 mb-2\">Content (Markdown)</label> <textarea name=\"content\" id=\"post-content\" class=\"w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white\" rows=\"15\" hx-post=\"/handle/admin/preview-markdown\" hx-target=\"#preview-body\" hx-trigger=\"input changed delay:500ms, load delay:100ms\" required>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var20 string
+			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(post.Content)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 175, Col: 55}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</textarea></div><div><label class=\"inline-flex items-center text-gray-300\"><input type=\"checkbox\" name=\"is_published\" value=\"1\" class=\"mr-2\" checked=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var21 string
+			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(post.IsPublished)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/admin/blog_pages.templ`, Line: 179, Col: 123}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\"> Published</label></div><button type=\"submit\" class=\"w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600\">Save Changes</button></form></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = frontend.Layout(c, "Edit Blog Post").Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = frontend.Layout(c, "Edit Blog Post").Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -349,6 +409,35 @@ func editPost(postID uint) templ.ComponentScript {
 }`,
 		Call:       templ.SafeScript(`__templ_editPost_1e31`, postID),
 		CallInline: templ.SafeScriptInline(`__templ_editPost_1e31`, postID),
+	}
+}
+
+func deletePost(postID uint, postTitle string) templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_deletePost_809e`,
+		Function: `function __templ_deletePost_809e(postID, postTitle){if (confirm("Are you sure you want to delete the post '" + postTitle + "'? This action cannot be undone.")) {
+        fetch("/handle/admin/post/delete?id=" + postID, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Reload the page to reflect the changes
+                window.location.reload();
+            } else {
+                alert("Error deleting post. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error deleting post. Please try again.");
+        });
+    }
+}`,
+		Call:       templ.SafeScript(`__templ_deletePost_809e`, postID, postTitle),
+		CallInline: templ.SafeScriptInline(`__templ_deletePost_809e`, postID, postTitle),
 	}
 }
 

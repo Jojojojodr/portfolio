@@ -26,12 +26,12 @@ templ AdminPostsPage(c *gin.Context, posts []models.BlogPost) {
                         <th class="px-4 py-2 text-left text-gray-300">Author</th>
                         <th class="px-4 py-2 text-left text-gray-300">Published</th>
                         <th class="px-4 py-2 text-left text-gray-300">Created</th>
+                        <th class="px-4 py-2 text-left text-gray-300">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     for _, post := range posts {
-                        <tr class="hover-bg border-b cursor-pointer transition"
-                        onclick={ editPost(post.ID) }>
+                        <tr class="hover-bg border-b transition">
                             <td class="px-4 py-2 text-white">{ post.ID }</td>
                             <td class="px-4 py-2 text-white">{ post.Title }</td>
                             <td class="px-4 py-2 text-white">{ post.User.Name }</td>
@@ -43,6 +43,16 @@ templ AdminPostsPage(c *gin.Context, posts []models.BlogPost) {
                                 }
                             </td>
                             <td class="px-4 py-2 text-white">{ post.CreatedAt.Format("02-01-2006 15:04") }</td>
+                            <td class="px-4 py-2">
+                                <div class="flex space-x-2">
+                                    <button onclick={ editPost(post.ID) } class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">
+                                        Edit
+                                    </button>
+                                    <button onclick={ deletePost(post.ID, post.Title) } class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -53,33 +63,61 @@ templ AdminPostsPage(c *gin.Context, posts []models.BlogPost) {
 
 templ BlogCreatePage(c *gin.Context, errorMsg string) {
     @frontend.Layout(c, "Create Blog Post") {
-    <div class="w-4/5 mx-auto mt-12">
-            <div class="darker-bg rounded-lg p-8 shadow-lg">
-                <h1 class="text-2xl font-bold text-white mb-6">Create Blog Post</h1>
-                if errorMsg != "" {
-                    <div class="mb-4 text-red-400">{ errorMsg }</div>
-                }
-                <form action="/handle/admin/post/create" method="POST" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
-                        <input type="text" name="title"
-                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-                            required />
+        <div class="max-w-7xl mx-auto mt-12 px-4">
+            <div class="flex gap-6">
+                <!-- Preview Section (Left) -->
+                <div class="w-1/2 darker-bg rounded-lg p-8 shadow-lg">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-white">Preview</h2>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Content</label>
-                        <textarea name="content"
-                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-                            rows="8" required></textarea>
+                    <div id="preview-content" class="min-h-96">
+                        <div id="preview-area">
+                            <h1 id="preview-title" class="text-3xl font-bold mb-4">Blog Post Title</h1>
+                            <div class="text-gray-500 text-sm mb-4">
+                                <span class="font-semibold">Author:</span> You
+                            </div>
+                            <div id="preview-body" class="prose prose-invert max-w-none">
+                                <p class="text-gray-400">Your markdown content will appear here as you type...</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="inline-flex items-center text-gray-300">
-                            <input type="checkbox" name="is_published" value="1" class="mr-2" />
-                            Publish immediately
-                        </label>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Create</button>
-                </form>
+                </div>
+                
+                <!-- Form Section (Right) -->
+                <div class="w-1/2 darker-bg rounded-lg p-8 shadow-lg">
+                    <h1 class="text-2xl font-bold text-white mb-6">Create Blog Post</h1>
+                    if errorMsg != "" {
+                        <div class="mb-4 text-red-400">{ errorMsg }</div>
+                    }
+                    <form action="/handle/admin/post/create" method="POST" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                            <input type="text" name="title" id="post-title"
+                                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                                hx-post="/handle/admin/preview-title"
+                                hx-target="#preview-title"
+                                hx-trigger="input changed delay:300ms"
+                                required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Content (Markdown)</label>
+                            <textarea name="content" id="post-content"
+                                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                                rows="15"
+                                hx-post="/handle/admin/preview-markdown"
+                                hx-target="#preview-body"
+                                hx-trigger="input changed delay:500ms"
+                                required></textarea>
+                        </div>
+                        <div>
+                            <label class="inline-flex items-center text-gray-300">
+                                <input type="checkbox" name="is_published" value="1" class="mr-2" />
+                                Publish immediately
+                            </label>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Create</button>
+                    </form>
+                </div>
             </div>
         </div>
     }
@@ -87,33 +125,64 @@ templ BlogCreatePage(c *gin.Context, errorMsg string) {
 
 templ BlogEditPage(c *gin.Context, post *models.BlogPost, errorMsg string) {
     @frontend.Layout(c, "Edit Blog Post") {
-        <div class="w-4/5 mx-auto mt-12">
-            <div class="darker-bg rounded-lg p-8 shadow-lg">
-                <h1 class="text-2xl font-bold text-white mb-6">Edit Blog Post</h1>
-                if errorMsg != "" {
-                    <div class="mb-4 text-red-400">{ errorMsg }</div>
-                }
-                <form action={ templ.SafeURL("/handle/admin/post/edit?id=" + fmt.Sprint(post.ID)) } method="POST" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
-                        <input type="text" name="title" value={ post.Title }
-                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-                            required />
+        <div class="max-w-7xl mx-auto mt-12 px-4">
+            <div class="flex gap-6">
+                <!-- Preview Section (Left) -->
+                <div class="w-1/2 darker-bg rounded-lg p-8 shadow-lg">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-white">Preview</h2>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Content</label>
-                        <textarea name="content"
-                            class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-                            rows="8" required>{ post.Content }</textarea>
+                    <div id="preview-content" class="min-h-96">
+                        <div id="preview-area">
+                            <h1 id="preview-title" class="text-3xl font-bold mb-4">{ post.Title }</h1>
+                            <div class="text-gray-500 text-sm mb-4">
+                                <span class="font-semibold">Author:</span> { post.User.Name }
+                            </div>
+                            <div id="preview-body" class="prose prose-invert max-w-none"
+                                hx-post="/handle/admin/preview-markdown"
+                                hx-trigger="load"
+                                hx-vals={ `{"content": "` + post.Content + `"}` }>
+                                <!-- Initial content will be loaded via HTMX -->
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="inline-flex items-center text-gray-300">
-                            <input type="checkbox" name="is_published" value="1" class="mr-2" checked={post.IsPublished} />
-                            Published
-                        </label>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Save Changes</button>
-                </form>
+                </div>
+                
+                <!-- Form Section (Right) -->
+                <div class="w-1/2 darker-bg rounded-lg p-8 shadow-lg">
+                    <h1 class="text-2xl font-bold text-white mb-6">Edit Blog Post</h1>
+                    if errorMsg != "" {
+                        <div class="mb-4 text-red-400">{ errorMsg }</div>
+                    }
+                    <form action={ templ.SafeURL("/handle/admin/post/edit?id=" + fmt.Sprint(post.ID)) } method="POST" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                            <input type="text" name="title" id="post-title" value={ post.Title }
+                                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                                hx-post="/handle/admin/preview-title"
+                                hx-target="#preview-title"
+                                hx-trigger="input changed delay:300ms"
+                                required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Content (Markdown)</label>
+                            <textarea name="content" id="post-content"
+                                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                                rows="15"
+                                hx-post="/handle/admin/preview-markdown"
+                                hx-target="#preview-body"
+                                hx-trigger="input changed delay:500ms, load delay:100ms"
+                                required>{ post.Content }</textarea>
+                        </div>
+                        <div>
+                            <label class="inline-flex items-center text-gray-300">
+                                <input type="checkbox" name="is_published" value="1" class="mr-2" checked={post.IsPublished} />
+                                Published
+                            </label>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Save Changes</button>
+                    </form>
+                </div>
             </div>
         </div>
     }
@@ -121,4 +190,27 @@ templ BlogEditPage(c *gin.Context, post *models.BlogPost, errorMsg string) {
 
 script editPost(postID uint) {
     window.location.href = "/admin/post/edit?id=" + postID;
+}
+
+script deletePost(postID uint, postTitle string) {
+    if (confirm("Are you sure you want to delete the post '" + postTitle + "'? This action cannot be undone.")) {
+        fetch("/handle/admin/post/delete?id=" + postID, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Reload the page to reflect the changes
+                window.location.reload();
+            } else {
+                alert("Error deleting post. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error deleting post. Please try again.");
+        });
+    }
 }
