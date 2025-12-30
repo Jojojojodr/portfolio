@@ -22,11 +22,12 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
                         <th class="px-4 py-2 text-left text-gray-300">Name</th>
                         <th class="px-4 py-2 text-left text-gray-300">Email</th>
                         <th class="px-4 py-2 text-left text-gray-300">Admin</th>
+                        <th class="px-4 py-2 text-left text-gray-300">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     for _, user := range users {
-                        <tr class="hover-bg border-b cursor-pointer transition" onclick={ editUser(user.ID) }>
+                        <tr class="hover-bg border-b transition">
                             <td class="px-4 py-2 text-white">{ user.ID }</td>
                             <td class="px-4 py-2 text-white">{ user.Name }</td>
                             <td class="px-4 py-2 text-white">{ user.Email }</td>
@@ -36,6 +37,16 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
                                 } else {
                                     No
                                 }
+                            </td>
+                            <td class="px-4 py-2">
+                                <div class="flex space-x-2">
+                                    <button onclick={ editUser(user.ID) } class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">
+                                        Edit
+                                    </button>
+                                    <button onclick={ deleteUser(user.ID, user.Name) } class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition">
+                                        Delete
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -47,4 +58,27 @@ templ AdminUsersPage(c *gin.Context, users []models.User) {
 
 script editUser(id uint) {
     window.location.href = `/profile/${id}`;
+}
+
+script deleteUser(userID uint, userName string) {
+    if (confirm("Are you sure you want to delete the user '" + userName + "'? This action cannot be undone.")) {
+        fetch("/handle/admin/user/delete?id=" + userID, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Reload the page to reflect the changes
+                window.location.reload();
+            } else {
+                alert("Error deleting user. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error deleting user. Please try again.");
+        });
+    }
 }
