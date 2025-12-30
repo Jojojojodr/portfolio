@@ -61,9 +61,9 @@ func BlogSidebar(posts []models.BlogPost) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var3 string
-					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("/handle/blog/post?id=" + fmt.Sprint(post.ID))
+					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(templ.SafeURL("/handle/blog/post?id=" + fmt.Sprint(post.ID)))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/sidebar.templ`, Line: 21, Col: 86}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/sidebar.templ`, Line: 21, Col: 101}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 					if templ_7745c5c3_Err != nil {
@@ -74,9 +74,9 @@ func BlogSidebar(posts []models.BlogPost) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var4 string
-					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("/blog/post?id=" + fmt.Sprint(post.ID))
+					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/sidebar.templ`, Line: 24, Col: 84}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `frontend/components/sidebar.templ`, Line: 24, Col: 99}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 					if templ_7745c5c3_Err != nil {

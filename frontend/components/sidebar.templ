@@ -18,10 +18,10 @@ templ BlogSidebar(posts []models.BlogPost) {
                         <li class="hover-bg rounded">
                             <a
                                 href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
-                                hx-get={ "/handle/blog/post?id=" + fmt.Sprint(post.ID) }
+                                hx-get={ templ.SafeURL("/handle/blog/post?id=" + fmt.Sprint(post.ID)) }
                                 hx-target="#blog-post-content"
                                 hx-swap="innerHTML"
-                                hx-push-url={ "/blog/post?id=" + fmt.Sprint(post.ID) }
+                                hx-push-url={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
                                 class="block px-4 py-2"
                             >
                                 { post.Title }
