@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Jojojojodr/portfolio/internal"
+	"github.com/Jojojojodr/portfolio/config"
 	"github.com/Jojojojodr/portfolio/internal/db/models"
 
 	"gorm.io/driver/postgres"
@@ -44,12 +44,12 @@ func ConnectDB(dbType string) *gorm.DB {
 }
 
 func connectPostgres() (*gorm.DB, error) {
-	host := internal.Env("DB_HOST")
-    port := internal.Env("DB_PORT")
-    user := internal.Env("DB_USER")
-    password := internal.Env("DB_PASSWORD")
-    dbname := internal.Env("DB_NAME")
-    sslmode := internal.Env("DB_SSLMODE")
+	host := config.AppConfig.Database.Host
+    port := config.AppConfig.Database.Port
+    user := config.AppConfig.Database.Username
+    password := config.AppConfig.Database.Password
+    dbname := config.AppConfig.Database.Name
+    sslmode := config.AppConfig.Database.SSLMode
 
 	if host == "" || port == "" || user == "" || password == "" || dbname == "" {
 		return nil, fmt.Errorf("one or more required environment variables for Postgres are missing, required: DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME")
@@ -64,7 +64,7 @@ func connectPostgres() (*gorm.DB, error) {
 }
 
 func connectSQLite() (*gorm.DB, error) {
-	dbPath := internal.Env("DB_PATH")
+	dbPath := config.AppConfig.Database.Path
 	if dbPath == "" {
 		return nil, fmt.Errorf("DB_PATH environment variable is not set for SQLite")
 	}

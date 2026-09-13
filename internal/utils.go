@@ -2,19 +2,14 @@ package internal
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/Jojojojodr/portfolio/internal/db/models"
-	"github.com/joho/godotenv"
+	
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 var SecretToken string
-
-func Env(key string) string {
-	return os.Getenv(key)
-}
 
 func Encrypt(key string) string {
 	hashedKey, err := bcrypt.GenerateFromPassword([]byte(key), bcrypt.DefaultCost)
@@ -40,11 +35,4 @@ func IsDatabaseEmpty(database *gorm.DB) bool {
 
 func SetSecretToken(token string) {
 	SecretToken = token
-}
-
-func init() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Print("Error loading .env file")
-	}
 }

@@ -4,5 +4,6 @@ bin/
 tmp/
 
 .env
+config.yaml
 sqlite.db
 static/css/style.css

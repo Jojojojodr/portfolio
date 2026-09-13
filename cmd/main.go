@@ -6,12 +6,15 @@ import (
 	"os"
 
 	"github.com/Jojojojodr/portfolio"
+	"github.com/Jojojojodr/portfolio/config"
 	"github.com/Jojojojodr/portfolio/internal"
 	"github.com/Jojojojodr/portfolio/internal/db"
 	"github.com/Jojojojodr/portfolio/internal/db/seed"
 )
 
 func main() {
+	config.LoadConfig()
+
 	var port = flag.String("p", "", "Port to run the server on (e.g., 8080)")
 	var dbType = flag.String("d", "", "Database type: sqlite or postgres")
 	var token = flag.String("t", "", "Secret token for JWT authentication")
@@ -21,7 +24,7 @@ func main() {
 
 	secretToken := *token
 	if secretToken == "" {
-		secretToken = internal.Env("SECRET_TOKEN")
+		secretToken = config.AppConfig.Server.JWTSecret
 		if secretToken == "" {
 			log.Println("Secret token not specified via -t flag or SECRET_TOKEN environment variable")
 			log.Println("Usage: ./app -p 8080 -d sqlite -t your_secret_token")
@@ -32,7 +35,7 @@ func main() {
 
 	selectedDBType := *dbType
 	if selectedDBType == "" {
-		selectedDBType = internal.Env("DB_TYPE")
+		selectedDBType = config.AppConfig.Database.Type
 		if selectedDBType == "" {
 			log.Println("Database type not specified via -d flag or DB_TYPE environment variable")
 			log.Println("Usage: ./app -p 8080 -d sqlite")
@@ -53,7 +56,7 @@ func main() {
 
 	selectedPort := *port
 	if selectedPort == "" {
-		selectedPort = internal.Env("PORT")
+		selectedPort = config.AppConfig.Server.Port
 		if selectedPort == "" {
 			log.Println("Port not specified via -p flag or PORT environment variable")
 			log.Println("Usage: ./app -p 8080 -d sqlite")
