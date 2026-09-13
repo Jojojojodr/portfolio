@@ -6,4 +6,5 @@ tmp/
 .env
 config.yaml
 sqlite.db
+frontend/**/*_templ.go
 static/css/style.css
