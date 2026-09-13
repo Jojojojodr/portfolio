@@ -7,10 +7,8 @@ import (
 
 	"github.com/Jojojojodr/portfolio"
 	"github.com/Jojojojodr/portfolio/config"
-	"github.com/Jojojojodr/portfolio/internal"
-	"github.com/Jojojojodr/portfolio/internal/db"
-	"github.com/Jojojojodr/portfolio/internal/db/seed"
-	"github.com/Jojojojodr/portfolio/internal/routers"
+	"github.com/Jojojojodr/portfolio/database/seed"
+	"github.com/Jojojojodr/portfolio/routers"
 )
 
 func main() {
@@ -32,7 +30,7 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	internal.SetSecretToken(secretToken)
+	portfolio.SetSecretToken(secretToken)
 
 	selectedDBType := *dbType
 	if selectedDBType == "" {
@@ -44,11 +42,14 @@ func main() {
 		}
 	}
 
-	db.DataBase = portfolio.ConnectDB(selectedDBType)
+	database := portfolio.NewDatabase()
+	if err := database.Connect(selectedDBType); err != nil {
+		log.Fatalf("Failed to connect to the database: %v", err)
+	}
 
-	if internal.IsDatabaseEmpty(db.DataBase) {
+	if portfolio.IsDatabaseEmpty(portfolio.Data.GetDB()) {
 		log.Println("Database is empty, seeding with initial data")
-		if err := seed.SeedDatabase(db.DataBase); err != nil {
+		if err := seed.SeedDatabase(portfolio.Data.GetDB()); err != nil {
 			log.Fatalf("Failed to seed database: %v", err)
 		}
 	} else {
