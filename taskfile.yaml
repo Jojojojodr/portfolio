@@ -29,19 +29,18 @@ tasks:
       - templ generate
       - task: tasks:build-css
       - go build -o {{ .EXE_PATH }} {{ .GO_RUN_PATH }}
+      - cp -r ./static ./bin/static
+      - cp -r ./database/seeds ./bin/database/seeds
+      - cp ./config.example.yaml ./bin/config.yaml
       - echo "Application build"
     silent: true
 
-  start:
-    cmds:
-      - ./{{ .EXE_PATH }}
-    silent: true
-
   run:
+    deps:
+      - task: build
     cmds:
       - echo "Building and running the application"
-      - task build
-      - task start
+      - ./{{ .EXE_PATH }}
     silent: true
 
   docker:
