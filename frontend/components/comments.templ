@@ -1,7 +1,8 @@
 package components
 
 import (
-    "github.com/Jojojojodr/portfolio/internal/db/models"
+    "github.com/Jojojojodr/portfolio/controllers"
+    "github.com/Jojojojodr/portfolio/database/models"
 
     "github.com/gin-gonic/gin"
 )
@@ -36,15 +37,15 @@ templ BlogComment(c *gin.Context, comment models.BlogComment) {
                 @LikeButton(
                     comment.ID,
                     "comment",
-                    comment.GetLikeCount(),
-                    comment.IsLikedByUser(currentUser.ID),
+                    controllers.GetCommentLikeCount(comment.ID),
+                    controllers.IsCommentLikedByUser(currentUser.ID, comment.ID),
                     true,
                 )
             } else {
                 @LikeButton(
                     comment.ID,
                     "comment",
-                    comment.GetLikeCount(),
+                    controllers.GetCommentLikeCount(comment.ID),
                     false,
                     false,
                 )
