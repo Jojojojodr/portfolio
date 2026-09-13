@@ -10,6 +10,7 @@ import (
 	"github.com/Jojojojodr/portfolio/internal"
 	"github.com/Jojojojodr/portfolio/internal/db"
 	"github.com/Jojojojodr/portfolio/internal/db/seed"
+	"github.com/Jojojojodr/portfolio/internal/routers"
 )
 
 func main() {
@@ -65,5 +66,11 @@ func main() {
 	}
 
 	log.Printf("Starting server on port %s with database type %s", selectedPort, selectedDBType)
-	portfolio.RunServer(selectedPort)
+	server := portfolio.NewServer(selectedPort)
+
+	routers.FrontendRouter(server.Engine)
+	routers.V1Router(server.Engine)
+	routers.HandleRouter(server.Engine)
+
+	server.Start()
 }
