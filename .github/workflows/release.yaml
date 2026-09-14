@@ -18,35 +18,35 @@ jobs:
             goos: linux
             goarch: amd64
             name: portfolio-linux-amd64
-            binary: portfolio-linux-amd64-{{ github.ref_name }}
+            binary: portfolio-linux-amd64
             archive: tar.gz
 
           - os: ubuntu-latest
             goos: linux
             goarch: arm64
             name: portfolio-linux-arm64
-            binary: portfolio-linux-arm64-{{ github.ref_name }}
+            binary: portfolio-linux-arm64
             archive: tar.gz
 
           - os: windows-latest
             goos: windows
             goarch: amd64
             name: portfolio-windows-amd64
-            binary: portfolio-windows-amd64-{{ github.ref_name }}.exe
+            binary: portfolio-windows-amd64
             archive: zip
 
           - os: macos-latest
             goos: darwin
             goarch: amd64
             name: portfolio-darwin-amd64
-            binary: portfolio-darwin-amd64-{{ github.ref_name }}
+            binary: portfolio-darwin-amd64
             archive: tar.gz
 
           - os: macos-latest
             goos: darwin
             goarch: arm64
             name: portfolio-darwin-arm64
-            binary: portfolio-darwin-arm64-{{ github.ref_name }}
+            binary: portfolio-darwin-arm64
             archive: tar.gz
     
     runs-on: ${{ matrix.os }}
@@ -88,7 +88,7 @@ jobs:
       - name: Build binary (Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          CGO_ENABLED=1 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-s -w" -o release/${{ matrix.binary }} ./cmd/main.go
+          CGO_ENABLED=1 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-s -w" -o release/${{ matrix.binary }}-${{ github.ref_name }} ./cmd/main.go
 
       - name: Build binary (Windows)
         if: matrix.os == 'windows-latest'
@@ -96,7 +96,7 @@ jobs:
           $env:CGO_ENABLED=1
           $env:GOOS="${{ matrix.goos }}"
           $env:GOARCH="${{ matrix.goarch }}"
-          go build -ldflags="-s -w" -o release/${{ matrix.binary }} ./cmd/main.go
+          go build -ldflags="-s -w" -o release/${{ matrix.binary }}-${{ github.ref_name }}.exe ./cmd/main.go
 
       - name: Create archive
         shell: bash
