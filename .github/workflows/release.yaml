@@ -105,7 +105,7 @@ jobs:
           if [[ "${{ matrix.goos }}" == "windows" && "${{ matrix.archive }}" == "zip" ]]; then
             pwsh -Command "Compress-Archive -Path * -DestinationPath ../${{ matrix.name }}.zip"
           elif [[ "${{ matrix.archive }}" == "tar.gz" ]]; then
-            tar -czf ${{ matrix.name }}.tar.gz .
+            tar -czf ../${{ matrix.name }}.tar.gz .
           else
             zip -r ../${{ matrix.name }}.zip .
           fi
