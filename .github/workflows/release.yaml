@@ -114,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          path: release/${{ matrix.name }}.${{ matrix.archive }}
+          path: ${{ matrix.name }}.${{ matrix.archive }}
 
   release:
     needs: build
@@ -123,6 +123,9 @@ jobs:
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -166,7 +169,7 @@ jobs:
             - Frontend templates
             - Database seeds
             - Default configuration
-          files: release/*
+          files: artifacts/*
           draft: false
           prerelease: false
         env:
