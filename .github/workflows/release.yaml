@@ -79,7 +79,7 @@ jobs:
 
       - name: Create release package
         run: |
-          mkdir -p release
+          mkdir -p release/database
           cp -r static release/static
           cp -r database/seeds release/database/seeds
           cp config.example.yaml release/config.yaml
