@@ -21,7 +21,7 @@ jobs:
             binary: portfolio-linux-amd64
             archive: tar.gz
 
-          - os: ubuntu-latest
+          - os: ubuntu-24.04-arm
             goos: linux
             goarch: arm64
             name: portfolio-linux-arm64
