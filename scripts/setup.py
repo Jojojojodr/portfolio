@@ -1,47 +1,51 @@
 import os
 import shutil
-import platform
-import utils
-import tailwind
+import subprocess
 
 go_deps = [
-    "github.com/a-h/templ/cmd/templ@v0.3.865",
+    "github.com/a-h/templ/cmd/templ@v0.3.1020",
     "github.com/air-verse/air@latest",
     "github.com/go-task/task/v3/cmd/task@latest"
 ]
 
-def setup():
+def install_go_dependency(package: str):
+    print(f"Installing Go dependency: {package}...")
+    
+    try:
+        subprocess.run(
+            ["go", "install", package],
+            check=True
+        )
+        print(f"Successfully installed {package}.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install {package}: {e}")
+        raise
+
+def setup_dependencies():
     print("Installing Go dependencies...\n")
     for dep in go_deps:
-        utils.install_go_dependency(dep)  
+        install_go_dependency(dep)
+
+    subprocess.run(["npm", "i"], check=True)
     print("\nAll Go dependencies installed successfully.")
     
-    if not os.path.exists(".env"):
-        shutil.copy(".env.example", ".env")
-        print(".env file created from .env.example.")
+def copy_config():    
+    if not os.path.exists("config.yaml"):
+        shutil.copy("config.example.yaml", "config.yaml")
+        print("config.yaml created from config.example.yaml.")
     else:
-        print(".env file already exists.")
-        
+        print("config file already exists.")
+
+def create_database():
     if not os.path.exists("database/sqlite.db"):
         print("Creating SQLite database...")
         with open("database/sqlite.db", "w") as db_file:
-            pass
+            db_file.write("")
         print("SQLite database created at database/sqlite.db.")
     else:
         print("SQLite database already exists at database/sqlite.db.")
-        
-    sys = platform.system()
-    if sys == "Windows":
-        tailwind_path = "bin/tailwindcss.exe"
-    elif sys in ["Linux", "Darwin"]:
-        tailwind_path = "bin/tailwindcss"
-        
-    if not os.path.exists(tailwind_path):
-        os.makedirs("bin", exist_ok=True)
-        tailwind.download_tailwind_binary()
-        print(f"Tailwind CSS binary downloaded to {tailwind_path}.")
-    else:
-        print(f"Tailwind CSS binary already exists at {tailwind_path}.")
 
 if __name__ == "__main__":
-    setup()
+    setup_dependencies()
+    copy_config()
+    create_database()

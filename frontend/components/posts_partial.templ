@@ -4,7 +4,8 @@ import (
     "fmt"
     "strconv"
 
-    "github.com/Jojojojodr/portfolio/internal/db/models"
+    "github.com/Jojojojodr/portfolio/controllers"
+    "github.com/Jojojojodr/portfolio/database/models"
 )
 
 templ BlogPostsPartial(posts []models.BlogPost) {
@@ -22,7 +23,7 @@ templ BlogPostsPartial(posts []models.BlogPost) {
                     <svg class="w-5 h-5 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="text-black font-medium">{ strconv.FormatInt(post.GetLikeCount(), 10) }</span>
+                    <span class="text-black font-medium">{ strconv.FormatInt(controllers.GetPostLikeCount(post.ID), 10) }</span>
                 </span>
             </div>
         </a>
