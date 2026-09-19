@@ -1,7 +1,7 @@
 package frontend
 
 import (
-	"github.com/Jojojojodr/portfolio/middleware"
+    "github.com/Jojojojodr/portfolio/middleware"
     "github.com/Jojojojodr/portfolio/frontend/components"
 
     "github.com/gin-gonic/gin"
@@ -36,9 +36,9 @@ templ head(title string) {
 templ header(c *gin.Context, isAuthenticated bool) {
     <header class="flex items-center justify-between px-8 h-20">
         <div>
-            <a class="flex items-center gap-1" href="/">
+            <a class="flex flex-col items-center" href="/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16"><path fill="currentColor" d="m8.13 1.229l5.5 4.47a1 1 0 0 1 .37.777V14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6.476a1 1 0 0 1 .37-.776l5.5-4.471a1 1 0 0 1 1.26 0M13 6.476L7.5 2.005L2 6.475V14h11z"/></svg>
-                <span class="pt-1 text-2xl font-bold">JdR</span>
+                <span class="text-base font-bold">JdR</span>
             </a>
         </div>
         <div class="flex items-center gap-6">
