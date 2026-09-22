@@ -11,13 +11,14 @@ import (
 templ BlogPostsPartial(posts []models.BlogPost) {
     for _, post := range posts {
         <a
-            href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) } class="hover-bg block mb-6 p-4 border rounded lighter-bg shadow transition"
+            href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) } 
+            class="hover-bg block mb-6 p-4 rounded lighter-bg shadow transition"
         >
             <h2 class="text-xl text-white font-semibold">{ post.Title }</h2>
             <div class="text-sm text-gray-500 mt-2 flex items-center justify-between">
                 <span>
                     <span class="font-semibold">Author:</span> { post.User.Name }
-                    &nbsp;Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
+                    Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
                 </span>
                 <span class="flex items-center ml-2">
                     <svg class="w-5 h-5 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20">

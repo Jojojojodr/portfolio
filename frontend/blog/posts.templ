@@ -10,9 +10,13 @@ import (
 
 templ BlogPosts(c *gin.Context) {
     @frontend.Layout(c, "Blog Posts") {
-        <div class="max-w-2xl mx-auto">
+        <div class="max-w-2xl mx-auto pt-10">
             <h1 class="text-2xl font-bold mb-4">Blog Posts</h1>
-            <div id="blog-posts" hx-get="/handle/blog/posts" hx-trigger="load" hx-target="#blog-posts" hx-swap="innerHTML">
+            <div id="blog-posts"
+                 hx-get="/handle/blog/posts"
+                 hx-trigger="load"
+                 hx-target="#blog-posts"
+                 hx-swap="innerHTML">
                 <p>Loading blog posts...</p>
             </div>
         </div>
@@ -29,8 +33,10 @@ templ BlogPostPage(c *gin.Context, posts []models.BlogPost, post *models.BlogPos
     @frontend.Layout(c, title) {
         <div class="flex">
             @components.BlogSidebar(posts)
-            <div id="blog-post-content" class="w-3/5 mx-20 mt-8 mb-8">
-                @components.BlogPostContent(c, post)
+            <div class="absolute left-1 right-0 md:left-1/4">
+                <div id="blog-post-content" class="flex flex-col pt-15 pr-10 pl-15 md:w-3/5 md:pt-20 md:px-0 md:min-w-max">
+                    @components.BlogPostContent(c, post)
+                </div>
             </div>
         </div> 
     }

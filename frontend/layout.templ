@@ -1,7 +1,7 @@
 package frontend
 
 import (
-	"github.com/Jojojojodr/portfolio/middleware"
+    "github.com/Jojojojodr/portfolio/middleware"
     "github.com/Jojojojodr/portfolio/frontend/components"
 
     "github.com/gin-gonic/gin"
@@ -13,7 +13,8 @@ templ Layout(c *gin.Context, title string) {
     @head(title)
     <body class="text-white">
         @header(c, middleware.IsAuthenticated(c))
-        <main class="pt-1">
+        <main class="pt-1 relative">
+            @components.LoginComponent(middleware.IsAuthenticated(c), middleware.GetUser(c), middleware.IsAdmin(c))
             <div class="w-full h-1 bg-gray-300"></div>
             <div class="w-full">
                 { children... }
@@ -36,14 +37,20 @@ templ head(title string) {
 templ header(c *gin.Context, isAuthenticated bool) {
     <header class="flex items-center justify-between px-8 h-20">
         <div>
-            <a class="flex items-center gap-1" href="/">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16"><path fill="currentColor" d="m8.13 1.229l5.5 4.47a1 1 0 0 1 .37.777V14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6.476a1 1 0 0 1 .37-.776l5.5-4.471a1 1 0 0 1 1.26 0M13 6.476L7.5 2.005L2 6.475V14h11z"/></svg>
-                <span class="pt-1 text-2xl font-bold">JdR</span>
+            <a class="flex flex-col items-center" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
+                    <path fill="currentColor" d="m8.13 1.229l5.5 4.47a1 1 0 0 1 .37.777V14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6.476a1 1 0 0 1 .37-.776l5.5-4.471a1 1 0 0 1 1.26 0M13 6.476L7.5 2.005L2 6.475V14h11z"/>
+                </svg>
+                <span class="text-base font-bold">JdR</span>
             </a>
         </div>
         <div class="flex items-center gap-6">
             <a href="/blog" class="text-white hover:underline">Blog</a>
-            @components.LoginComponent(isAuthenticated, middleware.GetUser(c), middleware.IsAdmin(c))
+            <span id="login-modal-open" class="cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 448 512">
+                    <path fill="rgb(255, 255, 255)" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
+                </svg>
+            </span>
         </div>
     </header>
 }

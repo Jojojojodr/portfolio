@@ -7,29 +7,42 @@ import (
 )
 
 templ BlogSidebar(posts []models.BlogPost) {
-    <aside class="darker-bg w-64 text-white h-screen max-h-screen sticky top-0 p-4 flex-shrink-0 overflow-y-auto">
-        <h2 class="text-lg font-bold mb-4">All Blog Posts</h2>
-        <ul class="space-y-2">
-            if len(posts) == 0 {
-                <li class="text-gray-400">No posts available.</li>
-            } else {
-                for _, post := range posts {
-                    if post.IsPublished {
-                        <li class="hover-bg rounded">
-                            <a
-                                href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
-                                hx-get={ templ.SafeURL("/handle/blog/post?id=" + fmt.Sprint(post.ID)) }
-                                hx-target="#blog-post-content"
-                                hx-swap="innerHTML"
-                                hx-push-url={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
-                                class="block px-4 py-2"
-                            >
-                                { post.Title }
-                            </a>
-                        </li>
+    <div id="sidebar-open" class="sidebar-open darker-bg h-10 w-10 flex justify-center items-center rounded">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="25px" height="25px" id="sidebar-open-button">
+            <path fill="rgb(255, 255, 255)" d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+        </svg>
+    </div>
+    <div id="sidebar-modal" class="sidebar-modal">
+        <aside class="darker-bg w-64 text-white h-screen p-4 overflow-y-auto">
+            <div class="flex justify-between">
+                <h2 class="text-lg font-bold mb-4">All Blog Posts</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="25px" height="25px" id="sidebar-close-button">
+                    <path fill="rgb(255, 255, 255)" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+                </svg>
+            </div>
+            <ul class="space-y-2">
+                if len(posts) == 0 {
+                    <li class="text-gray-400">No posts available.</li>
+                } else {
+                    for _, post := range posts {
+                        if post.IsPublished {
+                            <li class="hover-bg rounded">
+                                <a
+                                    href={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
+                                    hx-get={ templ.SafeURL("/handle/blog/post?id=" + fmt.Sprint(post.ID)) }
+                                    hx-target="#blog-post-content"
+                                    hx-swap="innerHTML"
+                                    hx-push-url={ templ.SafeURL("/blog/post?id=" + fmt.Sprint(post.ID)) }
+                                    class="block px-4 py-2"
+                                >
+                                    { post.Title }
+                                </a>
+                            </li>
+                         }
                     }
                 }
-            }
-        </ul>
-    </aside>
+            </ul>
+        </aside>
+    </div>
+    <script src="/static/js/sidebar.js"></script>
 }

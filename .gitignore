@@ -2,11 +2,13 @@
 __pycache__/
 bin/
 tmp/
+data/
 node_modules/
 
 .env
 config.yaml
 sqlite.db
 package-lock.json
+
 frontend/**/*_templ.go
 static/css/style.css
