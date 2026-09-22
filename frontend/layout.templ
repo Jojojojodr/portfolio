@@ -13,7 +13,8 @@ templ Layout(c *gin.Context, title string) {
     @head(title)
     <body class="text-white">
         @header(c, middleware.IsAuthenticated(c))
-        <main class="pt-1">
+        <main class="pt-1 relative">
+            @components.LoginComponent(middleware.IsAuthenticated(c), middleware.GetUser(c), middleware.IsAdmin(c))
             <div class="w-full h-1 bg-gray-300"></div>
             <div class="w-full">
                 { children... }
@@ -45,7 +46,11 @@ templ header(c *gin.Context, isAuthenticated bool) {
         </div>
         <div class="flex items-center gap-6">
             <a href="/blog" class="text-white hover:underline">Blog</a>
-            @components.LoginComponent(isAuthenticated, middleware.GetUser(c), middleware.IsAdmin(c))
+            <span id="login-modal-open" class="cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 448 512">
+                    <path fill="rgb(255, 255, 255)" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
+                </svg>
+            </span>
         </div>
     </header>
 }

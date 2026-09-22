@@ -5,29 +5,35 @@ import (
 )
 
 templ LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) {
-    if !isAuthenticated {
-        <div class="flex items-center gap-2">
-            @ButtonPrimary("Login", "/login")
-            @ButtonPrimary("Register", "/register")
-        </div>
-    } else {
-        <div class="flex items-center gap-4">
-            <a href="/profile" class="darker-bg hover-bg flex items-center gap-2 px-4 py-2 rounded-md transition">
-                <span class="text-white">
-                    Hello,<br />
-                    if user != nil {
-                        { user.Name }
-                    } else {
-                        Guest
-                    }
-                </span>
-            </a>
-            <div>
-                @ButtonAction("Logout", "/handle/auth/logout")
-                if isAdmin {
-                    @ButtonPrimary("Admin Dashboard", "/admin/dashboard")
-                }
+    <div id="login-modal" class="login-modal">
+        <div class="darker-bg w-64 p-4 text-white">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Account</h2>
             </div>
+            if !isAuthenticated {
+                <div class="flex flex-col gap-4">
+                    @ButtonPrimary("Login", "/login")
+                    @ButtonPrimary("Register", "/register")
+                </div>
+            } else {
+                <div class="flex flex-col gap-4">
+                    <a href="/profile" class="hover-bg flex items-center gap-2 px-4 py-2 rounded-md transition">
+                        <span class="text-white">
+                            Hello,
+                            if user != nil {
+                                { user.Name }
+                            } else {
+                                Guest
+                            }
+                        </span>
+                    </a>
+                    @ButtonAction("Logout", "/handle/auth/logout")
+                    if isAdmin {
+                        @ButtonPrimary("Admin Dashboard", "/admin/dashboard")
+                    }
+                </div>
+            }
         </div>
-    }
+    </div>
+    <script src="/static/js/login.js"></script>
 }
