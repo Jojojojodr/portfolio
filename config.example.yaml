@@ -1,6 +1,7 @@
 server:
   host: "localhost"
   port: 8080
+  admin_port: 8081
   jwt_secret: "your_jwt_secret_key"
 database:
   type: "sqlite"
@@ -13,5 +14,4 @@ database:
   ssl_mode: "disable"
 gin:
   mode: "debug"
-  trusted_proxies: ["127.0.0.1"]
-  
+  trusted_proxies: ["127.0.0.1"] 

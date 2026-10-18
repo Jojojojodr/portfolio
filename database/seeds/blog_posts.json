@@ -1,13 +1,13 @@
 [
     {
         "title": "test blog post",
-        "content": "# This is a test blog post\nIt contains some markdown content.", 
+        "content": "# This is a test blog post\nIt contains some markdown content.\n\n## Features\n- Markdown support\n- Rich text formatting\n- Links and images\n- Code blocks\n- Tables\n- Blockquotes\n- Lists\n\n## Example Code Block\n```python\ndef hello_world():\n    print(\"Hello, world!\")\n```\n",
         "user_id": 1, 
         "is_published": true
     },
     {
         "title": "test blog post 2",
-        "content": "# Testing blog 2\nThis is a second test blog post.\nContains more markdown content.", 
+        "content": "# Testing blog 2\n\nThis is a second test blog post. It **contains** more markdown content.\n\n## Rich Text\n\nYou can write *italic*, __bold__, ~~strikethrough~~ and `inline code`.\n\n## Links\n\nCheck out [GitHub](https://github.com/Jojojojodr) or my [LinkedIn](https://www.linkedin.com/in/jordy-de-ron/).\n\n## Image\n\n![Placeholder image](/static/img/JordyPFP.jpg)\n\n## Table\n\n| Feature | Status | Notes |\n|---------|--------|-------|\n| Markdown | ✅ | Full gomarkdown rendering |\n| Tables | ✅ | Rendered as HTML |\n| Links | ✅ | Autolink support |\n| Code blocks | ✅ | Fenced code blocks |\n\n## Blockquote\n\n> This is a blockquote and it can contain **bold** text.\n\n## Ordered list\n\n1. First item\n2. Second item\n3. Third item\n\n## Unordered list\n\n- list not numbered\n- list still not numbered\n- list wont be numbered\n\n## Code blocks\n\nThis is a `codeblock`\n\n```bash\necho 'hello world'\n```\n", 
         "user_id": 1, 
         "is_published": true
     }

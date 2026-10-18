@@ -15,6 +15,7 @@ type Config struct {
 	Server struct {
 		Host string `yaml:"host"`
 		Port  string `yaml:"port"`
+		AdminPort string `yaml:"admin_port"`
 		JWTSecret string `yaml:"jwt_secret"`
 	} `yaml:"server"`
 	Database struct {

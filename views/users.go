@@ -21,20 +21,20 @@ func Login(c *gin.Context) {
 	password := c.PostForm("password")
 
 	if name == "" || password == "" {
-		c.Writer.WriteHeader(400)
+		c.Writer.WriteHeader(http.StatusOK) // htmx only swaps 2xx responses
 		components.LoginResponse("", "Username and password required").Render(c.Request.Context(), c.Writer)
 		return
 	}
 
 	user, err := controllers.GetUserByName(name)
 	if err != nil || user == nil {
-		c.Writer.WriteHeader(401)
+		c.Writer.WriteHeader(http.StatusOK) // htmx only swaps 2xx responses
 		components.LoginResponse("", "Invalid username or password").Render(c.Request.Context(), c.Writer)
 		return
 	}
 
 	if !portfolio.CheckPasswordHash(password, user.Password) {
-		c.Writer.WriteHeader(401)
+		c.Writer.WriteHeader(http.StatusOK) // htmx only swaps 2xx responses
 		components.LoginResponse("", "Invalid username or password").Render(c.Request.Context(), c.Writer)
 		return
 	}
@@ -47,15 +47,15 @@ func Login(c *gin.Context) {
 	secretToken := portfolio.SecretToken
 	tokenString, err := token.SignedString([]byte(secretToken))
 	if err != nil {
-		c.Writer.WriteHeader(500)
+		c.Writer.WriteHeader(http.StatusOK) // htmx only swaps 2xx responses
 		components.LoginResponse("", "Could not create token").Render(c.Request.Context(), c.Writer)
 		return
 	}
 
 	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", "", false, true)
+	c.SetCookie("Authorization", tokenString, 3600*24, "/", "", false, true)
 
-	c.Header("HX-Location", "/")
+	c.Header("HX-Redirect", "/") // full reload so the whole page reflects the new auth state
 	c.Writer.WriteHeader(200)
 }
 

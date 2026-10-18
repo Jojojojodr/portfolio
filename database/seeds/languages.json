@@ -1,0 +1,14 @@
+[
+    {
+        "id": "language-1",
+        "portfolio_id": "portfolio-1",
+        "language": "Dutch",
+        "proficiency": "Fluent"
+    },
+    {
+        "id": "language-2",
+        "portfolio_id": "portfolio-1",
+        "language": "English",
+        "proficiency": "Good"
+    }
+]

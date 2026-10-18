@@ -11,7 +11,7 @@ templ Login(c *gin.Context) {
         <div class="max-w-md mx-auto mt-12">
             <div class="darker-bg rounded-lg p-8 shadow-lg">
                 <h1 class="text-2xl font-bold text-white mb-6">Login</h1>
-                <div id="login-response" class="mt-4"></div>
+                <div id="login-response"></div>
                 <form hx-post="/handle/auth/login" hx-target="#login-response" hx-swap="innerHTML" class="space-y-6">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Username</label>

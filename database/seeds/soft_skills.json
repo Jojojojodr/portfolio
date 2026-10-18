@@ -1,0 +1,17 @@
+[
+    {
+        "id": "soft-skill-1",
+        "portfolio_id": "portfolio-1",
+        "skill": "Self-directed learning"
+    },
+    {
+        "id": "soft-skill-2",
+        "portfolio_id": "portfolio-1",
+        "skill": "Problem-solving thinking"
+    },
+    {
+        "id": "soft-skill-3",
+        "portfolio_id": "portfolio-1",
+        "skill": "Documentation and knowledge management"
+    }
+]

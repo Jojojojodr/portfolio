@@ -1,0 +1,14 @@
+[
+    {
+        "id": "portfolio-1",
+        "name": "Jordy de Ron",
+        "function": "Software Developer",
+        "place": "Hoogerheide",
+        "email": "jordy@tronsoft.nl",
+        "github": "https://github.com/Jojojojodr",
+        "linkedin": "https://www.linkedin.com/in/jordy-de-ron/",
+        "birthday": "January 3rd, 2001",
+        "img_path": "/static/img/JordyPFP.jpg",
+        "about": "I'm Jordy de Ron, a driven and enthusiastic software engineer from the Netherlands. I have a keen eye for detail and a strong eagerness to learn. I excel at independently analyzing technical challenges and finding effective solutions. I actively invest time outside of work hours to master new methods and technologies, which demonstrates my passion for the profession. With a solid technical foundation and a hands-on mentality, I am ready to add value to any development team."
+    }
+]

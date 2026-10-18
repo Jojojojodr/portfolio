@@ -58,18 +58,14 @@ tasks:
   docker-build:
     cmds:
       - echo "Building Docker containers"
-      - templ generate
-      - task: tasks:build-css
-      - docker-compose up --build
+      - docker-compose up --build -d
     silent: true
   
   docker-rebuild:
     cmds:
       - echo "Rebuilding Docker containers"
       - docker-compose down
-      - templ generate
-      - task: tasks:build-css
-      - docker-compose up --build --force-recreate
+      - docker-compose up --build --force-recreate -d
     silent: true
 
   clean:

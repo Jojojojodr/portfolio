@@ -1,0 +1,17 @@
+[
+    {
+        "id": "education-task-1",
+        "education_id": "education-1",
+        "task": "Various software projects executed with diverse techniques"
+    },
+    {
+        "id": "education-task-2",
+        "education_id": "education-1",
+        "task": "Focus on web development, embedded systems and application management"
+    },
+    {
+        "id": "education-task-3",
+        "education_id": "education-1",
+        "task": "Learned multiple programming languages and frameworks"
+    }
+]

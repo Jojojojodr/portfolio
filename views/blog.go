@@ -9,8 +9,8 @@ import (
 	"github.com/Jojojojodr/portfolio/frontend/blog"
 	"github.com/Jojojojodr/portfolio/frontend/components"
 	"github.com/Jojojojodr/portfolio/database/models"
-	"github.com/gin-gonic/gin"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
 )
@@ -21,7 +21,7 @@ func HandleBlogPostsPage(c *gin.Context) {
 
 func HandleBlogPostPage(c *gin.Context) {
     idStr := c.Query("id")
-	posts, err := controllers.BlogPosts()
+	posts, err := controllers.PublishedBlogPosts()
 	if err != nil {
 		c.String(404, "Post not found")
 		return
@@ -32,9 +32,11 @@ func HandleBlogPostPage(c *gin.Context) {
     if idStr != "" {
         id, err := strconv.Atoi(idStr)
         if err == nil {
-            post, _ = controllers.BlogPostByID(uint(id))
-			htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
-			post.Content = string(htmlContent)
+            post, _ = controllers.PublishedBlogPostByID(uint(id))
+            if post != nil {
+                htmlContent := markdown.ToHTML([]byte(post.Content), nil, html.NewRenderer(html.RendererOptions{}))
+                post.Content = string(htmlContent)
+            }
         }
     }
 
@@ -65,7 +67,7 @@ func HandleBlogPostHTMX(c *gin.Context) {
         return
     }
 
-    post, err := controllers.BlogPostByID(uint(id))
+    post, err := controllers.PublishedBlogPostByID(uint(id))
     if err != nil || post == nil {
         c.Writer.WriteHeader(http.StatusNotFound)
         c.Writer.Write([]byte("Post not found"))

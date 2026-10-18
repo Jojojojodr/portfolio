@@ -1,6 +1,7 @@
 package views
 
 import (
+	"github.com/Jojojojodr/portfolio/controllers"
 	"github.com/Jojojojodr/portfolio/frontend"
 	"github.com/Jojojojodr/portfolio/frontend/auth"
 
@@ -9,7 +10,11 @@ import (
 )
 
 func HandleHomePage(c *gin.Context) {
-    renderTempl(c, 200, frontend.Index(c))
+	portfolio, err := controllers.GetPortfolio()
+	if err != nil {
+		portfolio = nil
+	}
+	renderTempl(c, 200, frontend.Index(c, portfolio))
 }
 
 func HandleLoginPage(c *gin.Context) {

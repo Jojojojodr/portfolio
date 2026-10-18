@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Jojojojodr/portfolio"
@@ -70,19 +71,39 @@ func HandleGetUsers(c *gin.Context) {
 }
 
 func HandleCreateUser(c *gin.Context) {
-	var user models.User
-	if err := c.ShouldBindJSON(&user); err != nil {
+	var input struct {
+		Name     string `json:"name" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=6"`
+		IsAdmin  bool   `json:"is_admin"`
+	}
+	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// hash the password before saving
-	hashedPassword := portfolio.Encrypt(user.Password)
-	user.Password = hashedPassword
+	// Only a logged-in admin may create another admin
+	if input.IsAdmin {
+		if u := currentUser(c); u == nil || !u.IsAdmin {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Admin privileges required to create an admin user"})
+			return
+		}
+	}
 
-	result := portfolio.Data.GetDB().Create(&user)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+	email := strings.TrimSpace(input.Email)
+	if _, err := GetUserByEmail(email); err == nil {
+		c.JSON(http.StatusConflict, gin.H{"error": "Email already registered"})
+		return
+	}
+
+	user := &models.User{
+		Name:     strings.TrimSpace(input.Name),
+		Email:    email,
+		Password: portfolio.Encrypt(input.Password),
+		IsAdmin:  input.IsAdmin,
+	}
+	if err := CreateUser(user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
 
@@ -91,8 +112,8 @@ func HandleCreateUser(c *gin.Context) {
 
 func HandleAuth(c *gin.Context) {
 	var loginData struct {
-		Name     string `json:"name"`
-		Password string `json:"password"`
+		Name     string `json:"name" binding:"required"`
+		Password string `json:"password" binding:"required"`
 	}
 
 	if err := c.ShouldBindJSON(&loginData); err != nil {
@@ -110,20 +131,10 @@ func HandleAuth(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 		return
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"exp": jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-	})
-
-	secretToken := portfolio.SecretToken
-	tokenString, err := token.SignedString([]byte(secretToken))
-	if err != nil {
+	if err := setAuthCookie(c, user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create token"})
 		return
 	}
-
-	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("Authorization", tokenString, 3600*24, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Login successful", "user": user})
 }
@@ -132,4 +143,20 @@ func HandleValidate(c *gin.Context) {
 	user, _ := c.Get("user")
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
+}
+
+func setAuthCookie(c *gin.Context, user *models.User) error {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,
+		"exp": jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+	})
+
+	tokenString, err := token.SignedString([]byte(portfolio.SecretToken))
+	if err != nil {
+		return err
+	}
+
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("Authorization", tokenString, 3600*24, "/", "", false, true)
+	return nil
 }

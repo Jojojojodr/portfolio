@@ -1,0 +1,182 @@
+[
+    {
+        "id": "skill-go",
+        "portfolio_id": "portfolio-1",
+        "skill": "Go",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-templ",
+        "portfolio_id": "portfolio-1",
+        "skill": "Templ",
+        "language": false,
+        "framework": true,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-html",
+        "portfolio_id": "portfolio-1",
+        "skill": "HTML",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-css",
+        "portfolio_id": "portfolio-1",
+        "skill": "CSS",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-javascript",
+        "portfolio_id": "portfolio-1",
+        "skill": "JavaScript",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-vue",
+        "portfolio_id": "portfolio-1",
+        "skill": "Vue",
+        "language": false,
+        "framework": true,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-cpp",
+        "portfolio_id": "portfolio-1",
+        "skill": "C++",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-csharp",
+        "portfolio_id": "portfolio-1",
+        "skill": "C#",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-net",
+        "portfolio_id": "portfolio-1",
+        "skill": ".NET 4.8+",
+        "language": false,
+        "framework": true,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-php",
+        "portfolio_id": "portfolio-1",
+        "skill": "PHP",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-laravel",
+        "portfolio_id": "portfolio-1",
+        "skill": "Laravel",
+        "language": false,
+        "framework": true,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-symfony",
+        "portfolio_id": "portfolio-1",
+        "skill": "Symfony",
+        "language": false,
+        "framework": true,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-dart",
+        "portfolio_id": "portfolio-1",
+        "skill": "Dart",
+        "language": true,
+        "framework": false,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-tailwind",
+        "portfolio_id": "portfolio-1",
+        "skill": "Tailwind",
+        "language": false,
+        "framework": true,
+        "platform": false,
+        "tool": false
+    },
+    {
+        "id": "skill-linux",
+        "portfolio_id": "portfolio-1",
+        "skill": "Linux",
+        "language": false,
+        "framework": false,
+        "platform": true,
+        "tool": false
+    },
+    {
+        "id": "skill-windows",
+        "portfolio_id": "portfolio-1",
+        "skill": "Windows",
+        "language": false,
+        "framework": false,
+        "platform": true,
+        "tool": false
+    },
+    {
+        "id": "skill-flutter",
+        "portfolio_id": "portfolio-1",
+        "skill": "Flutter",
+        "language": false,
+        "framework": false,
+        "platform": true,
+        "tool": false
+    },
+    {
+        "id": "skill-git",
+        "portfolio_id": "portfolio-1",
+        "skill": "Git",
+        "language": false,
+        "framework": false,
+        "platform": false,
+        "tool": true
+    },
+    {
+        "id": "skill-winforms",
+        "portfolio_id": "portfolio-1",
+        "skill": "WinForms",
+        "language": false,
+        "framework": false,
+        "platform": false,
+        "tool": true
+    },
+    {
+        "id": "skill-docker",
+        "portfolio_id": "portfolio-1",
+        "skill": "Docker",
+        "language": false,
+        "framework": false,
+        "platform": false,
+        "tool": true
+    }
+]

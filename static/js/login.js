@@ -1,15 +1,21 @@
-const loginOpenBtn = document.getElementById("login-modal-open");
-const loginModal = document.getElementById("login-modal");
+// Delegated listener registered once, so it keeps working when htmx swaps in a new header/modal
+// and this script gets executed again.
+if (!window.loginModalInitialized) {
+  window.loginModalInitialized = true;
 
-loginOpenBtn.addEventListener("click", () => {
-  loginModal.classList.add("show");
-});
+  document.addEventListener("click", (event) => {
+    const loginModal = document.getElementById("login-modal");
+    if (!loginModal) {
+      return;
+    }
 
-document.addEventListener("click", (event) => {
-  if (event.target === loginModal || loginOpenBtn.contains(event.target)) {
-    return;
-  }
-  if (!loginModal.contains(event.target)) {
-    loginModal.classList.remove("show");
-  }
-});
+    if (event.target.closest("#login-modal-open")) {
+      loginModal.classList.add("show");
+      return;
+    }
+
+    if (event.target !== loginModal && !loginModal.contains(event.target)) {
+      loginModal.classList.remove("show");
+    }
+  });
+}

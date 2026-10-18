@@ -44,7 +44,56 @@ func SeedDatabase(db *gorm.DB) error {
 		return fmt.Errorf("failed to seed comment likes: %v", err)
 	}
 
+	if err := seedPortfolios(db, seedDir); err != nil {
+		return err
+	}
+
 	log.Println("Database seeding completed successfully")
+	return nil
+}
+
+func SeedPortfoliosIfEmpty(db *gorm.DB) error {
+	seedDir := "database/seeds"
+
+	if _, err := os.Stat(seedDir); os.IsNotExist(err) {
+		log.Printf("Seeds directory %s does not exist, skipping portfolio seeding", seedDir)
+		return nil
+	}
+
+	var portfolioCount int64
+	if err := db.Model(&models.Portfolio{}).Count(&portfolioCount).Error; err != nil {
+		return fmt.Errorf("failed to check existing portfolios: %v", err)
+	}
+	if portfolioCount > 0 {
+		log.Println("Portfolios already exist, skipping portfolio seeding")
+		return nil
+	}
+
+	log.Println("Seeding portfolio data...")
+	return seedPortfolios(db, seedDir)
+}
+
+func seedPortfolios(db *gorm.DB, seedDir string) error {
+	seeds := []struct {
+		file  string
+		model interface{}
+	}{
+		{filepath.Join(seedDir, "portfolios.json"), &[]models.Portfolio{}},
+		{filepath.Join(seedDir, "skills.json"), &[]models.Skill{}},
+		{filepath.Join(seedDir, "soft_skills.json"), &[]models.SoftSkill{}},
+		{filepath.Join(seedDir, "languages.json"), &[]models.Language{}},
+		{filepath.Join(seedDir, "education.json"), &[]models.Education{}},
+		{filepath.Join(seedDir, "education_tasks.json"), &[]models.EducationTask{}},
+		{filepath.Join(seedDir, "hobbies.json"), &[]models.Hobby{}},
+	}
+
+	for _, seed := range seeds {
+		if err := seedFromJSON(db, seed.file, seed.model); err != nil {
+			return fmt.Errorf("failed to seed %s: %v", seed.file, err)
+		}
+	}
+
+	log.Println("Portfolio seeding completed successfully")
 	return nil
 }
 

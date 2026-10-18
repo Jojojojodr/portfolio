@@ -3,6 +3,7 @@ package portfolio
 import (
 	"fmt"
 	"log"
+	"net/url"
 
 	"github.com/Jojojojodr/portfolio/config"
 	"github.com/Jojojojodr/portfolio/database/models"
@@ -51,6 +52,13 @@ func (d *Database) Connect(dbType string) error {
 		&models.BlogComment{},
 		&models.PostLike{},
 		&models.CommentLike{},
+		&models.Portfolio{},
+		&models.Skill{},
+		&models.SoftSkill{},
+		&models.Language{},
+		&models.Education{},
+		&models.EducationTask{},
+		&models.Hobby{},
 	)
 	if err != nil {
 		log.Fatalf("Failed to auto-migrate database models: %v", err)
@@ -73,21 +81,29 @@ func connectPostgres() (*gorm.DB, error) {
 	sslmode := config.AppConfig.Database.SSLMode
 
 	if host == "" || port == "" || user == "" || password == "" || dbname == "" {
-		return nil, fmt.Errorf("one or more required environment variables for Postgres are missing, required: DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME")
+		return nil, fmt.Errorf("One or more required PostgreSQL config settings are not set")
 	}
 	if sslmode == "" {
 		sslmode = "disable"
 	}
 
-	dns := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, password, host, port, dbname, sslmode)
+	dsn := url.URL{
+		Scheme: "postgres",
+		User:   url.UserPassword(user, password),
+		Host:   host + ":" + port,
+		Path:   dbname,
+	}
+	query := dsn.Query()
+	query.Set("sslmode", sslmode)
+	dsn.RawQuery = query.Encode()
 
-	return gorm.Open(postgres.Open(dns), &gorm.Config{})
+	return gorm.Open(postgres.Open(dsn.String()), &gorm.Config{})
 }
 
 func connectSQLite() (*gorm.DB, error) {
 	dbPath := config.AppConfig.Database.Path
 	if dbPath == "" {
-		return nil, fmt.Errorf("DB_PATH environment variable is not set for SQLite")
+		return nil, fmt.Errorf("Database path is not set for SQLite")
 	}
 
 	return gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

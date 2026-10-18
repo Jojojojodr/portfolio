@@ -37,6 +37,15 @@ func BlogPostByID(id uint) (*models.BlogPost, error) {
     return &post, nil
 }
 
+func PublishedBlogPostByID(id uint) (*models.BlogPost, error) {
+    var post models.BlogPost
+    err := portfolio.Data.GetDB().Preload("User").Where("is_published = true").First(&post, id).Error
+    if err != nil {
+        return nil, err
+    }
+    return &post, nil
+}
+
 func CommentsByPostID(postID uint) ([]models.BlogComment, error) {
     var comments []models.BlogComment
     err := portfolio.Data.GetDB().Where("blog_post_id = ?", postID).Find(&comments).Error
@@ -64,7 +73,7 @@ func GetBlogPostByID(c *gin.Context) {
         return
     }
 
-    post, err := BlogPostByID(idUint)
+    post, err := PublishedBlogPostByID(idUint)
     if err != nil {
         c.JSON(404, gin.H{"error": "Blog post not found"})
         return

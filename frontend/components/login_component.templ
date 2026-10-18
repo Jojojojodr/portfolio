@@ -1,10 +1,13 @@
 package components
 
 import (
+    "github.com/Jojojojodr/portfolio"
     "github.com/Jojojojodr/portfolio/database/models"
+
+    "github.com/gin-gonic/gin"
 )
 
-templ LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) {
+templ LoginComponent(c *gin.Context, isAuthenticated bool, user *models.User, isAdmin bool) {
     <div id="login-modal" class="login-modal">
         <div class="darker-bg w-64 p-4 text-white">
             <div class="flex justify-between items-center mb-4">
@@ -17,7 +20,7 @@ templ LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) {
                 </div>
             } else {
                 <div class="flex flex-col gap-4">
-                    <a href="/profile" class="hover-bg flex items-center gap-2 px-4 py-2 rounded-md transition">
+                    <a href={ templ.SafeURL(portfolio.PublicURL(c, "/profile")) } class="hover-bg flex items-center gap-2 px-4 py-2 rounded-md transition">
                         <span class="text-white">
                             Hello,
                             if user != nil {
@@ -29,7 +32,7 @@ templ LoginComponent(isAuthenticated bool, user *models.User, isAdmin bool) {
                     </a>
                     @ButtonAction("Logout", "/handle/auth/logout")
                     if isAdmin {
-                        @ButtonPrimary("Admin Dashboard", "/admin/dashboard")
+                        @ButtonPrimary("Admin Dashboard", portfolio.AdminURL(c, "/"))
                     }
                 </div>
             }

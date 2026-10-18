@@ -5,36 +5,38 @@ services:
       dockerfile: dockerfile
     container_name: portfolio-app
     ports:
-      - "8080:${PORT}"
+      - "8080:8080"
+      - "8081:8081"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=${DB_PORT}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_SSLMODE=${DB_SSLMODE}
-      - GIN_MODE=${GIN_MODE}
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: ${DB_USER:-your_db_username}
+      DB_PASSWORD: ${DB_PASSWORD:-your_db_password}
+      DB_NAME: ${DB_NAME:-your_db_name}
+      DB_SSLMODE: disable
+      GIN_MODE: ${GIN_MODE:-release}
+      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
     networks:
       - portfolio-network
-    command: ["./main", "-d", "postgres", "-p", "${PORT}", "-t", "${SECRET_TOKEN}"]
-  
+    command: ["./main", "-d", "postgres"]
+
   postgres:
     image: postgres:latest
     container_name: portfolio-postgres
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      POSTGRES_USER: ${DB_USER:-your_db_username}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-your_db_password}
+      POSTGRES_DB: ${DB_NAME:-your_db_name}
     ports:
-      - "${DB_PORT}:5432"
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5

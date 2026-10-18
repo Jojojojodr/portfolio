@@ -1,0 +1,10 @@
+[
+    {
+        "id": "education-1",
+        "portfolio_id": "portfolio-1",
+        "education": "Software Development",
+        "school": "Curio",
+        "start": "September 2019",
+        "end": "July 2025"
+    }
+]

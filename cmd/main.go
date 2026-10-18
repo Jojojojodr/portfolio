@@ -56,6 +56,10 @@ func main() {
 		log.Println("Database already contains data, skipping seeding")
 	}
 
+	if err := seed.SeedPortfoliosIfEmpty(portfolio.Data.GetDB()); err != nil {
+		log.Fatalf("Failed to seed portfolio data: %v", err)
+	}
+
 	selectedPort := *port
 	if selectedPort == "" {
 		selectedPort = config.AppConfig.Server.Port
@@ -68,10 +72,15 @@ func main() {
 
 	log.Printf("Starting server on port %s with database type %s", selectedPort, selectedDBType)
 	server := portfolio.NewServer(selectedPort)
+	admin := portfolio.NewServer(config.AppConfig.Server.AdminPort)
 
 	routers.FrontendRouter(server.Engine)
 	routers.V1Router(server.Engine)
 	routers.HandleRouter(server.Engine)
+	routers.AdminFrontendRouter(admin.Engine)
+	routers.AdminHandleRouter(admin.Engine)
+	routers.AdminV1Router(admin.Engine)
 
+	go admin.Start()
 	server.Start()
 }

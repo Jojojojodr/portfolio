@@ -1,0 +1,30 @@
+[
+    {
+        "id": "hobby-1",
+        "portfolio_id": "portfolio-1",
+        "emoji": "🥋",
+        "hobby": "Karate",
+        "discription": "Martial arts training and discipline"
+    },
+    {
+        "id": "hobby-2",
+        "portfolio_id": "portfolio-1",
+        "emoji": "⚔️",
+        "hobby": "Iai Jutsu",
+        "discription": "Traditional Japanese sword art"
+    },
+    {
+        "id": "hobby-3",
+        "portfolio_id": "portfolio-1",
+        "emoji": "🎨",
+        "hobby": "Drawing",
+        "discription": "Traditional art"
+    },
+    {
+        "id": "hobby-4",
+        "portfolio_id": "portfolio-1",
+        "emoji": "🎮",
+        "hobby": "Gaming",
+        "discription": "Multiplayer games"
+    }
+]
