@@ -4,39 +4,37 @@ services:
       context: .
       dockerfile: dockerfile
     container_name: portfolio-app
+    # Must match server.port / server.admin_port in the config file
     ports:
       - "8080:8080"
       - "8081:8081"
-    environment:
-      DB_HOST: postgres
-      DB_PORT: "5432"
-      DB_USER: ${DB_USER:-your_db_username}
-      DB_PASSWORD: ${DB_PASSWORD:-your_db_password}
-      DB_NAME: ${DB_NAME:-your_db_name}
-      DB_SSLMODE: disable
-      GIN_MODE: ${GIN_MODE:-release}
-      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
     depends_on:
       postgres:
         condition: service_healthy
+        required: false
+    volumes:
+      # Config file from the host, database.type in it selects sqlite or postgres
+      - ./config.yaml:/app/config.yaml:ro
+      # SQLite database file, used when database.type is "sqlite" (path: "./data/sqlite.db")
+      - ./data/:/app/data/
     restart: unless-stopped
     networks:
       - portfolio-network
-    command: ["./main", "-d", "postgres"]
 
   postgres:
     image: postgres:latest
     container_name: portfolio-postgres
+    profiles: ["postgres"]
     environment:
-      POSTGRES_USER: ${DB_USER:-your_db_username}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-your_db_password}
-      POSTGRES_DB: ${DB_NAME:-your_db_name}
+      POSTGRES_USER: your_db_username
+      POSTGRES_PASSWORD: your_db_password
+      POSTGRES_DB: your_db_name
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U your_db_username -d your_db_name"]
       interval: 10s
       timeout: 5s
       retries: 5

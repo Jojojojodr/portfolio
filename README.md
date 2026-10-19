@@ -52,6 +52,15 @@ On first run the application:
 1. Connects to the database and runs auto-migrations
 2. Seeds an admin and a regular user if the database is empty
 
+### Docker
+
+`docker compose up -d` builds the app and starts it together with a PostgreSQL container. No `.env` file is needed: the app is configured entirely by `config.yaml`, which is mounted into the container as a volume. `database.type` in that file selects the database:
+
+- **sqlite**: keep `path: "./data/sqlite.db"`. The database file is stored in `./data` on the host, which is mounted at `/app/data`.
+- **postgres**: set `database.host: "postgres"` (the compose service name, not `localhost`). Keep `username` / `password` / `name` matching the `POSTGRES_*` values in `docker-compose.yaml` (`your_db_username` / `your_db_password` / `your_db_name` by default).
+
+The published ports `8080` / `8081` must match `server.port` / `server.admin_port` in the config.
+
 ### Default Credentials
 
 | Role  | Email              | Password   |
