@@ -8,6 +8,8 @@ import (
 	"github.com/Jojojojodr/portfolio/database/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func GetPortfolio() (*models.Portfolio, error) {
@@ -143,4 +145,73 @@ func GetHobbiesAPI(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, hobbies)
+}
+
+func GetPortfolioInfo() (*models.Portfolio, error) {
+	var p models.Portfolio
+	if err := portfolio.Data.GetDB().First(&p).Error; err != nil {
+		return nil, err
+	}
+	return &p, nil
+}
+
+func SavePortfolioInfo(p *models.Portfolio) error {
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(p).Error
+}
+
+func SaveSkill(s *models.Skill) error {
+	ensureID(&s.ID, "skill")
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(s).Error
+}
+
+func SaveSoftSkill(s *models.SoftSkill) error {
+	ensureID(&s.ID, "soft-skill")
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(s).Error
+}
+
+func SaveLanguage(l *models.Language) error {
+	ensureID(&l.ID, "language")
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(l).Error
+}
+
+func SaveEducation(e *models.Education) error {
+	ensureID(&e.ID, "education")
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(e).Error
+}
+
+func SaveEducationTask(t *models.EducationTask) error {
+	ensureID(&t.ID, "education-task")
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(t).Error
+}
+
+func SaveHobby(h *models.Hobby) error {
+	ensureID(&h.ID, "hobby")
+	return portfolio.Data.GetDB().Omit(clause.Associations).Save(h).Error
+}
+
+// DeletePortfolioItem deletes a skill, soft skill, language or hobby of the given portfolio.
+func DeletePortfolioItem[T any](portfolioID, id string) error {
+	return portfolio.Data.GetDB().Where("id = ? AND portfolio_id = ?", id, portfolioID).Delete(new(T)).Error
+}
+
+func GetEducationByID(portfolioID, id string) (*models.Education, error) {
+	var e models.Education
+	if err := portfolio.Data.GetDB().Where("id = ? AND portfolio_id = ?", id, portfolioID).First(&e).Error; err != nil {
+		return nil, err
+	}
+	return &e, nil
+}
+
+func DeleteEducation(portfolioID, id string) error {
+	return portfolio.Data.GetDB().Transaction(func(tx *gorm.DB) error {
+		owned := tx.Model(&models.Education{}).Select("id").Where("id = ? AND portfolio_id = ?", id, portfolioID)
+		if err := tx.Where("education_id IN (?)", owned).Delete(&models.EducationTask{}).Error; err != nil {
+			return err
+		}
+		return tx.Where("id = ? AND portfolio_id = ?", id, portfolioID).Delete(&models.Education{}).Error
+	})
+}
+
+func DeleteEducationTask(educationID, id string) error {
+	return portfolio.Data.GetDB().Where("id = ? AND education_id = ?", id, educationID).Delete(&models.EducationTask{}).Error
 }

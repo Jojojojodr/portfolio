@@ -39,6 +39,10 @@ func AdminFrontendRouter(svr *gin.Engine) *gin.Engine {
 	admin.GET("/posts", views.HandleAdminPostsPage)
 	admin.GET("/post/create", views.HandleAdminCreateBlogPostPage)
 	admin.GET("/post/edit", views.HandleAdminEditBlogPostPage)
+	admin.GET("/portfolio", views.HandleAdminPortfolioPage)
+	admin.GET("/portfolio/skills", views.HandleAdminPortfolioSkillsPage)
+	admin.GET("/portfolio/education", views.HandleAdminPortfolioEducationPage)
+	admin.GET("/portfolio/hobbies", views.HandleAdminPortfolioHobbiesPage)
 	admin.GET("/profile/:id", middleware.AuthRequired(), middleware.AdminRequired(), views.ProfileHandler)
 
 	svr.NoRoute(views.HandleNotFoundPage)

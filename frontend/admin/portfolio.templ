@@ -1,0 +1,247 @@
+package admin
+
+import (
+	"github.com/Jojojojodr/portfolio/database/models"
+	"github.com/Jojojojodr/portfolio/frontend"
+
+	"github.com/gin-gonic/gin"
+)
+
+const inputClass = "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+
+const portfolioHandle = "/handle/admin/portfolio"
+
+templ PortfolioProfilePage(c *gin.Context, p *models.Portfolio, errorMsg string, successMsg string) {
+	if p == nil {
+		@noPortfolio(c)
+	} else {
+		@portfolioLayout(c, "Edit Portfolio", "/portfolio", errorMsg, successMsg) {
+			<form method="POST" action={ templ.SafeURL(portfolioHandle + "/profile") } class="darker-bg rounded-lg p-8 shadow-lg">
+				<h2 class="text-2xl font-bold text-white mb-6">Profile</h2>
+				<div class="grid md:grid-cols-2 gap-6">
+					@profileField("Name", "name", "text", p.Name)
+					@profileField("Function", "function", "text", p.Function)
+					@profileField("Place", "place", "text", p.Place)
+					@profileField("Email", "email", "email", p.Email)
+					@profileField("GitHub URL", "github", "url", p.Github)
+					@profileField("LinkedIn URL", "linkedin", "url", p.LinkedIn)
+					@profileField("Birthday", "birthday", "text", p.Birthday)
+					@profileField("Image path", "img_path", "text", p.ImgPath)
+				</div>
+				<div class="flex justify-end pt-6">
+					@saveButton("Save Profile")
+				</div>
+			</form>
+			<form id="about" method="POST" action={ templ.SafeURL(portfolioHandle + "/about") } class="darker-bg rounded-lg p-8 shadow-lg">
+				<h2 class="text-2xl font-bold text-white mb-6">About Me</h2>
+				<textarea name="about" rows="10" class={ inputClass } required>{ p.About }</textarea>
+				<div class="flex justify-end pt-6">
+					@saveButton("Save About Me")
+				</div>
+			</form>
+		}
+	}
+}
+
+templ PortfolioSkillsPage(c *gin.Context, p *models.Portfolio, errorMsg string, successMsg string) {
+	if p == nil {
+		@noPortfolio(c)
+	} else {
+		@portfolioLayout(c, "Edit Skills", "/portfolio/skills", errorMsg, successMsg) {
+			@portfolioSection("skills", "Skills", "Programming languages, frameworks, platforms and tools. Tick every category a skill belongs to.") {
+				for _, skill := range p.Skills {
+					@skillRow(skill)
+				}
+				@skillRow(models.Skill{})
+			}
+			@portfolioSection("soft-skills", "Soft Skills", "") {
+				for _, softSkill := range p.SoftSkills {
+					@softSkillRow(softSkill)
+				}
+				@softSkillRow(models.SoftSkill{})
+			}
+			@portfolioSection("languages", "Languages", "") {
+				for _, language := range p.Languages {
+					@languageRow(language)
+				}
+				@languageRow(models.Language{})
+			}
+		}
+	}
+}
+
+templ PortfolioEducationPage(c *gin.Context, p *models.Portfolio, errorMsg string, successMsg string) {
+	if p == nil {
+		@noPortfolio(c)
+	} else {
+		@portfolioLayout(c, "Edit Education", "/portfolio/education", errorMsg, successMsg) {
+			@portfolioSection("education", "Education", "Save a new education first, then add its tasks.") {
+				for _, education := range p.Education {
+					<div id={ education.ID } class="space-y-3">
+						@educationRow(education)
+						<div class="border-l-4 border-blue-500 ml-3 pl-4 space-y-2">
+							<p class="text-sm font-medium text-gray-300">Tasks</p>
+							for _, task := range education.Tasks {
+								@taskRow(education.ID, task)
+							}
+							@taskRow(education.ID, models.EducationTask{})
+						</div>
+					</div>
+				}
+				@educationRow(models.Education{})
+			}
+		}
+	}
+}
+
+templ PortfolioHobbiesPage(c *gin.Context, p *models.Portfolio, errorMsg string, successMsg string) {
+	if p == nil {
+		@noPortfolio(c)
+	} else {
+		@portfolioLayout(c, "Edit Hobbies", "/portfolio/hobbies", errorMsg, successMsg) {
+			@portfolioSection("hobbies", "Hobbies & Side Activities", "") {
+				for _, hobby := range p.Hobbies {
+					@hobbyRow(hobby)
+				}
+				@hobbyRow(models.Hobby{})
+			}
+		}
+	}
+}
+
+templ portfolioLayout(c *gin.Context, title string, active string, errorMsg string, successMsg string) {
+	@frontend.Layout(c, title) {
+		<div class="max-w-4xl mx-auto mt-12 px-4 pb-16">
+			<div class="flex flex-wrap gap-2 mb-8">
+				@portfolioNavLink("/portfolio", "Profile & About", active)
+				@portfolioNavLink("/portfolio/skills", "Skills & Languages", active)
+				@portfolioNavLink("/portfolio/education", "Education", active)
+				@portfolioNavLink("/portfolio/hobbies", "Hobbies & Side Activities", active)
+			</div>
+			if errorMsg != "" {
+				<div class="mb-6 rounded-md border border-red-500 px-4 py-3 text-sm text-red-400">{ errorMsg }</div>
+			}
+			if successMsg != "" {
+				<div class="mb-6 rounded-md border border-green-500 px-4 py-3 text-sm text-green-400">{ successMsg }</div>
+			}
+			<div class="space-y-8">
+				{ children... }
+			</div>
+		</div>
+	}
+}
+
+templ portfolioNavLink(href string, label string, active string) {
+	if href == active {
+		<a href={ templ.SafeURL(href) } class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold">{ label }</a>
+	} else {
+		<a href={ templ.SafeURL(href) } class="lighter-bg hover-bg text-white px-4 py-2 rounded text-sm font-semibold transition">{ label }</a>
+	}
+}
+
+templ portfolioSection(id string, title string, description string) {
+	<section id={ id } class="darker-bg rounded-lg p-8 shadow-lg">
+		<h2 class="text-2xl font-bold text-white mb-2">{ title }</h2>
+		if description != "" {
+			<p class="text-sm text-gray-400 mb-6">{ description }</p>
+		}
+		<div class="space-y-3 mt-4">
+			{ children... }
+		</div>
+	</section>
+}
+
+// itemForm is one editable item. Items with an id get Save and Delete buttons, an empty one is the add form.
+templ itemForm(action string, id string) {
+	<form method="POST" action={ templ.SafeURL(action + "/save") } class="lighter-bg rounded-md p-3 flex flex-col md:flex-row md:items-center gap-3">
+		<input type="hidden" name="id" value={ id }/>
+		{ children... }
+		<div class="flex gap-2 shrink-0">
+			if id == "" {
+				@saveButton("Add")
+			} else {
+				@saveButton("Save")
+				<button type="submit" formaction={ templ.SafeURL(action + "/delete") } formnovalidate class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm transition">
+					Delete
+				</button>
+			}
+		</div>
+	</form>
+}
+
+templ saveButton(label string) {
+	<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition">{ label }</button>
+}
+
+templ noPortfolio(c *gin.Context) {
+	@frontend.Layout(c, "Portfolio") {
+		<div class="max-w-md mx-auto mt-12 darker-bg rounded-lg p-8 shadow-lg text-gray-300">
+			No portfolio found. Seed the database first.
+		</div>
+	}
+}
+
+templ profileField(label string, name string, inputType string, value string) {
+	<div>
+		<label for={ "profile-" + name } class="block text-sm font-medium text-gray-300 mb-2">{ label }</label>
+		<input type={ inputType } id={ "profile-" + name } name={ name } value={ value } class={ inputClass }/>
+	</div>
+}
+
+templ skillRow(skill models.Skill) {
+	@itemForm(portfolioHandle+"/skill", skill.ID) {
+		<input type="text" name="skill" value={ skill.Skill } placeholder="Skill" class={ inputClass } required/>
+		<div class="flex flex-wrap gap-4 text-sm text-gray-300 shrink-0">
+			@skillCategory("language", "Language", skill.Language)
+			@skillCategory("framework", "Framework", skill.Framework)
+			@skillCategory("platform", "Platform", skill.Platform)
+			@skillCategory("tool", "Tool", skill.Tool)
+		</div>
+	}
+}
+
+templ skillCategory(name string, label string, checked bool) {
+	<label class="inline-flex items-center gap-2">
+		<input type="checkbox" name={ name } checked?={ checked } class="w-4 h-4 accent-blue-600"/>
+		{ label }
+	</label>
+}
+
+templ softSkillRow(softSkill models.SoftSkill) {
+	@itemForm(portfolioHandle+"/soft-skill", softSkill.ID) {
+		<input type="text" name="skill" value={ softSkill.Skill } placeholder="Soft skill" class={ inputClass } required/>
+	}
+}
+
+templ languageRow(language models.Language) {
+	@itemForm(portfolioHandle+"/language", language.ID) {
+		<input type="text" name="language" value={ language.Language } placeholder="Language" class={ inputClass } required/>
+		<input type="text" name="proficiency" value={ language.Proficiency } placeholder="Proficiency" class={ inputClass }/>
+	}
+}
+
+templ educationRow(education models.Education) {
+	@itemForm(portfolioHandle+"/education", education.ID) {
+		<div class="grid md:grid-cols-2 gap-3 w-full">
+			<input type="text" name="education" value={ education.Education } placeholder="Education" class={ inputClass } required/>
+			<input type="text" name="school" value={ education.School } placeholder="School" class={ inputClass } required/>
+			<input type="text" name="start" value={ education.Start } placeholder="Start" class={ inputClass }/>
+			<input type="text" name="end" value={ education.End } placeholder="End" class={ inputClass }/>
+		</div>
+	}
+}
+
+templ taskRow(educationID string, task models.EducationTask) {
+	@itemForm(portfolioHandle+"/education/task", task.ID) {
+		<input type="hidden" name="education_id" value={ educationID }/>
+		<input type="text" name="task" value={ task.Task } placeholder="Task" class={ inputClass } required/>
+	}
+}
+
+templ hobbyRow(hobby models.Hobby) {
+	@itemForm(portfolioHandle+"/hobby", hobby.ID) {
+		<input type="text" name="emoji" value={ hobby.Emoji } placeholder="🙂" class={ inputClass + " md:w-20 text-center" }/>
+		<input type="text" name="hobby" value={ hobby.Hobby } placeholder="Hobby" class={ inputClass } required/>
+		<input type="text" name="discription" value={ hobby.Discription } placeholder="Description" class={ inputClass }/>
+	}
+}
