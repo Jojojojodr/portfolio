@@ -1,9 +1,11 @@
 package views
 
 import (
+	"errors"
 	"net/http"
 	"net/mail"
 	"net/url"
+	"path/filepath"
 	"strings"
 
 	"github.com/Jojojojodr/portfolio/controllers"
@@ -27,6 +29,61 @@ func HandleAdminPortfolioEducationPage(c *gin.Context) {
 
 func HandleAdminPortfolioHobbiesPage(c *gin.Context) {
 	renderTempl(c, 200, admin.PortfolioHobbiesPage(c, adminPortfolio(), c.Query("error"), c.Query("success")))
+}
+
+func HandleAdminPortfolioImagesPage(c *gin.Context) {
+	images, err := controllers.ListImages()
+	errorMsg := c.Query("error")
+	if err != nil && errorMsg == "" {
+		errorMsg = "Could not read the image folder"
+	}
+	renderTempl(c, 200, admin.PortfolioImagesPage(c, images, errorMsg, c.Query("success")))
+}
+
+func HandleAdminUploadImage(c *gin.Context) {
+	const page = "/portfolio/images"
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, controllers.MaxImageSize+(1<<20))
+
+	header, err := c.FormFile("image")
+	if err != nil {
+		var tooLarge *http.MaxBytesError
+		if errors.As(err, &tooLarge) {
+			redirectPortfolio(c, page, "error", "Image is too large, the maximum is 10 MB")
+			return
+		}
+		redirectPortfolio(c, page, "error", "Choose an image to upload")
+		return
+	}
+	if header.Size > controllers.MaxImageSize {
+		redirectPortfolio(c, page, "error", "Image is too large, the maximum is 10 MB")
+		return
+	}
+
+	// An optional custom name keeps the extension of the uploaded file when it has none of its own.
+	name := strings.TrimSpace(c.PostForm("name"))
+	if name == "" {
+		name = header.Filename
+	} else if filepath.Ext(name) == "" {
+		name += filepath.Ext(header.Filename)
+	}
+
+	file, err := header.Open()
+	if err != nil {
+		redirectPortfolio(c, page, "error", "Failed to read the uploaded image")
+		return
+	}
+	defer file.Close()
+
+	path, err := controllers.SaveImage(name, file)
+	switch {
+	case errors.Is(err, controllers.ErrImageType), errors.Is(err, controllers.ErrImageExists), errors.Is(err, controllers.ErrImageName):
+		redirectPortfolio(c, page, "error", "Upload failed: "+err.Error())
+		return
+	case err != nil:
+		redirectPortfolio(c, page, "error", "Failed to save the image")
+		return
+	}
+	redirectPortfolio(c, page, "success", "Image uploaded to "+path)
 }
 
 func HandleAdminSavePortfolioProfile(c *gin.Context) {

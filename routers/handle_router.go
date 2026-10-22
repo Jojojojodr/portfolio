@@ -62,6 +62,7 @@ func AdminHandleRouter(svr *gin.Engine) *gin.Engine {
 	portfolio.POST("/education/task/delete", views.HandleAdminDeleteEducationTask)
 	portfolio.POST("/hobby/save", views.HandleAdminSaveHobby)
 	portfolio.POST("/hobby/delete", views.HandleAdminDeleteHobby)
+	portfolio.POST("/image/upload", views.HandleAdminUploadImage)
 
 	return svr
 }
