@@ -59,6 +59,8 @@ On first run the application:
 - **sqlite**: keep `path: "./data/sqlite.db"`. The database file is stored in `./data` on the host, which is mounted at `/app/data`.
 - **postgres**: set `database.host: "postgres"` (the compose service name, not `localhost`). Keep `username` / `password` / `name` matching the `POSTGRES_*` values in `docker-compose.yaml` (`your_db_username` / `your_db_password` / `your_db_name` by default).
 
+Images uploaded in the admin panel are stored in `./static/img` on the host, which is mounted at `/app/static/img`, so they survive rebuilds. If that folder is empty when the container starts, the default images from the image are copied into it.
+
 The published ports `8080` / `8081` must match `server.port` / `server.admin_port` in the config.
 
 ### Default Credentials
