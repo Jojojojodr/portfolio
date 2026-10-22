@@ -1,17 +1,20 @@
 server:
-  host: "localhost"
+  host: localhost
   port: 8080
   admin_port: 8081
-  jwt_secret: "your_jwt_secret_key"
+  jwt_secret: your_jwt_secret_key
+
 database:
-  type: "sqlite"
-  path: "./data/sqlite.db"
-  host: "localhost"
+  type: sqlite
+  path: ./data/sqlite.db
+  host: postgres
   port: 5432
-  username: "your_db_username"
-  password: "your_db_password"
-  name: "your_db_name"
-  ssl_mode: "disable"
+  username: your_db_username
+  password: your_db_password
+  name: your_db_name
+  ssl_mode: disable
+
 gin:
-  mode: "debug"
-  trusted_proxies: ["127.0.0.1"] 
+  mode: debug
+  trusted_proxies: 
+    - 127.0.0.1
