@@ -23,6 +23,7 @@ Images are published for `linux/amd64` and `linux/arm64`.
 | `8081`              | Admin panel (`server.admin_port`)                                   |
 | `/app/config.yaml`  | Configuration file, **required**                                    |
 | `/app/data`         | SQLite database directory, only needed when `database.type: sqlite` |
+| `/app/static/img`   | Images uploaded in the admin panel, filled with defaults when empty |
 
 ## Configuration
 
@@ -30,22 +31,23 @@ The container is configured entirely through a `config.yaml` file that you mount
 
 ```yaml
 server:
-  host: "localhost"
+  host: localhost
   port: 8080
   admin_port: 8081
-  jwt_secret: "change_me_to_a_long_random_string"
+  jwt_secret: change_me_to_a_long_random_string
 database:
-  type: "sqlite"              # "sqlite" or "postgres"
-  path: "./data/sqlite.db"    # sqlite only, keep it inside ./data so it lands in the volume
-  host: "postgres"            # postgres only, the hostname of the postgres container
+  type: sqlite              # "sqlite" or "postgres"
+  path: ./data/sqlite.db    # sqlite only, keep it inside ./data so it lands in the volume
+  host: postgres            # postgres only, the hostname of the postgres container
   port: 5432
-  username: "portfolio"
-  password: "change_me"
-  name: "portfolio"
-  ssl_mode: "disable"
+  username: portfolio
+  password: change_me
+  name: portfolio
+  ssl_mode: disable
 gin:
-  mode: "release"
-  trusted_proxies: ["127.0.0.1"]
+  mode: release
+  trusted_proxies:
+    - 127.0.0.1
 ```
 
 - `jwt_secret` must be set to a real secret.
@@ -61,12 +63,13 @@ docker run -d \
   --name portfolio \
   -p 8080:8080 -p 8081:8081 \
   -v "$(pwd)/config.yaml:/app/config.yaml:ro" \
+  -v "$(pwd)/static/img:/app/static/img" \
   -v portfolio_data:/app/data \
   --restart unless-stopped \
   jordyderon/portfolio:latest
 ```
 
-The site is available at `http://localhost:8080` and the admin panel at `http://localhost:8081`. The database file is stored in the `portfolio_data` volume.
+The site is available at `http://localhost:8080` and the admin panel at `http://localhost:8081`. The database file is stored in the `portfolio_data` volume and uploaded images in `./static/img` on the host.
 
 ### PostgreSQL
 
@@ -90,6 +93,7 @@ docker run -d \
   --network portfolio \
   -p 8080:8080 -p 8081:8081 \
   -v "$(pwd)/config.yaml:/app/config.yaml:ro" \
+  -v "$(pwd)/static/img:/app/static/img" \
   --restart unless-stopped \
   jordyderon/portfolio:latest
 ```
@@ -110,8 +114,12 @@ services:
       - "8081:8081"
     volumes:
       - ./config.yaml:/app/config.yaml:ro
-      - ./data:/app/data
+      - ./static/img:/app/static/img
+      - portfolio_data:/app/data
     restart: unless-stopped
+
+volumes:
+  portfolio_data:
 ```
 
 ### PostgreSQL
@@ -126,6 +134,7 @@ services:
       - "8081:8081"
     volumes:
       - ./config.yaml:/app/config.yaml:ro
+      - ./static/img:/app/static/img
     depends_on:
       postgres:
         condition: service_healthy
