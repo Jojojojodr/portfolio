@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  air:
+    cmds:
+      - air -c .air_{{ OS }}.toml
+    silent: true

@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  up:
+    cmds:
+      - echo "Running docker compose up"
+      - docker compose --profile postgres up -d
+    silent: true
+
+  down:
+    cmds:
+      - echo "Running docker compose down"
+      - docker compose --profile postgres down
+    silent: true
+
+  build:
+    cmds:
+      - echo "Running docker compose up --build"
+      - docker compose --profile postgres up -d --build
+    silent: true

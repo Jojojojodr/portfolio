@@ -1,0 +1,18 @@
+version: '3'
+
+vars:
+  input: ./static/css/input.css
+  output: ./static/css/style.css
+
+tasks:
+  watch-css:
+    cmds:
+      - echo "Watching CSS changes"
+      - npx tailwindcss -i {{ .input }} -o {{ .output }} --watch
+    silent: true
+
+  build-css:
+    cmds:
+      - echo "Building CSS"
+      - npx tailwindcss -i {{ .input }} -o {{ .output }} --minify
+    silent: true

@@ -1,37 +1,40 @@
 version: '3'
 
-dotenv:
-  - .env
-
 includes:
   os_specific: ./tasks/taskfile_{{ OS }}.yaml
-  tasks: ./tasks/tasks.yaml
+  css: ./tasks/css.yaml
+  dev: ./tasks/dev.yaml
+  docker: ./tasks/docker.yaml
 
 vars:
-  GO_RUN_PATH: ./cmd/main.go
+  BIN: ./bin/
+  TMP: ./tmp/
+  GO_PATH: ./cmd/main.go
 
 tasks:
   default:
     cmds:
       - echo "Running the application"
+      - task: css:build-css
       - templ generate
-      - go run {{ .GO_RUN_PATH }}
+      - go run {{ .GO_PATH }}
     silent: true
-  
+
   serve:
     deps:
-      - task: tasks:watch-css
-      - task: tasks:air
+      - task: css:watch-css
+      - task: dev:air
     silent: true
 
   build:
     cmds:
       - templ generate
-      - task: tasks:build-css
-      - go build -o {{ .EXE_PATH }} {{ .GO_RUN_PATH }}
-      - cp -r ./static ./bin/static
-      - cp -r ./database/seeds ./bin/database/seeds
-      - cp ./config.example.yaml ./bin/config.yaml
+      - task: css:build-css
+      - go build -o {{ .BIN }}{{ .EXECUTABLE }} {{ .GO_PATH }}
+      - mkdir -p {{ .BIN }}database
+      - '[ -e {{ .BIN }}static ] || cp -r ./static {{ .BIN }}static'
+      - '[ -e {{ .BIN }}database/seeds ] || cp -r ./database/seeds {{ .BIN }}database/seeds'
+      - '[ -e {{ .BIN }}config.yaml ] || cp ./config.example.yaml {{ .BIN }}config.yaml'
       - echo "Application build"
     silent: true
 
@@ -40,37 +43,12 @@ tasks:
       - task: build
     cmds:
       - echo "Building and running the application"
-      - ./{{ .EXE_PATH }}
-    silent: true
-
-  docker:
-    cmds:
-      - docker-compose up -d
-      - echo "Docker containers started"
-    silent: true
-
-  docker-stop:
-    cmds:
-      - docker-compose down
-      - echo "Docker containers stopped"
-    silent: true
-
-  docker-build:
-    cmds:
-      - echo "Building Docker containers"
-      - docker-compose up --build -d
-    silent: true
-  
-  docker-rebuild:
-    cmds:
-      - echo "Rebuilding Docker containers"
-      - docker-compose down
-      - docker-compose up --build --force-recreate -d
+      - cd {{ .BIN }} && exec ./{{ .EXECUTABLE }}
     silent: true
 
   clean:
     cmds:
       - echo "Cleaning application"
-      - rm -rf ./bin
-      - rm -rf ./tmp
+      - rm -rf {{ .BIN }}
+      - rm -rf {{ .TMP }}
     silent: true
