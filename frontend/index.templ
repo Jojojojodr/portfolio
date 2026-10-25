@@ -8,135 +8,139 @@ import (
 
 templ Index(c *gin.Context, portfolio *models.Portfolio) {
     @Layout(c, "Portfolio - Jordy de Ron") {
-        <div id="index-page" class="max-w-6xl mx-auto px-4 py-8">
-            <section class="flex justify-center items-center h-screen">
-                <div class="text-center mb-12">
-                    if portfolio != nil {
-                        <img src={ portfolio.ImgPath } alt={ portfolio.Name } class="hero-img rounded-full w-40 h-40 mx-auto mb-6 shadow-lg">
-                    }
-                    if portfolio != nil {
-                        <h1 class="text-4xl font-bold text-white mb-2">{ portfolio.Name }</h1>
-                        <p class="text-xl text-gray-300 mb-4">{ portfolio.Function }</p>
-                        <div class="flex justify-center space-x-6 text-gray-400">
-                            <span>📍 { portfolio.Place }</span>
-                            <span>📧 { portfolio.Email }</span>
-                            <span>🎂 { portfolio.Birthday }</span>
-                        </div>
-                    }
+        <div id="index-page" class="h-dvh flex justify-center items-center px-4">
+            if portfolio != nil {
+                <div class="text-center">
+                    <img src={ portfolio.ImgPath } alt={ portfolio.Name } class="hero-img rounded-full w-40 h-40 mx-auto mb-6 shadow-lg">
+                    <h1 class="text-4xl font-bold text-white mb-2">{ portfolio.Name }</h1>
+                    <p class="text-xl text-gray-300 mb-4">{ portfolio.Function }</p>
+                    <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-gray-400">
+                        <span>📍 { portfolio.Place }</span>
+                        <span>📧 { portfolio.Email }</span>
+                        <span>🎂 { portfolio.Birthday }</span>
+                    </div>
                     <div class="mt-4 flex justify-center space-x-6">
                         <a href={ portfolio.LinkedIn } class="text-blue-400 hover:text-blue-300 transition">LinkedIn Profile</a>
                         <a href={ portfolio.Github } class="text-blue-400 hover:text-blue-300 transition">Github Profile</a>
                     </div>
                 </div>
-            </section>
+            }
+        </div>
 
-            <section class="flex justify-center items-center h-screen pb-50 md:pb-0">
-                <div class="target-element darker-bg rounded-lg p-8 shadow-lg">
-                    <h2 class="text-2xl font-bold text-white mb-6">About Me</h2>
-                    if portfolio != nil {
-                        <p class="text-gray-300 leading-relaxed">{ portfolio.About }</p>
-                    }
-                </div>
-            </section>
+        <button type="button" class="edge-handle edge-handle-left" data-edge-open="skills-panel" aria-controls="skills-panel">Skills</button>
+        <button type="button" class="edge-handle edge-handle-right" data-edge-open="about-panel" aria-controls="about-panel">About</button>
+        <button type="button" class="edge-handle edge-handle-bottom" data-edge-open="education-panel" aria-controls="education-panel">Education & Hobbies</button>
 
-            <section class="flex justify-center items-center h-screen pb-50 md:pb-0">
-                <div class="target-element darker-bg rounded-lg p-8 shadow-lg">
-                    <h2 class="text-2xl font-bold text-white mb-6">Skills</h2>
+        <div id="edge-backdrop" class="edge-backdrop"></div>
 
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div>
-                            <h3 class="text-xl font-semibold text-white mb-4">Programming Languages & Frameworks</h3>
-                            <div class="flex flex-wrap gap-2">
-                                if portfolio != nil {
-                                    for _, skill := range controllers.LanguagesAndFrameworks(portfolio.Skills) {
-                                        <span class="lighter-bg px-3 py-1 rounded-full text-sm text-gray-200">{ skill.Skill }</span>
-                                    }
+        <section id="about-panel" class="edge-panel edge-panel-right" role="dialog" aria-modal="true" aria-labelledby="about-title">
+            @edgePanelClose()
+            <div class="p-8">
+                <h2 id="about-title" class="text-2xl font-bold text-white mb-6">About Me</h2>
+                if portfolio != nil {
+                    <p class="text-gray-300 leading-relaxed">{ portfolio.About }</p>
+                }
+            </div>
+        </section>
+
+        <section id="skills-panel" class="edge-panel edge-panel-left" role="dialog" aria-modal="true" aria-labelledby="skills-title">
+            @edgePanelClose()
+            <div class="p-8">
+                <h2 id="skills-title" class="text-2xl font-bold text-white mb-6">Skills</h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-4">Programming Languages & Frameworks</h3>
+                        <div class="flex flex-wrap gap-2">
+                            if portfolio != nil {
+                                for _, skill := range controllers.LanguagesAndFrameworks(portfolio.Skills) {
+                                    <span class="lighter-bg px-3 py-1 rounded-full text-sm text-gray-200">{ skill.Skill }</span>
                                 }
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-semibold text-white mb-4">Platforms & Tools</h3>
-                            <div class="flex flex-wrap gap-2">
-                                if portfolio != nil {
-                                    for _, skill := range controllers.PlatformsAndTools(portfolio.Skills) {
-                                        <span class="lighter-bg px-3 py-1 rounded-full text-sm text-gray-200">{ skill.Skill }</span>
-                                    }
-                                }
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-semibold text-white mb-4">Soft Skills</h3>
-                            <ul class="text-gray-300 space-y-2">
-                                if portfolio != nil {
-                                    for _, softSkill := range portfolio.SoftSkills {
-                                        <li>• { softSkill.Skill }</li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-semibold text-white mb-4">Languages</h3>
-                            <ul class="text-gray-300 space-y-2">
-                                if portfolio != nil {
-                                    for _, language := range portfolio.Languages {
-                                        <li>• { language.Language } – { language.Proficiency }</li>
-                                    }
-                                }
-                            </ul>
+                            }
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <section class="flex justify-center items-center h-screen">
-                <div class="grid md:grid-cols-2 gap-8">
-                    <section>
-                        <div class="target-element darker-bg rounded-lg p-8 shadow-lg h-full">
-                            <h2 class="text-2xl font-bold text-white mb-6">Education</h2>
-                            <div class="space-y-6">
-                                if portfolio != nil {
-                                    for _, education := range portfolio.Education {
-                                        <div class="border-l-4 border-blue-500 pl-6">
-                                            <h3 class="text-lg font-semibold text-white">{ education.Education }</h3>
-                                            <p class="text-blue-400 font-medium">{ education.School }</p>
-                                            <p class="text-gray-400 mb-3">{ education.Start } - { education.End }</p>
-                                            <ul class="text-gray-300 text-sm space-y-2">
-                                                for _, task := range education.Tasks {
-                                                    <li>• { task.Task }</li>
-                                                }
-                                            </ul>
-                                        </div>
-                                    }
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-4">Platforms & Tools</h3>
+                        <div class="flex flex-wrap gap-2">
+                            if portfolio != nil {
+                                for _, skill := range controllers.PlatformsAndTools(portfolio.Skills) {
+                                    <span class="lighter-bg px-3 py-1 rounded-full text-sm text-gray-200">{ skill.Skill }</span>
                                 }
-                            </div>
+                            }
                         </div>
-                    </section>
+                    </div>
 
-                    <section>
-                        <div class="target-element darker-bg rounded-lg p-8 shadow-lg h-full">
-                            <h2 class="text-2xl font-bold text-white mb-6">Hobbies & Side Activities</h2>
-                            <ul class="text-gray-300 space-y-4">
-                                if portfolio != nil {
-                                    for _, hobby := range portfolio.Hobbies {
-                                        <li class="flex items-center">
-                                            <span class="text-2xl mr-3">{ hobby.Emoji }</span>
-                                            <div>
-                                                <span class="font-medium">{ hobby.Hobby }</span>
-                                                <p class="text-sm text-gray-400">{ hobby.Discription }</p>
-                                            </div>
-                                        </li>
-                                    }
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-4">Soft Skills</h3>
+                        <ul class="text-gray-300 space-y-2">
+                            if portfolio != nil {
+                                for _, softSkill := range portfolio.SoftSkills {
+                                    <li>• { softSkill.Skill }</li>
                                 }
-                            </ul>
-                        </div>
-                    </section>
+                            }
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-4">Languages</h3>
+                        <ul class="text-gray-300 space-y-2">
+                            if portfolio != nil {
+                                for _, language := range portfolio.Languages {
+                                    <li>• { language.Language } – { language.Proficiency }</li>
+                                }
+                            }
+                        </ul>
+                    </div>
                 </div>
-            </section>
-        </div>
-        <script src="/static/js/hover.js"></script>
-        <script src="/static/js/scroll.js"></script>
+            </div>
+        </section>
+
+        <section id="education-panel" class="edge-panel edge-panel-bottom" role="dialog" aria-modal="true" aria-label="Education and hobbies">
+            @edgePanelClose()
+            <div class="max-w-6xl mx-auto p-8 grid md:grid-cols-2 gap-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-6">Education</h2>
+                    <div class="space-y-6">
+                        if portfolio != nil {
+                            for _, education := range portfolio.Education {
+                                <div class="border-l-4 border-blue-500 pl-6">
+                                    <h3 class="text-lg font-semibold text-white">{ education.Education }</h3>
+                                    <p class="text-blue-400 font-medium">{ education.School }</p>
+                                    <p class="text-gray-400 mb-3">{ education.Start } - { education.End }</p>
+                                    <ul class="text-gray-300 text-sm space-y-2">
+                                        for _, task := range education.Tasks {
+                                            <li>• { task.Task }</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-6">Hobbies & Side Activities</h2>
+                    <ul class="text-gray-300 space-y-4">
+                        if portfolio != nil {
+                            for _, hobby := range portfolio.Hobbies {
+                                <li class="flex items-center">
+                                    <span class="text-2xl mr-3">{ hobby.Emoji }</span>
+                                    <div>
+                                        <span class="font-medium">{ hobby.Hobby }</span>
+                                        <p class="text-sm text-gray-400">{ hobby.Discription }</p>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <script src="/static/js/index.js"></script>
     }
+}
+
+templ edgePanelClose() {
+    <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl leading-none p-2 transition" data-edge-close aria-label="Close">×</button>
 }
