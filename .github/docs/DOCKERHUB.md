@@ -34,6 +34,8 @@ server:
   host: localhost
   port: 8080
   admin_port: 8081
+  # public_url: https://portfolio.example.com   # optional, only behind a reverse proxy
+  # admin_url: https://admin.example.com        # optional, only behind a reverse proxy
   jwt_secret: change_me_to_a_long_random_string
 database:
   type: sqlite              # "sqlite" or "postgres"
@@ -53,6 +55,22 @@ gin:
 - `jwt_secret` must be set to a real secret.
 - If you change `server.port` or `server.admin_port`, change the published ports to match.
 - On first start the database is migrated and seeded with an admin (`admin@example.com` / `adminpass`) and a regular user (`user@example.com` / `userpass`). **Change these passwords right away.**
+
+### Running behind a reverse proxy
+
+When the website and the admin panel are served on their own domains (for example with nginx, Caddy or Traefik), set `public_url` and `admin_url` so the links between the two sites (Blog, Profile, Admin Dashboard) point to those domains:
+
+```yaml
+server:
+  port: 8080
+  admin_port: 8081
+  public_url: https://portfolio.example.com
+  admin_url: https://admin.example.com
+```
+
+- Point the website domain to `server.port` and the admin domain to `server.admin_port`.
+- Leave both empty for local development. The links then use the current host with `port` / `admin_port`, e.g. `http://localhost:8081`.
+- The app tells the two sites apart by the port the request came in on, so the proxy has to forward each domain to its own port.
 
 ## Using plain Docker
 
