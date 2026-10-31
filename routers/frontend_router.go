@@ -9,7 +9,7 @@ import (
 
 func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	// Set up the routes for the frontend
-	svr.Static("/static", "./static")
+	staticFiles(svr)
 
 	svr.Use(middleware.LoginMiddleware)
 	svr.GET("/", views.HandleHomePage)
@@ -27,7 +27,7 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 }
 
 func AdminFrontendRouter(svr *gin.Engine) *gin.Engine {
-	svr.Static("/static", "./static")
+	staticFiles(svr)
 	svr.Use(middleware.LoginMiddleware)
 
 	svr.GET("/login", views.HandleLoginPage)
@@ -39,9 +39,21 @@ func AdminFrontendRouter(svr *gin.Engine) *gin.Engine {
 	admin.GET("/posts", views.HandleAdminPostsPage)
 	admin.GET("/post/create", views.HandleAdminCreateBlogPostPage)
 	admin.GET("/post/edit", views.HandleAdminEditBlogPostPage)
+	admin.GET("/portfolio", views.HandleAdminPortfolioPage)
+	admin.GET("/portfolio/skills", views.HandleAdminPortfolioSkillsPage)
+	admin.GET("/portfolio/education", views.HandleAdminPortfolioEducationPage)
+	admin.GET("/portfolio/hobbies", views.HandleAdminPortfolioHobbiesPage)
+	admin.GET("/portfolio/images", views.HandleAdminPortfolioImagesPage)
 	admin.GET("/profile/:id", middleware.AuthRequired(), middleware.AdminRequired(), views.ProfileHandler)
 
 	svr.NoRoute(views.HandleNotFoundPage)
 
 	return svr
+}
+
+func staticFiles(svr *gin.Engine) {
+	static := svr.Group("/static", func(c *gin.Context) {
+		c.Header("Cache-Control", "no-cache")
+	})
+	static.Static("/", "./static")
 }

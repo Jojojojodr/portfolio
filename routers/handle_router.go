@@ -32,7 +32,7 @@ func HandleRouter(svr *gin.Engine) *gin.Engine {
 func AdminHandleRouter(svr *gin.Engine) *gin.Engine {
 	handle := svr.Group("/handle")
 	handle.Use(middleware.LoginMiddleware)
-	handle.POST("/profile/update", middleware.AuthRequired(), views.UpdateProfileHandler)
+	handle.POST("/profile/update", middleware.AuthRequired(), middleware.AdminRequired(), views.AdminUpdateProfileHandler)
 
 	auth := handle.Group("/auth")
 	auth.POST("/login", views.Login)
@@ -46,6 +46,23 @@ func AdminHandleRouter(svr *gin.Engine) *gin.Engine {
 	admin.POST("/post/edit", views.HandleAdminEditBlogPost)
 	admin.POST("/preview-title", views.HandleAdminPreviewTitle)
 	admin.POST("/preview-markdown", views.HandleAdminPreviewMarkdown)
+
+	portfolio := handle.Group("/admin/portfolio").Use(middleware.AuthRequired(), middleware.AdminRequired())
+	portfolio.POST("/profile", views.HandleAdminSavePortfolioProfile)
+	portfolio.POST("/about", views.HandleAdminSavePortfolioAbout)
+	portfolio.POST("/skill/save", views.HandleAdminSaveSkill)
+	portfolio.POST("/skill/delete", views.HandleAdminDeleteSkill)
+	portfolio.POST("/soft-skill/save", views.HandleAdminSaveSoftSkill)
+	portfolio.POST("/soft-skill/delete", views.HandleAdminDeleteSoftSkill)
+	portfolio.POST("/language/save", views.HandleAdminSaveLanguage)
+	portfolio.POST("/language/delete", views.HandleAdminDeleteLanguage)
+	portfolio.POST("/education/save", views.HandleAdminSaveEducation)
+	portfolio.POST("/education/delete", views.HandleAdminDeleteEducation)
+	portfolio.POST("/education/task/save", views.HandleAdminSaveEducationTask)
+	portfolio.POST("/education/task/delete", views.HandleAdminDeleteEducationTask)
+	portfolio.POST("/hobby/save", views.HandleAdminSaveHobby)
+	portfolio.POST("/hobby/delete", views.HandleAdminDeleteHobby)
+	portfolio.POST("/image/upload", views.HandleAdminUploadImage)
 
 	return svr
 }

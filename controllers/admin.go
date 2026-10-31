@@ -38,7 +38,7 @@ func HandleAdminAuth(c *gin.Context) {
 		return
 	}
 
-	if err := setAuthCookie(c, user); err != nil {
+	if err := SetAuthCookie(c, user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create token"})
 		return
 	}

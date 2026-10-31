@@ -17,6 +17,9 @@ services:
       - ./config.yaml:/app/config.yaml:ro
       # SQLite database file, used when database.type is "sqlite" (path: "./data/sqlite.db")
       - ./data/:/app/data/
+      # Images uploaded in the admin panel. When this folder is empty on startup the
+      # container fills it with the default images (profile picture, favicons)
+      - ./static/img:/app/static/img
     restart: unless-stopped
     networks:
       - portfolio-network

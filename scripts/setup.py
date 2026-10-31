@@ -36,16 +36,6 @@ def copy_config():
     else:
         print("config file already exists.")
 
-def create_database():
-    if not os.path.exists("database/sqlite.db"):
-        print("Creating SQLite database...")
-        with open("database/sqlite.db", "w") as db_file:
-            db_file.write("")
-        print("SQLite database created at database/sqlite.db.")
-    else:
-        print("SQLite database already exists at database/sqlite.db.")
-
 if __name__ == "__main__":
     setup_dependencies()
     copy_config()
-    create_database()

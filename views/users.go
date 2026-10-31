@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Jojojojodr/portfolio"
 	"github.com/Jojojojodr/portfolio/controllers"
@@ -13,7 +12,6 @@ import (
 	"github.com/Jojojojodr/portfolio/frontend/components"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 func Login(c *gin.Context) {
@@ -39,23 +37,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"exp": jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-	})
-
-	secretToken := portfolio.SecretToken
-	tokenString, err := token.SignedString([]byte(secretToken))
-	if err != nil {
+	if err := controllers.SetAuthCookie(c, user); err != nil {
 		c.Writer.WriteHeader(http.StatusOK) // htmx only swaps 2xx responses
 		components.LoginResponse("", "Could not create token").Render(c.Request.Context(), c.Writer)
 		return
 	}
 
-	c.SetSameSite(http.SameSiteLaxMode)
-	c.SetCookie("Authorization", tokenString, 3600*24, "/", "", false, true)
-
-	c.Header("HX-Redirect", "/") // full reload so the whole page reflects the new auth state
+	c.Header("HX-Redirect", safeRedirect(c.PostForm("next"))) // full reload so the whole page reflects the new auth state
 	c.Writer.WriteHeader(200)
 }
 
@@ -67,14 +55,19 @@ func Logout(c *gin.Context) {
 }
 
 func HandleRegisterPage(c *gin.Context) {
-	errors := make(map[string]string)
-	auth.RegisterPage(c, errors).Render(c.Request.Context(), c.Writer)
+	auth.RegisterPage(c).Render(c.Request.Context(), c.Writer)
 }
 
 func HandleRegisterPost(c *gin.Context) {
 	name := strings.TrimSpace(c.PostForm("name"))
 	email := strings.TrimSpace(c.PostForm("email"))
 	password := c.PostForm("password")
+	confirmPassword := c.PostForm("confirm_password")
+	next := safeRedirect(c.PostForm("next"))
+	formID := "page"
+	if c.PostForm("form_id") == "modal" {
+		formID = "modal"
+	}
 	errors := make(map[string]string)
 
 	// Validation
@@ -91,6 +84,11 @@ func HandleRegisterPost(c *gin.Context) {
 	} else if len(password) < 6 {
 		errors["password"] = "Password must be at least 6 characters"
 	}
+	if confirmPassword == "" {
+		errors["confirm_password"] = "Please confirm your password"
+	} else if password != confirmPassword {
+		errors["confirm_password"] = "Passwords do not match"
+	}
 
 	// Check if email already exists
 	if _, err := controllers.GetUserByEmail(email); err == nil {
@@ -98,7 +96,7 @@ func HandleRegisterPost(c *gin.Context) {
 	}
 
 	if len(errors) > 0 {
-		auth.RegisterPage(c, errors).Render(c.Request.Context(), c.Writer)
+		components.RegisterForm(formID, next, name, email, errors).Render(c.Request.Context(), c.Writer)
 		return
 	}
 
@@ -107,12 +105,24 @@ func HandleRegisterPost(c *gin.Context) {
 	user := &models.User{Name: name, Email: email, Password: hashed}
 	if err := controllers.CreateUser(user); err != nil {
 		errors["general"] = "Registration failed"
-		auth.RegisterPage(c, errors).Render(c.Request.Context(), c.Writer)
+		components.RegisterForm(formID, next, name, email, errors).Render(c.Request.Context(), c.Writer)
 		return
 	}
 
-	// Redirect to login or auto-login
-	c.Redirect(http.StatusSeeOther, "/login")
+	// Log the new user in straight away, falling back to the login page if that fails
+	if err := controllers.SetAuthCookie(c, user); err != nil {
+		next = "/login"
+	}
+	c.Header("HX-Redirect", next)
+	c.Status(http.StatusOK)
+}
+
+// safeRedirect only allows redirects to paths on this site, so the next form field can't send users elsewhere
+func safeRedirect(next string) string {
+	if !strings.HasPrefix(next, "/") || strings.HasPrefix(next, "//") || strings.HasPrefix(next, "/\\") {
+		return "/"
+	}
+	return next
 }
 
 func ProfileHandler(c *gin.Context) {
@@ -169,7 +179,17 @@ func ProfileHandler(c *gin.Context) {
 	}
 }
 
+// UpdateProfileHandler handles profile updates on the user-facing site and redirects back to the profile page.
 func UpdateProfileHandler(c *gin.Context) {
+	updateProfile(c, false)
+}
+
+// AdminUpdateProfileHandler handles profile updates from the admin dashboard and redirects back to the users overview.
+func AdminUpdateProfileHandler(c *gin.Context) {
+	updateProfile(c, true)
+}
+
+func updateProfile(c *gin.Context, fromAdminDashboard bool) {
 	// Get current user from session
 	currentUser, exists := c.Get("user")
 	if !exists {
@@ -318,8 +338,10 @@ func UpdateProfileHandler(c *gin.Context) {
 		c.Set("user", targetUser)
 	}
 
-	// Success - redirect to profile page
-	if isOwnProfile {
+	// Success - admins go back to the users overview, users back to their profile
+	if fromAdminDashboard {
+		c.Redirect(http.StatusSeeOther, "/users")
+	} else if isOwnProfile {
 		c.Redirect(http.StatusSeeOther, "/profile")
 	} else {
 		c.Redirect(http.StatusSeeOther, "/profile/"+strconv.Itoa(int(targetUser.ID)))

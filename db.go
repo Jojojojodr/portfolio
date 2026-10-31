@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"os"
+	"path/filepath"
 
 	"github.com/Jojojojodr/portfolio/config"
 	"github.com/Jojojojodr/portfolio/database/models"
@@ -104,6 +106,9 @@ func connectSQLite() (*gorm.DB, error) {
 	dbPath := config.AppConfig.Database.Path
 	if dbPath == "" {
 		return nil, fmt.Errorf("Database path is not set for SQLite")
+	}
+	if err := os.MkdirAll(filepath.Dir(dbPath), 0o755); err != nil {
+		return nil, fmt.Errorf("Failed to create database directory: %w", err)
 	}
 
 	return gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

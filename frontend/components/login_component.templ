@@ -15,8 +15,10 @@ templ LoginComponent(c *gin.Context, isAuthenticated bool, user *models.User, is
             </div>
             if !isAuthenticated {
                 <div class="flex flex-col gap-4">
-                    @ButtonPrimary("Login", "/login")
-                    @ButtonPrimary("Register", "/register")
+                    @ButtonModal("Login", "login")
+                    if !portfolio.IsAdminRequest(c) {
+                        @ButtonModal("Register", "register")
+                    }
                 </div>
             } else {
                 <div class="flex flex-col gap-4">
@@ -38,5 +40,8 @@ templ LoginComponent(c *gin.Context, isAuthenticated bool, user *models.User, is
             }
         </div>
     </div>
-    <script src="/static/js/login.js"></script>
+    if !isAuthenticated {
+        @AuthModal(c)
+    }
+    <script src={ portfolio.StaticURL("/static/js/login.js") }></script>
 }

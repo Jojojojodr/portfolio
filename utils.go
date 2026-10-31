@@ -3,7 +3,10 @@ package portfolio
 import (
 	"fmt"
 	"net"
+	"net/http"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Jojojojodr/portfolio/config"
 	"github.com/Jojojojodr/portfolio/database/models"
@@ -14,6 +17,12 @@ import (
 )
 
 var SecretToken string
+
+var assetVersion = strconv.FormatInt(time.Now().Unix(), 10)
+
+func StaticURL(path string) string {
+	return path + "?v=" + assetVersion
+}
 
 func Encrypt(key string) string {
 	hashedKey, err := bcrypt.GenerateFromPassword([]byte(key), bcrypt.DefaultCost)
@@ -30,9 +39,9 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 func IsDatabaseEmpty(database *gorm.DB) bool {
-    var userCount int64 
-    database.Model(&models.User{}).Count(&userCount)
-    return userCount == 0
+	var userCount int64
+	database.Model(&models.User{}).Count(&userCount)
+	return userCount == 0
 }
 
 func SetSecretToken(token string) {
@@ -40,22 +49,36 @@ func SetSecretToken(token string) {
 }
 
 func PublicURL(c *gin.Context, path string) string {
-	if !isAdminRequest(c) {
+	if !IsAdminRequest(c) {
 		return path
+	}
+	if base := config.AppConfig.Server.PublicURL; base != "" {
+		return strings.TrimSuffix(base, "/") + path
 	}
 	return siteURL(c, config.AppConfig.Server.Port, path)
 }
 
 func AdminURL(c *gin.Context, path string) string {
-	if isAdminRequest(c) {
+	if IsAdminRequest(c) {
 		return path
+	}
+	if base := config.AppConfig.Server.AdminURL; base != "" {
+		return strings.TrimSuffix(base, "/") + path
 	}
 	return siteURL(c, config.AppConfig.Server.AdminPort, path)
 }
 
-func isAdminRequest(c *gin.Context) bool {
-	port := requestPort(c)
-	return port != "" && port == config.AppConfig.Server.AdminPort
+func IsAdminRequest(c *gin.Context) bool {
+	adminPort := config.AppConfig.Server.AdminPort
+	if adminPort == "" {
+		return false
+	}
+	if addr, ok := c.Request.Context().Value(http.LocalAddrContextKey).(net.Addr); ok {
+		if _, port, err := net.SplitHostPort(addr.String()); err == nil {
+			return port == adminPort
+		}
+	}
+	return requestPort(c) == adminPort
 }
 
 func requestPort(c *gin.Context) string {

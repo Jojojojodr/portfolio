@@ -131,7 +131,7 @@ func HandleAuth(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
 		return
 	}
-	if err := setAuthCookie(c, user); err != nil {
+	if err := SetAuthCookie(c, user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create token"})
 		return
 	}
@@ -145,7 +145,7 @@ func HandleValidate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
-func setAuthCookie(c *gin.Context, user *models.User) error {
+func SetAuthCookie(c *gin.Context, user *models.User) error {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.ID,
 		"exp": jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),

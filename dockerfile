@@ -33,8 +33,12 @@ COPY --from=builder /builder/bin/main ./main
 COPY --from=builder /builder/database/seeds ./database/seeds
 COPY --from=builder /builder/static ./static
 COPY --from=frontend /src/static/css/style.css ./static/css/style.css
+# Second copy of the images, static/img itself is usually hidden by a bind mount
+COPY --from=builder /builder/static/img ./defaults/img
+COPY --from=builder /builder/scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN mkdir -p /app/data
 
 EXPOSE 8080 8081
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["./main"]
