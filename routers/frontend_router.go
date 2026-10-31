@@ -9,7 +9,7 @@ import (
 
 func FrontendRouter(svr *gin.Engine) *gin.Engine {
 	// Set up the routes for the frontend
-	svr.Static("/static", "./static")
+	staticFiles(svr)
 
 	svr.Use(middleware.LoginMiddleware)
 	svr.GET("/", views.HandleHomePage)
@@ -27,7 +27,7 @@ func FrontendRouter(svr *gin.Engine) *gin.Engine {
 }
 
 func AdminFrontendRouter(svr *gin.Engine) *gin.Engine {
-	svr.Static("/static", "./static")
+	staticFiles(svr)
 	svr.Use(middleware.LoginMiddleware)
 
 	svr.GET("/login", views.HandleLoginPage)
@@ -49,4 +49,11 @@ func AdminFrontendRouter(svr *gin.Engine) *gin.Engine {
 	svr.NoRoute(views.HandleNotFoundPage)
 
 	return svr
+}
+
+func staticFiles(svr *gin.Engine) {
+	static := svr.Group("/static", func(c *gin.Context) {
+		c.Header("Cache-Control", "no-cache")
+	})
+	static.Static("/", "./static")
 }

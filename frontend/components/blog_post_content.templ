@@ -1,69 +1,73 @@
 package components
 
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/Jojojojodr/portfolio/controllers"
-    "github.com/Jojojojodr/portfolio/database/models"
+	"github.com/Jojojojodr/portfolio/controllers"
+	"github.com/Jojojojodr/portfolio/database/models"
 	"github.com/gin-gonic/gin"
 )
 
 templ BlogPostContent(c *gin.Context, post *models.BlogPost) {
-    if post != nil {
-        <title hx-swap-oob="true">{ post.Title }</title>
-        <h1 class="text-3xl font-bold mb-4">{ post.Title }</h1>
-        <div class="text-gray-500 text-sm mb-4">
-            <span class="font-semibold">Author:</span> { post.User.Name }
-            Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
-        </div>
-        if userInterface, exists := c.Get("user"); exists {
-            {{ currentUser := userInterface.(*models.User) }}
-            @LikeButton(
-                post.ID,
-                "post",
-                controllers.GetPostLikeCount(post.ID),
-                controllers.IsPostLikedByUser(currentUser.ID, post.ID),
-                true,
-            )
-        } else {
-            @LikeButton(
-                post.ID,
-                "post",
-                controllers.GetPostLikeCount(post.ID),
-                false,
-                false,
-            )
-        }
-        <div class="markdown">
-            @templ.Raw(post.Content)
-        </div>
-        <div class="mt-8">
-            <h2 class="text-xl font-semibold mb-2">Comments</h2>
-            <div id="comments-section"
-                hx-get={ "/handle/blog/comments?post_id=" + fmt.Sprint(post.ID) }
-                hx-trigger="load"
-                hx-swap="innerHTML">
-                <p>Loading comments...</p>
-            </div>
-            if _, exists := c.Get("user"); exists {
-                <form id="comment-form"
-                    hx-post={ "/handle/blog/comments/add?post_id=" + fmt.Sprint(post.ID) }
-                    hx-target="#comments-section"
-                    hx-swap="innerHTML"
-                    class="mt-4 space-y-2">
-                    <textarea name="comment" class="w-full text-white border rounded px-3 py-2 text-black" rows="3" placeholder="Add a comment..." required></textarea>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Post Comment</button>
-                </form>
-            } else {
-                <div class="mt-4 p-4 bg-gray-700 rounded border">
-                    <p class="text-gray-300 text-center">
-                        <a href="/login" class="text-blue-400 hover:text-blue-300 underline">Log in</a> 
-                        to post a comment
-                    </p>
-                </div>
-            }
-        </div>
-    } else {
-        <div>No post selected.</div>
-    }
+	if post != nil {
+		<title hx-swap-oob="true">{ post.Title }</title>
+		<h1 class="text-3xl font-bold mb-4">{ post.Title }</h1>
+		<div class="text-gray-500 text-sm mb-4">
+			<span class="font-semibold">Author:</span> { post.User.Name }
+			Posted at: { post.CreatedAt.Format("02-01-2006 15:04") }
+		</div>
+		if userInterface, exists := c.Get("user"); exists {
+			{{ currentUser := userInterface.(*models.User) }}
+			@LikeButton(
+				post.ID,
+				"post",
+				controllers.GetPostLikeCount(post.ID),
+				controllers.IsPostLikedByUser(currentUser.ID, post.ID),
+				true,
+			)
+		} else {
+			@LikeButton(
+				post.ID,
+				"post",
+				controllers.GetPostLikeCount(post.ID),
+				false,
+				false,
+			)
+		}
+		<div class="markdown">
+			@templ.Raw(post.Content)
+		</div>
+		<div class="mt-8 mb-8">
+			<h2 class="text-xl font-semibold mb-2">Comments</h2>
+			<div
+				id="comments-section"
+				hx-get={ "/handle/blog/comments?post_id=" + fmt.Sprint(post.ID) }
+				hx-trigger="load"
+				hx-swap="innerHTML"
+			>
+				<p>Loading comments...</p>
+			</div>
+			if _, exists := c.Get("user"); exists {
+				<form
+					id="comment-form"
+					hx-post={ "/handle/blog/comments/add?post_id=" + fmt.Sprint(post.ID) }
+					hx-target="#comments-section"
+					hx-swap="innerHTML"
+					class="mt-4 space-y-2"
+				>
+					<textarea name="comment" class="w-full text-white border rounded px-3 py-2 text-black" rows="3" placeholder="Add a comment..." required></textarea>
+					<button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Post Comment</button>
+				</form>
+			} else {
+				<div class="mt-4 p-4 bg-gray-700 rounded border">
+					<p class="text-gray-300 text-center">
+						<a href="/login" data-auth-open="login" class="text-blue-400 hover:text-blue-300 underline">Log in</a>
+						to post a comment
+					</p>
+				</div>
+			}
+		</div>
+	} else {
+		<div>No post selected.</div>
+	}
 }

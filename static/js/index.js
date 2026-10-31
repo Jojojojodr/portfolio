@@ -33,7 +33,7 @@
   }
 
   document.addEventListener("mousemove", (event) => {
-    if (openPanel) return;
+    if (openPanel || document.getElementById("auth-modal")?.open) return;
     const x = event.clientX;
     const y = event.clientY;
 

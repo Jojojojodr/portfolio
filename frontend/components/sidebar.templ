@@ -3,6 +3,7 @@ package components
 import (
     "fmt"
 
+    "github.com/Jojojojodr/portfolio"
     "github.com/Jojojojodr/portfolio/database/models"
 )
 
@@ -44,5 +45,5 @@ templ BlogSidebar(posts []models.BlogPost) {
             </ul>
         </aside>
     </div>
-    <script src="/static/js/sidebar.js"></script>
+    <script src={ portfolio.StaticURL("/static/js/sidebar.js") }></script>
 }

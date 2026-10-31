@@ -16,6 +16,10 @@ type Config struct {
 		Host string `yaml:"host"`
 		Port  string `yaml:"port"`
 		AdminPort string `yaml:"admin_port"`
+		// Optional public base URLs, used for links between the two sites when served behind a reverse proxy.
+		// Leave empty locally to link with the current host and the port instead.
+		PublicURL string `yaml:"public_url"`
+		AdminURL  string `yaml:"admin_url"`
 		JWTSecret string `yaml:"jwt_secret"`
 	} `yaml:"server"`
 	Database struct {

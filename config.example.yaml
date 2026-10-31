@@ -2,6 +2,10 @@ server:
   host: localhost
   port: 8080
   admin_port: 8081
+  # Optional: set these when the sites are served on their own domains behind a reverse proxy.
+  # Leave them empty locally, then links use the current host with port / admin_port.
+  # public_url: https://portfolio.example.com
+  # admin_url: https://admin.example.com
   jwt_secret: your_jwt_secret_key
 
 database:

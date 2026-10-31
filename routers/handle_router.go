@@ -32,7 +32,7 @@ func HandleRouter(svr *gin.Engine) *gin.Engine {
 func AdminHandleRouter(svr *gin.Engine) *gin.Engine {
 	handle := svr.Group("/handle")
 	handle.Use(middleware.LoginMiddleware)
-	handle.POST("/profile/update", middleware.AuthRequired(), views.UpdateProfileHandler)
+	handle.POST("/profile/update", middleware.AuthRequired(), middleware.AdminRequired(), views.AdminUpdateProfileHandler)
 
 	auth := handle.Group("/auth")
 	auth.POST("/login", views.Login)
