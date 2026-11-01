@@ -55,7 +55,7 @@ templ Index(c *gin.Context, portfolio *models.Portfolio) {
                         <div class="flex flex-wrap gap-2">
                             if portfolio != nil {
                                 for _, skill := range controllers.LanguagesAndFrameworks(portfolio.Skills) {
-                                    <span class="lighter-bg px-3 py-1 rounded-full text-sm text-gray-200">{ skill.Skill }</span>
+                                    <span class={ "px-3 py-1 rounded-full text-sm ring-1", skillColor(skill) }>{ skill.Skill }</span>
                                 }
                             }
                         </div>
@@ -66,7 +66,7 @@ templ Index(c *gin.Context, portfolio *models.Portfolio) {
                         <div class="flex flex-wrap gap-2">
                             if portfolio != nil {
                                 for _, skill := range controllers.PlatformsAndTools(portfolio.Skills) {
-                                    <span class="lighter-bg px-3 py-1 rounded-full text-sm text-gray-200">{ skill.Skill }</span>
+                                    <span class={ "px-3 py-1 rounded-full text-sm ring-1", skillColor(skill) }>{ skill.Skill }</span>
                                 }
                             }
                         </div>
@@ -144,4 +144,21 @@ templ Index(c *gin.Context, portfolio *models.Portfolio) {
 
 templ edgePanelClose() {
     <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl leading-none p-2 transition" data-edge-close aria-label="Close">×</button>
+}
+
+// skillColor gives each skill type its own color: languages purple, frameworks green, platforms red, tools blue.
+// A skill with more than one type gets the color of the first one in that order.
+func skillColor(skill models.Skill) string {
+	switch {
+	case skill.Language:
+		return "bg-purple-500/20 text-purple-200 ring-purple-500/40"
+	case skill.Framework:
+		return "bg-green-500/20 text-green-200 ring-green-500/40"
+	case skill.Platform:
+		return "bg-red-500/20 text-red-200 ring-red-500/40"
+	case skill.Tool:
+		return "bg-blue-500/20 text-blue-200 ring-blue-500/40"
+	default:
+		return "lighter-bg text-gray-200 ring-transparent"
+	}
 }
