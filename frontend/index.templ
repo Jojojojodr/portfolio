@@ -39,7 +39,7 @@ templ Index(c *gin.Context, portfolio *models.Portfolio) {
             <div class="p-8">
                 <h2 id="about-title" class="text-2xl font-bold text-white mb-6">About Me</h2>
                 if portfolio != nil {
-                    <p class="text-gray-300 leading-relaxed">{ portfolio.About }</p>
+                    <p class="text-gray-300 leading-relaxed whitespace-pre-line">{ portfolio.About }</p>
                 }
             </div>
         </section>
